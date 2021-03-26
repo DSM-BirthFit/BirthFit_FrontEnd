@@ -1,13 +1,19 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import * as SideBarStyle from '../../../assets/styles/Common/SideBar/SideBar';
 import { RiQuestionAnswerLine } from 'react-icons/ri';
 import { IoMdHelp } from 'react-icons/io';
 
 const SideBar = ({ auth, menu, title, qna, help, handleMenuOption, handleSignIn, handleSignUp, handleProfile, onChangeAuth }) => {
+    let history = useHistory();
 
     const handleLogout = () => {
-        onChangeAuth();
+        onChangeAuth(false);
+        handleMenuOption(0);
         localStorage.removeItem('userInfo');
+        history.push({
+            pathname: '/'
+        })
     }
 
     return (

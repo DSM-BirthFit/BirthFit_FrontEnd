@@ -14,6 +14,7 @@ const Header = ({ auth, onChangeMenuBar, handleMenuOption, handleSignIn, handleS
 
     const handleLogout = () => {
         onChangeAuth(false);
+        handleMenuOption(0);
         localStorage.removeItem('userInfo');
         history.push({
             pathname: '/'

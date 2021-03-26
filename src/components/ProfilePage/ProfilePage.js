@@ -160,6 +160,7 @@ const ProfilePage = ({ auth, menu, title, qna, help, id, pw, onChangeMenuBar, on
             })
             .then(res => {console.log(res);
                 onChangeProfile('', '');
+                handleMenuOption(0);
                 history.push({
                     pathname: '/',
                 })

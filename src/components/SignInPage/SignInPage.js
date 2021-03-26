@@ -74,6 +74,8 @@ const SignInPage = ({ auth, menu, title, qna, help, id, pw, idClick, pwClick, on
                 })
             );
 
+            handleMenuOption(0);
+
             history.push({
                 pathname: '/',
             })
