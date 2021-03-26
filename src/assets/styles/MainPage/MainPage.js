@@ -139,3 +139,16 @@ export const IntroImg = styled.img`
         top: 10vh;
     }
 `;
+
+export const MainHeader = styled.div`
+    position:fixed;
+    width: 100%;
+    z-index: 3;
+`;
+
+export const MaineSide = styled.div`
+    margin-top: 60px;
+    position: fixed;
+    height: 100%;
+    z-index: ${props => props.menu ? 2 : 0};
+`;

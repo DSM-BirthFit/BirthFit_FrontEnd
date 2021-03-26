@@ -3,14 +3,15 @@ import { useHistory } from 'react-router';
 import * as SignInPageStyle from '../../assets/styles/SignInPage/SignInPage';
 import signinImg from '../../assets/images/signin.jpg';
 
-import Common from '../Common/Common';
+import Header from '../Common/Header/Header';
+import SideBar from '../Common/SideBar/SideBar';
 
 import { connect } from 'react-redux';
-import { setAuth, setMenu, setSignin } from '../../actions';
+import { setAuth, setMenu, setSignin, setSideBar } from '../../actions';
 
 const axios = require('axios');
 
-const SignInPage = ({ auth, menu, id, pw, idClick, pwClick, onChangeMenuBar, onChangeAuth, onChangeSignin }) => {
+const SignInPage = ({ auth, menu, title, qna, help, id, pw, idClick, pwClick, onChangeMenuBar, onChangeAuth, onChangeSignin, onChangeMenuOption }) => {
     let history = useHistory();
 
     const [signId, setSignId] = useState(''),
@@ -23,6 +24,16 @@ const SignInPage = ({ auth, menu, id, pw, idClick, pwClick, onChangeMenuBar, onC
     const signupText = 'Sign up here';
     const dontMatch = 'Username/password doesn\'t match, or the user does\'t exist';
     const require = 'Require';
+
+    const handleMenuOption = (num) => {
+        if(num === 0) {
+            onChangeMenuOption(true, false, false);
+        } else if(num === 1) {
+            onChangeMenuOption(false, true, false);
+        } else if(num === 2){
+            onChangeMenuOption(false, false, true);
+        }
+    }
 
     useEffect(() => {
         if(signId!=='' || signPw!=='') {
@@ -70,6 +81,13 @@ const SignInPage = ({ auth, menu, id, pw, idClick, pwClick, onChangeMenuBar, onC
         .catch(err => {
             console.log(err);
             setNullIn(true);
+        })
+    }
+
+
+    const handleSignIn = () => {
+        history.push({
+            pathname: '/signin'
         })
     }
 
@@ -128,7 +146,12 @@ const SignInPage = ({ auth, menu, id, pw, idClick, pwClick, onChangeMenuBar, onC
                     </SignInPageStyle.WarningContents>
                 }
             </SignInPageStyle.Contents>
-            <Common auth={auth} menu={menu} onChangeMenuBar={onChangeMenuBar}></Common>
+            <SignInPageStyle.MainHeader>
+                <Header auth={auth} onChangeMenuBar={onChangeMenuBar} onChangeMenuOption={onChangeMenuOption} handleMenuOption={handleMenuOption} handleSignIn={handleSignIn} handleSignUp={handleSignUp}></Header>
+            </SignInPageStyle.MainHeader>
+            <SignInPageStyle.MaineSide menu={menu}>
+                <SideBar auth={auth} menu={menu} title={title} qna={qna} help={help} onChangeMenuBar={onChangeMenuBar} onChangeMenuOption={onChangeMenuOption} handleMenuOption={handleMenuOption} handleSignIn={handleSignIn} handleSignUp={handleSignUp}></SideBar>
+            </SignInPageStyle.MaineSide>
         </SignInPageStyle.Container>
     )
 }
@@ -140,7 +163,10 @@ let mapStateToProps = (state) => {
         id: state.signin.id,
         pw: state.signin.pw,
         idClick: state.signin.idClick,
-        pwClick: state.signin.pwClick
+        pwClick: state.signin.pwClick,
+        title: state.sidebar.title,
+        qna: state.sidebar.qna,
+        help: state.sidebar.help,
     }
 }
 
@@ -148,6 +174,7 @@ let mapDispatchToProps = (dispatch) => {
     return {
         onChangeMenuBar: () => dispatch(setMenu()),
         onChangeAuth: (auth) => dispatch(setAuth(auth)),
+        onChangeMenuOption: (title, qna, help) => dispatch(setSideBar(title, qna, help)),
         onChangeSignin: (id, pw, idClick, pwClick) => dispatch(setSignin(id, pw, idClick, pwClick))
     }
 }
