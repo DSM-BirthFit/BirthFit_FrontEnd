@@ -10,41 +10,18 @@ import { setSideBar } from '../../actions';
 
 const axios = require('axios');
 
-const Common = ({ auth, menu, sidebar, onChangeMenuBar, onChangeMenuOption, onChangeAuth }) => {
+const Common = ({ auth, menu, title, qna, help, onChangeMenuBar, onChangeMenuOption, onChangeAuth }) => {
     let history = useHistory();
 
-    const [mainAuth, setMainAuth] = useState(false),
-          [side, setSide] = useState(sidebar),
-          [sideType, setSideType] = useState(-1);
-        
-    useEffect(() => {
-        setMainAuth(state => auth);
-        setSide(state => sidebar);
-    }, [auth, sidebar])
-
-
     const handleMenuOption = (num) => {
-        setSideType(num);
-    }
-
-    useEffect(() => {
-    if(sideType !== -1) {
-        if(sideType === 0) {
-            side.splice(0, 1, {name: side[0].name, stat: false});
-            side.splice(1, 1, {name: side[1].name, stat: false});
+        if(num === 0) {
+            onChangeMenuOption(true, false, false);
+        } else if(num === 1) {
+            onChangeMenuOption(false, true, false);
+        } else if(num === 2){
+            onChangeMenuOption(false, false, true);
         }
-        else if(sideType === 1) {
-            side.splice(sideType-1, 1, {name: side[sideType-1].name, stat: true});
-            side.splice(1, 1, {name: side[1].name, stat: false});
-        } else if(sideType === 2){
-            side.splice(sideType-1, 1, {name: side[sideType-1].name, stat: true});
-            side.splice(0, 1, {name: side[0].name, stat: false});
-        }
-
-        onChangeMenuOption(side);
-        setSideType(-1);
     }
-    }, [side, sideType, onChangeMenuOption])
 
     const handleSignIn = () => {
         history.push({
@@ -82,10 +59,10 @@ const Common = ({ auth, menu, sidebar, onChangeMenuBar, onChangeMenuOption, onCh
     return (
         <CommonStyle.Container>
             <CommonStyle.Header>
-                <Header auth={mainAuth} onChangeMenuBar={onChangeMenuBar} handleMenuOption={handleMenuOption} handleSignIn={handleSignIn} handleSignUp={handleSignUp} handleProfile={handleProfile} onChangeAuth={onChangeAuth}/>
+                <Header auth={auth} onChangeMenuBar={onChangeMenuBar} handleMenuOption={handleMenuOption} handleSignIn={handleSignIn} handleSignUp={handleSignUp} handleProfile={handleProfile} onChangeAuth={onChangeAuth}/>
             </CommonStyle.Header>
             <CommonStyle.SideBar>
-                <SideBar auth={mainAuth} menu={menu} sidebar={side} handleMenuOption={handleMenuOption} handleSignIn={handleSignIn} handleSignUp={handleSignUp} handleProfile={handleProfile} onChangeAuth={onChangeAuth}></SideBar>
+                <SideBar auth={auth} menu={menu} title={title} qna={qna} help={help} handleMenuOption={handleMenuOption} handleSignIn={handleSignIn} handleSignUp={handleSignUp} handleProfile={handleProfile} onChangeAuth={onChangeAuth}></SideBar>
             </CommonStyle.SideBar>
         </CommonStyle.Container>
     )
@@ -93,13 +70,15 @@ const Common = ({ auth, menu, sidebar, onChangeMenuBar, onChangeMenuOption, onCh
 
 let mapStateToProps = (state) => {
     return {
-        sidebar: state.sidebar.sidebar
+        title: state.sidebar.title,
+        qna: state.sidebar.qna,
+        help: state.sidebar.help
     }
 }
 
 let mapDispatchToProps = (dispatch) => {
     return {
-        onChangeMenuOption: (sidebar) => dispatch(setSideBar(sidebar))
+        onChangeMenuOption: (title, qna, help) => dispatch(setSideBar(title, qna, help))
     }
 }
 

@@ -12,7 +12,7 @@ import { setMenu, setSideBar, setForgot } from '../../actions';
 
 const axios = require('axios');
 
-const ForgotPage = ({ auth, menu, sidebar, email, authent, pw, conpw, onChangeMenuBar, onChangeMenuOption, onChangeForgot }) => {
+const ForgotPage = ({ auth, menu, title, qna, help, email, authent, pw, conpw, onChangeMenuBar, onChangeMenuOption, onChangeForgot }) => {
     let history = useHistory();
 
     const text = 'Enter your email address below and we\'ll send you a link to reset your password.'
@@ -44,32 +44,17 @@ const ForgotPage = ({ auth, menu, sidebar, email, authent, pw, conpw, onChangeMe
         },
     ]),
           [inputClick, setInputClick] = useState({value:'', id:-1}),
-          [inputChange, setInputChange] = useState({value:'', id:-1}),
-          [side, setSide] = useState(sidebar),
-          [sideType, setSideType] = useState(-1);
+          [inputChange, setInputChange] = useState({value:'', id:-1});
 
     const handleMenuOption = (num) => {
-        setSideType(num);
-    }
-
-    useEffect(() => {
-    if(sideType !== -1) {
-        if(sideType === 0) {
-            side.splice(0, 1, {name: side[0].name, stat: false});
-            side.splice(1, 1, {name: side[1].name, stat: false});
+        if(num === 0) {
+            onChangeMenuOption(true, false, false);
+        } else if(num === 1) {
+            onChangeMenuOption(false, true, false);
+        } else if(num === 2){
+            onChangeMenuOption(false, false, true);
         }
-        else if(sideType === 1) {
-            side.splice(sideType-1, 1, {name: side[sideType-1].name, stat: true});
-            side.splice(1, 1, {name: side[1].name, stat: false});
-        } else if(sideType === 2){
-            side.splice(sideType-1, 1, {name: side[sideType-1].name, stat: true});
-            side.splice(0, 1, {name: side[0].name, stat: false});
-        }
-
-        onChangeMenuOption(side);
-        setSideType(-1);
     }
-    }, [side, sideType, onChangeMenuOption])
 
     const handleSignIn = () => {
         history.push({
@@ -216,7 +201,7 @@ const ForgotPage = ({ auth, menu, sidebar, email, authent, pw, conpw, onChangeMe
                 <Header auth={auth} onChangeMenuBar={onChangeMenuBar} onChangeMenuOption={onChangeMenuOption} handleMenuOption={handleMenuOption} handleSignIn={handleSignIn} handleSignUp={handleSignUp}></Header>
             </ForgotPageStyle.MainHeader>
             <ForgotPageStyle.MainSide menu={menu}>
-                <SideBar auth={auth} menu={menu} sidebar={sidebar} onChangeMenuBar={onChangeMenuBar} onChangeMenuOption={onChangeMenuOption} handleMenuOption={handleMenuOption} handleSignIn={handleSignIn} handleSignUp={handleSignUp}></SideBar>
+                <SideBar auth={auth} menu={menu} title={title} qna={qna} help={help} onChangeMenuBar={onChangeMenuBar} onChangeMenuOption={onChangeMenuOption} handleMenuOption={handleMenuOption} handleSignIn={handleSignIn} handleSignUp={handleSignUp}></SideBar>
             </ForgotPageStyle.MainSide>
         </ForgotPageStyle.Container>
     )
@@ -226,7 +211,9 @@ let mapStateToProps = (state) => {
     return {
         auth: state.head.auth,
         menu: state.head.menu,
-        sidebar: state.sidebar.sidebar,
+        title: state.sidebar.title,
+        qna: state.sidebar.qna,
+        help: state.sidebar.help,
         email: state.forgot.email,
         authent: state.forgot.authent,
         pw: state.forgot.pw,
@@ -237,7 +224,7 @@ let mapStateToProps = (state) => {
 let mapDispatchToProps = (dispatch) => {
     return {
         onChangeMenuBar: () => dispatch(setMenu()),
-        onChangeMenuOption: (sidebar) => dispatch(setSideBar(sidebar)),
+        onChangeMenuOption: (title, qna, help) => dispatch(setSideBar(title, qna, help)),
         onChangeForgot: (email, authent, pw, conpw) => dispatch(setForgot(email, authent, pw, conpw))
     }
 }

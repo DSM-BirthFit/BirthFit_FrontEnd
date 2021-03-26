@@ -22,23 +22,18 @@ const head = (state=headIntialState, action) => {
 }
 
 const sidebarIntialState = {
-    sidebar : [
-        {
-            name: 'QnA',
-            stat: false
-        },
-        {
-            name: 'Help',
-            stat: false
-        }
-    ]
+    title: true,
+    qna: false,
+    help: false
 }
 
 const sidebar = (state=sidebarIntialState, action) => {
     switch(action.type) {
         case SET_SIDEBAR:
             return Object.assign({}, state, {
-                sidebar: action.sidebar
+                title: action.title,
+                qna: action.qna,
+                help: action.help
             })
         default:
             return state

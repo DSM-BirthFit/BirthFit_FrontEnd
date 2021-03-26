@@ -19,10 +19,12 @@ export const setMenu = () => {
     }
 }
 
-export const setSideBar = (sidebar) => {
+export const setSideBar = (title, qna, help) => {
     return {
         type: SET_SIDEBAR,
-        sidebar: sidebar
+        title: title,
+        qna: qna,
+        help: help
     }
 }
 

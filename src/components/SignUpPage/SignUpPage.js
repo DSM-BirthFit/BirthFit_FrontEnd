@@ -12,70 +12,55 @@ import { setMenu, setSideBar, setSignup } from '../../actions';
 
 const axios = require('axios');
 
-const SignUpPage = ({ auth, menu, sidebar, email, authent, id, pw, conpw, onChangeMenuBar, onChangeMenuOption, onChangeSignup }) => {
+const SignUpPage = ({ auth, menu, title, qna, help, email, authent, id, pw, conpw, onChangeMenuBar, onChangeMenuOption, onChangeSignup }) => {
     let history = useHistory();
 
     const text = 'Already have an account?'
 
     const [inputList, setInuptList] = useState([
-        { 
-            id: 0,
-            name: 'Email',
-            btn: true,
-            warning: '',
-        },
-        { 
-            id: 1,
-            name: 'Authentication',
-            btn: true,
-            warning: '',
-        },
-        { 
-            id: 2,
-            name: 'ID',
-            btn: false,
-            warning: '',
-        },
-        { 
-            id: 3,
-            name: 'Password',
-            btn: false,
-            warning: '',
-        },
-        { 
-            id: 4,
-            name: 'Confirm Password',
-            btn: false,
-            warning: '',
-        },
-    ]),
+            { 
+                id: 0,
+                name: 'Email',
+                btn: true,
+                warning: '',
+            },
+            { 
+                id: 1,
+                name: 'Authentication',
+                btn: true,
+                warning: '',
+            },
+            { 
+                id: 2,
+                name: 'ID',
+                btn: false,
+                warning: '',
+            },
+            { 
+                id: 3,
+                name: 'Password',
+                btn: false,
+                warning: '',
+            },
+            { 
+                id: 4,
+                name: 'Confirm Password',
+                btn: false,
+                warning: '',
+            },
+        ]),
           [inputClick, setInputClick] = useState({value:'', id:-1}),
-          [inputChange, setInputChange] = useState({value:'', id:-1}),
-          [side, setSide] = useState(sidebar),
-          [sideType, setSideType] = useState(-1);
+          [inputChange, setInputChange] = useState({value:'', id:-1});
 
     const handleMenuOption = (num) => {
-        setSideType(num);
-    }
-
-    useEffect(() => {
-    if(sideType !== -1) {
-        if(sideType === 0) {
-            side.splice(0, 1, {name: side[0].name, stat: false});
-            side.splice(1, 1, {name: side[1].name, stat: false});
+        if(num === 0) {
+            onChangeMenuOption(true, false, false);
+        } else if(num === 1) {
+            onChangeMenuOption(false, true, false);
+        } else if(num === 2){
+            onChangeMenuOption(false, false, true);
         }
-        else if(sideType === 1) {
-            side.splice(sideType-1, 1, {name: side[sideType-1].name, stat: true});
-            side.splice(1, 1, {name: side[1].name, stat: false});
-        } else if(sideType === 2){
-            side.splice(sideType-1, 1, {name: side[sideType-1].name, stat: true});
-            side.splice(0, 1, {name: side[0].name, stat: false});
-        }
-
-        onChangeMenuOption(side);
-        setSideType(-1);
     }
-    }, [side, sideType, onChangeMenuOption])
 
     const handleSignIn = () => {
         history.push({
@@ -227,7 +212,7 @@ const SignUpPage = ({ auth, menu, sidebar, email, authent, id, pw, conpw, onChan
                 <Header auth={auth} onChangeMenuBar={onChangeMenuBar} onChangeMenuOption={onChangeMenuOption} handleMenuOption={handleMenuOption} handleSignIn={handleSignIn} handleSignUp={handleSignUp}></Header>
             </SignUpPageStyle.MainHeader>
             <SignUpPageStyle.MaineSide menu={menu}>
-                <SideBar auth={auth} menu={menu} sidebar={sidebar} onChangeMenuBar={onChangeMenuBar} onChangeMenuOption={onChangeMenuOption} handleMenuOption={handleMenuOption} handleSignIn={handleSignIn} handleSignUp={handleSignUp}></SideBar>
+                <SideBar auth={auth} menu={menu} title={title} qna={qna} help={help} onChangeMenuBar={onChangeMenuBar} onChangeMenuOption={onChangeMenuOption} handleMenuOption={handleMenuOption} handleSignIn={handleSignIn} handleSignUp={handleSignUp}></SideBar>
             </SignUpPageStyle.MaineSide>
         </SignUpPageStyle.Container>
     )
@@ -237,7 +222,9 @@ let mapStateToProps = (state) => {
     return {
         auth: state.head.auth,
         menu: state.head.menu,
-        sidebar: state.sidebar.sidebar,
+        title: state.sidebar.title,
+        qna: state.sidebar.qna,
+        help: state.sidebar.help,
         email: state.signup.email,
         authent: state.signup.authent,
         id: state.signup.id,
@@ -249,7 +236,7 @@ let mapStateToProps = (state) => {
 let mapDispatchToProps = (dispatch) => {
     return {
         onChangeMenuBar: () => dispatch(setMenu()),
-        onChangeMenuOption: (sidebar) => dispatch(setSideBar(sidebar)),
+        onChangeMenuOption: (title, qna, help) => dispatch(setSideBar(title, qna, help)),
         onChangeSignup: (email, authent, id, pw, conpw) => dispatch(setSignup(email, authent, id, pw, conpw))
     }
 }

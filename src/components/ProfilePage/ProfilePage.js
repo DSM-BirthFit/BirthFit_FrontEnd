@@ -12,13 +12,11 @@ import { setMenu, setSideBar, setAuth, setProfile } from '../../actions';
 
 const axios = require('axios');
 
-const ProfilePage = ({ auth, menu, sidebar, id, pw, onChangeMenuBar, onChangeMenuOption, onChangeAuth, onChangeProfile }) => {
+const ProfilePage = ({ auth, menu, title, qna, help, id, pw, onChangeMenuBar, onChangeMenuOption, onChangeAuth, onChangeProfile }) => {
     let history = useHistory();
     let location = useLocation();
 
     const [user, setUser] = useState({userId: '', userEmail: ''}),
-          [side, setSide] = useState(sidebar),
-          [sideType, setSideType] = useState(-1),
           [inputList, setInuptList] = useState([
               {
                 id: 0,
@@ -60,27 +58,14 @@ const ProfilePage = ({ auth, menu, sidebar, id, pw, onChangeMenuBar, onChangeMen
     }, [])
 
     const handleMenuOption = (num) => {
-        setSideType(num);
-    }
-
-    useEffect(() => {
-    if(sideType !== -1) {
-        if(sideType === 0) {
-            side.splice(0, 1, {name: side[0].name, stat: false});
-            side.splice(1, 1, {name: side[1].name, stat: false});
+        if(num === 0) {
+            onChangeMenuOption(true, false, false);
+        } else if(num === 1) {
+            onChangeMenuOption(false, true, false);
+        } else if(num === 2){
+            onChangeMenuOption(false, false, true);
         }
-        else if(sideType === 1) {
-            side.splice(sideType-1, 1, {name: side[sideType-1].name, stat: true});
-            side.splice(1, 1, {name: side[1].name, stat: false});
-        } else if(sideType === 2){
-            side.splice(sideType-1, 1, {name: side[sideType-1].name, stat: true});
-            side.splice(0, 1, {name: side[0].name, stat: false});
-        }
-
-        onChangeMenuOption(side);
-        setSideType(-1);
     }
-    }, [side, sideType, onChangeMenuOption])
 
     const handleSignIn = () => {
         history.push({
@@ -202,7 +187,7 @@ const ProfilePage = ({ auth, menu, sidebar, id, pw, onChangeMenuBar, onChangeMen
                 <Header auth={auth} onChangeMenuBar={onChangeMenuBar} handleMenuOption={handleMenuOption} handleSignIn={handleSignIn} handleSignUp={handleSignUp} onChangeAuth={onChangeAuth} handleProfile={handleProfile}></Header>
             </ProfilePageStyle.MainHeader>
             <ProfilePageStyle.MainSide menu={menu}>
-                <SideBar auth={auth} menu={menu} sidebar={sidebar} handleMenuOption={handleMenuOption} handleSignIn={handleSignIn} handleSignUp={handleSignUp} handleProfile={handleProfile} onChangeAuth={onChangeAuth}></SideBar>
+                <SideBar auth={auth} menu={menu} title={title} qna={qna} help={help} handleMenuOption={handleMenuOption} handleSignIn={handleSignIn} handleSignUp={handleSignUp} handleProfile={handleProfile} onChangeAuth={onChangeAuth}></SideBar>
             </ProfilePageStyle.MainSide>
         </ProfilePageStyle.Container>
     )
@@ -212,7 +197,9 @@ let mapStateToProps = (state) => {
     return {
         auth: state.head.auth,
         menu: state.head.menu,
-        sidebar: state.sidebar.sidebar,
+        title: state.sidebar.title,
+        qna: state.sidebar.qna,
+        help: state.sidebar.help,
         id: state.profile.id,
         pw: state.profile.pw
     }
@@ -221,7 +208,7 @@ let mapStateToProps = (state) => {
 let mapDispatchToProps = (dispatch) => {
     return {
         onChangeMenuBar: () => dispatch(setMenu()),
-        onChangeMenuOption: (sidebar) => dispatch(setSideBar(sidebar)),
+        onChangeMenuOption: (title, qna, help) => dispatch(setSideBar(title, qna, help)),
         onChangeAuth: (auth) => dispatch(setAuth(auth)),
         onChangeProfile: (id, pw) => dispatch(setProfile(id, pw))
     }
