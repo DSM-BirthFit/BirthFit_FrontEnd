@@ -4,7 +4,7 @@ import QnAItemPage from '../QnAItemPage/QnAItemPage';
 const QnAPage = ({lists}) => {
     const qnaItemPage = lists.map(
         list => (
-            <QnAItemPage/>
+            <QnAItemPage id={list.id} title={list.title} answer={list.answer} like={list.like} />
         )
     ) 
 

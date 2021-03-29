@@ -63,12 +63,14 @@ const SignUpPage = ({ auth, menu, title, qna, help, email, authent, id, pw, conp
     }
 
     const handleSignIn = () => {
+        onChangeMenuBar(false);
         history.push({
             pathname: '/signin'
         })
     }
 
     const handleSignUp = () => {
+        onChangeMenuBar(false);
         history.push({
             pathname: '/signup'
         })
@@ -153,6 +155,7 @@ const SignUpPage = ({ auth, menu, title, qna, help, email, authent, id, pw, conp
             })
             .then(res => {
                 console.log(res);
+                onChangeMenuBar(false);
                 history.push({
                     pathname: '/signin'
                 })
@@ -209,10 +212,10 @@ const SignUpPage = ({ auth, menu, title, qna, help, email, authent, id, pw, conp
                 <SignUpPageStyle.SignUpImg src={signupImg}/>
             </SignUpPageStyle.Contents>
             <SignUpPageStyle.MainHeader>
-                <Header auth={auth} onChangeMenuBar={onChangeMenuBar} onChangeMenuOption={onChangeMenuOption} handleMenuOption={handleMenuOption} handleSignIn={handleSignIn} handleSignUp={handleSignUp}></Header>
+                <Header auth={auth} menu={menu} onChangeMenuBar={onChangeMenuBar} onChangeMenuOption={onChangeMenuOption} handleMenuOption={handleMenuOption} handleSignIn={handleSignIn} handleSignUp={handleSignUp}></Header>
             </SignUpPageStyle.MainHeader>
             <SignUpPageStyle.MaineSide menu={menu}>
-                <SideBar auth={auth} menu={menu} title={title} qna={qna} help={help} onChangeMenuBar={onChangeMenuBar} onChangeMenuOption={onChangeMenuOption} handleMenuOption={handleMenuOption} handleSignIn={handleSignIn} handleSignUp={handleSignUp}></SideBar>
+                <SideBar auth={auth} menu={menu} title={title} qna={qna} help={help}  onChangeMenuBar={onChangeMenuBar} onChangeMenuOption={onChangeMenuOption} handleMenuOption={handleMenuOption} handleSignIn={handleSignIn} handleSignUp={handleSignUp}></SideBar>
             </SignUpPageStyle.MaineSide>
         </SignUpPageStyle.Container>
     )
@@ -235,7 +238,7 @@ let mapStateToProps = (state) => {
 
 let mapDispatchToProps = (dispatch) => {
     return {
-        onChangeMenuBar: () => dispatch(setMenu()),
+        onChangeMenuBar: (menu) => dispatch(setMenu(menu)),
         onChangeMenuOption: (title, qna, help) => dispatch(setSideBar(title, qna, help)),
         onChangeSignup: (email, authent, id, pw, conpw) => dispatch(setSignup(email, authent, id, pw, conpw))
     }

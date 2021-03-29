@@ -57,12 +57,14 @@ const ForgotPage = ({ auth, menu, title, qna, help, email, authent, pw, conpw, o
     }
 
     const handleSignIn = () => {
+        onChangeMenuBar(false);
         history.push({
             pathname: '/signin'
         })
     }
 
     const handleSignUp = () => {
+        onChangeMenuBar(false);
         history.push({
             pathname: '/signup'
         })
@@ -142,6 +144,7 @@ const ForgotPage = ({ auth, menu, title, qna, help, email, authent, pw, conpw, o
             })
             .then(res => {
                 console.log(res);
+                onChangeMenuBar(false);
                 history.push({
                     pathname: '/signin'
                 })
@@ -198,7 +201,7 @@ const ForgotPage = ({ auth, menu, title, qna, help, email, authent, pw, conpw, o
                 <ForgotPageStyle.ForgotImg src={forgotImg}/>
             </ForgotPageStyle.Contents>
             <ForgotPageStyle.MainHeader>
-                <Header auth={auth} onChangeMenuBar={onChangeMenuBar} onChangeMenuOption={onChangeMenuOption} handleMenuOption={handleMenuOption} handleSignIn={handleSignIn} handleSignUp={handleSignUp}></Header>
+                <Header auth={auth} menu={menu} onChangeMenuBar={onChangeMenuBar} onChangeMenuOption={onChangeMenuOption} handleMenuOption={handleMenuOption} handleSignIn={handleSignIn} handleSignUp={handleSignUp}></Header>
             </ForgotPageStyle.MainHeader>
             <ForgotPageStyle.MainSide menu={menu}>
                 <SideBar auth={auth} menu={menu} title={title} qna={qna} help={help} onChangeMenuBar={onChangeMenuBar} onChangeMenuOption={onChangeMenuOption} handleMenuOption={handleMenuOption} handleSignIn={handleSignIn} handleSignUp={handleSignUp}></SideBar>
@@ -223,7 +226,7 @@ let mapStateToProps = (state) => {
 
 let mapDispatchToProps = (dispatch) => {
     return {
-        onChangeMenuBar: () => dispatch(setMenu()),
+        onChangeMenuBar: (menu) => dispatch(setMenu(menu)),
         onChangeMenuOption: (title, qna, help) => dispatch(setSideBar(title, qna, help)),
         onChangeForgot: (email, authent, pw, conpw) => dispatch(setForgot(email, authent, pw, conpw))
     }

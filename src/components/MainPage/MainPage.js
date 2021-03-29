@@ -35,6 +35,7 @@ const MainPage = ({ auth, menu, title, qna, help, onChangeMenuBar, onChangeAuth,
     }
 
     const handleSignIn = () => {
+        onChangeMenuBar(false);
         handleMenuOption(0);
         history.push({
             pathname: '/signin'
@@ -42,6 +43,7 @@ const MainPage = ({ auth, menu, title, qna, help, onChangeMenuBar, onChangeAuth,
     }
 
     const handleSignUp = () => {
+        onChangeMenuBar(false);
         handleMenuOption(0);
         history.push({
             pathname: '/signup'
@@ -56,6 +58,7 @@ const MainPage = ({ auth, menu, title, qna, help, onChangeMenuBar, onChangeAuth,
         axios.get(`http://10.156.145.170:8080/user/profile`, {})
         .then(res => {
             console.log(res);
+            onChangeMenuBar(false);
             handleMenuOption(0);
             history.push({
                 pathname: '/profile',
@@ -87,10 +90,10 @@ const MainPage = ({ auth, menu, title, qna, help, onChangeMenuBar, onChangeAuth,
                 <MainPageStyle.IntroImg src={introImg}/>
             </MainPageStyle.Contents>
             <MainPageStyle.MainHeader>
-                <Header auth={auth} onChangeMenuBar={onChangeMenuBar} onChangeMenuOption={onChangeMenuOption} handleMenuOption={handleMenuOption} handleSignIn={handleSignIn} handleSignUp={handleSignUp} onChangeAuth={onChangeAuth} handleProfile={handleProfile}></Header>
+                <Header auth={auth} menu={menu} onChangeMenuBar={onChangeMenuBar} onChangeMenuOption={onChangeMenuOption} handleMenuOption={handleMenuOption} handleSignIn={handleSignIn} handleSignUp={handleSignUp} onChangeAuth={onChangeAuth} handleProfile={handleProfile}></Header>
             </MainPageStyle.MainHeader>
             <MainPageStyle.MaineSide menu={menu}>
-                <SideBar auth={auth} menu={menu} title={title} qna={qna} help={help} onChangeMenuBar={onChangeMenuBar} onChangeMenuOption={onChangeMenuOption} handleMenuOption={handleMenuOption} handleSignIn={handleSignIn} handleSignUp={handleSignUp} onChangeAuth={onChangeAuth} handleProfile={handleProfile}></SideBar>
+                <SideBar auth={auth} menu={menu} title={title} qna={qna} help={help} onChangeMenuBar={onChangeMenuBar}  onChangeMenuOption={onChangeMenuOption} handleMenuOption={handleMenuOption} handleSignIn={handleSignIn} handleSignUp={handleSignUp} onChangeAuth={onChangeAuth} handleProfile={handleProfile}></SideBar>
             </MainPageStyle.MaineSide>
         </MainPageStyle.Container>
     )
@@ -108,7 +111,7 @@ let mapStateToProps = (state) => {
 
 let mapDispatchToProps = (dispatch) => {
     return {
-        onChangeMenuBar: () => dispatch(setMenu()),
+        onChangeMenuBar: (menu) => dispatch(setMenu(menu)),
         onChangeAuth: (auth) => dispatch(setAuth(auth)),
         onChangeMenuOption: (title, qna, help) => dispatch(setSideBar(title, qna, help)),
     }

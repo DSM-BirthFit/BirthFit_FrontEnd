@@ -14,7 +14,7 @@ const head = (state=headIntialState, action) => {
             })
         case SET_MENU:
             return Object.assign({}, state, {
-                menu: !(state.menu)
+                menu: action.menu
             })
         default:
             return state

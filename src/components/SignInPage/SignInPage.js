@@ -73,7 +73,7 @@ const SignInPage = ({ auth, menu, title, qna, help, id, pw, idClick, pwClick, on
                     tokenType: res.data.tokenType 
                 })
             );
-
+            onChangeMenuBar(false);
             handleMenuOption(0);
 
             history.push({
@@ -88,12 +88,14 @@ const SignInPage = ({ auth, menu, title, qna, help, id, pw, idClick, pwClick, on
 
 
     const handleSignIn = () => {
+        onChangeMenuBar(false);
         history.push({
             pathname: '/signin'
         })
     }
 
     const handleSignUp = () => {
+        onChangeMenuBar(false);
         history.push({
             pathname: '/signup'
         })
@@ -106,6 +108,7 @@ const SignInPage = ({ auth, menu, title, qna, help, id, pw, idClick, pwClick, on
     }, [nullIn])
 
     const handleForgot = () => {
+        onChangeMenuBar(false);
         history.push({
             pathname: '/forgot'
         })
@@ -149,7 +152,7 @@ const SignInPage = ({ auth, menu, title, qna, help, id, pw, idClick, pwClick, on
                 }
             </SignInPageStyle.Contents>
             <SignInPageStyle.MainHeader>
-                <Header auth={auth} onChangeMenuBar={onChangeMenuBar} onChangeMenuOption={onChangeMenuOption} handleMenuOption={handleMenuOption} handleSignIn={handleSignIn} handleSignUp={handleSignUp}></Header>
+                <Header auth={auth} menu={menu} onChangeMenuBar={onChangeMenuBar} onChangeMenuOption={onChangeMenuOption} handleMenuOption={handleMenuOption} handleSignIn={handleSignIn} handleSignUp={handleSignUp}></Header>
             </SignInPageStyle.MainHeader>
             <SignInPageStyle.MaineSide menu={menu}>
                 <SideBar auth={auth} menu={menu} title={title} qna={qna} help={help} onChangeMenuBar={onChangeMenuBar} onChangeMenuOption={onChangeMenuOption} handleMenuOption={handleMenuOption} handleSignIn={handleSignIn} handleSignUp={handleSignUp}></SideBar>
@@ -174,7 +177,7 @@ let mapStateToProps = (state) => {
 
 let mapDispatchToProps = (dispatch) => {
     return {
-        onChangeMenuBar: () => dispatch(setMenu()),
+        onChangeMenuBar: (menu) => dispatch(setMenu(menu)),
         onChangeAuth: (auth) => dispatch(setAuth(auth)),
         onChangeMenuOption: (title, qna, help) => dispatch(setSideBar(title, qna, help)),
         onChangeSignin: (id, pw, idClick, pwClick) => dispatch(setSignin(id, pw, idClick, pwClick))

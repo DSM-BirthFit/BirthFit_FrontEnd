@@ -28,7 +28,6 @@ export const MainContents = styled.div`
     position: relative;
     z-index: 1;
     margin-bottom: 70px;
-
 `;
 
 export const TextContents = styled.div`

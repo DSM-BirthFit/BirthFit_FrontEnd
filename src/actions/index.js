@@ -13,9 +13,10 @@ export const setAuth = (auth) => {
     }
 }
 
-export const setMenu = () => {
+export const setMenu = (menu) => {
     return {
         type: SET_MENU,
+        menu: menu
     }
 }
 

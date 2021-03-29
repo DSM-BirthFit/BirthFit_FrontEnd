@@ -3,10 +3,11 @@ import { useHistory } from 'react-router-dom';
 import * as HeaderStyle from '../../../assets/styles/Common/Header/Header';
 import { AiOutlineMenu } from 'react-icons/ai'
 
-const Header = ({ auth, onChangeMenuBar, handleMenuOption, handleSignIn, handleSignUp, handleProfile, onChangeAuth }) => {
+const Header = ({ auth, menu, onChangeMenuBar, handleMenuOption, handleSignIn, handleSignUp, handleProfile, onChangeAuth }) => {
     let history = useHistory();
 
     const handleMain = () => {
+        onChangeMenuBar(false);
         history.push({
             pathname: '/'
         })
@@ -14,6 +15,7 @@ const Header = ({ auth, onChangeMenuBar, handleMenuOption, handleSignIn, handleS
 
     const handleLogout = () => {
         onChangeAuth(false);
+        onChangeMenuBar(false);
         handleMenuOption(0);
         localStorage.removeItem('userInfo');
         history.push({
@@ -23,7 +25,7 @@ const Header = ({ auth, onChangeMenuBar, handleMenuOption, handleSignIn, handleS
 
     return (
         <HeaderStyle.Container>
-            <HeaderStyle.MenuBarIcon onClick={() => onChangeMenuBar()}>
+            <HeaderStyle.MenuBarIcon onClick={() => onChangeMenuBar(!menu)}>
                 <AiOutlineMenu color="white" size="50"></AiOutlineMenu>
             </HeaderStyle.MenuBarIcon>
             <HeaderStyle.MainTitle onClick={() => {handleMenuOption(0);handleMain()}}>Birth<HeaderStyle.HighLightTitle>Fit</HeaderStyle.HighLightTitle></HeaderStyle.MainTitle>
