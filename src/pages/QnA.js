@@ -1,9 +1,9 @@
 import React from 'react';
-import QnAPage from './../components/QnAPage/QnAPage';
+import QnAPage from './../components/Common/TablePage/TablePage';
 
 function QnA(){
     return(
-        <QnAPage>
+        <QnAPage pageTitle={"QnA"} writeButton={"질문하기"} answerType={"답변"}>
         </QnAPage>
     )
 }

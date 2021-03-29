@@ -74,7 +74,7 @@ const SignInPage = ({ auth, menu, title, qna, help, id, pw, idClick, pwClick, on
                 })
             );
             onChangeMenuBar(false);
-            handleMenuOption(0);
+            handleMenuOption(0, onChangeMenuOption);
 
             history.push({
                 pathname: '/',
@@ -155,7 +155,7 @@ const SignInPage = ({ auth, menu, title, qna, help, id, pw, idClick, pwClick, on
                 <Header auth={auth} menu={menu} onChangeMenuBar={onChangeMenuBar} onChangeMenuOption={onChangeMenuOption} handleMenuOption={handleMenuOption} handleSignIn={handleSignIn} handleSignUp={handleSignUp}></Header>
             </SignInPageStyle.MainHeader>
             <SignInPageStyle.MaineSide menu={menu}>
-                <SideBar auth={auth} menu={menu} title={title} qna={qna} help={help} onChangeMenuBar={onChangeMenuBar} onChangeMenuOption={onChangeMenuOption} handleMenuOption={handleMenuOption} handleSignIn={handleSignIn} handleSignUp={handleSignUp}></SideBar>
+                <SideBar auth={auth} menu={menu} title={title} qna={qna} help={help} onChangeMenuBar={onChangeMenuBar} onChangeMenuOption={onChangeMenuOption} onChangeMenuOption={onChangeMenuOption} handleMenuOption={handleMenuOption} handleSignIn={handleSignIn} handleSignUp={handleSignUp}></SideBar>
             </SignInPageStyle.MaineSide>
         </SignInPageStyle.Container>
     )

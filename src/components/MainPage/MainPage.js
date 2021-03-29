@@ -36,7 +36,7 @@ const MainPage = ({ auth, menu, title, qna, help, onChangeMenuBar, onChangeAuth,
 
     const handleSignIn = () => {
         onChangeMenuBar(false);
-        handleMenuOption(0);
+        handleMenuOption(0, onChangeMenuOption);
         history.push({
             pathname: '/signin'
         })
@@ -44,7 +44,7 @@ const MainPage = ({ auth, menu, title, qna, help, onChangeMenuBar, onChangeAuth,
 
     const handleSignUp = () => {
         onChangeMenuBar(false);
-        handleMenuOption(0);
+        handleMenuOption(0, onChangeMenuOption);
         history.push({
             pathname: '/signup'
         })
@@ -59,7 +59,7 @@ const MainPage = ({ auth, menu, title, qna, help, onChangeMenuBar, onChangeAuth,
         .then(res => {
             console.log(res);
             onChangeMenuBar(false);
-            handleMenuOption(0);
+            handleMenuOption(0, onChangeMenuOption);
             history.push({
                 pathname: '/profile',
                 state: {

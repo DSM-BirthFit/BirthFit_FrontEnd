@@ -1,18 +1,19 @@
 import React, {useState, useEffect} from "react";
-import { useHistory, useLocation } from 'react-router';
-import * as QnAPageStyle from '../../assets/styles/QnAPage/QnAPage'
+import { useHistory } from 'react-router';
+import * as TablePageStyle from '../../../assets/styles/TablePage/TablePage'
 
-import Header from '../Common/Header/Header';
-import SideBar from '../Common/SideBar/SideBar';
-import QnAListPage from './QnAListPage/QnAListPage';
-import Pagination from '../Common/Pagination/Pagination';
+import Header from '../Header/Header';
+import SideBar from '../SideBar/SideBar';
+import QnAListPage from './TableListPage/TableListPage';
+import Pagination from '../Pagination/Pagination';
+import {handleMenuOption} from '../Controllers/user';
 
 import { connect } from 'react-redux';
-import { setMenu, setSideBar, setAuth } from '../../actions';
+import { setMenu, setSideBar, setAuth } from '../../../actions';
 
 const axios = require('axios');
 
-const QnAPage = ({ auth, menu, title, qna, help, onChangeMenuBar, onChangeMenuOption, onChangeAuth }) => {
+const TablePage = ({ auth, menu, title, qna, help, pageTitle, writeButton, answerType, onChangeMenuBar, onChangeMenuOption, onChangeAuth }) => {
     let history = useHistory();
      
     const [posts, setPosts] = useState([
@@ -99,16 +100,6 @@ const QnAPage = ({ auth, menu, title, qna, help, onChangeMenuBar, onChangeMenuOp
         }
     }, [])
 
-    const handleMenuOption = (num) => {
-        if(num === 0) {
-            onChangeMenuOption(true, false, false);
-        } else if(num === 1) {
-            onChangeMenuOption(false, true, false);
-        } else if(num === 2){
-            onChangeMenuOption(false, false, true);
-        }
-    }
-
     const handleSignIn = () => {
         onChangeMenuBar(false);
         history.push({
@@ -131,7 +122,7 @@ const QnAPage = ({ auth, menu, title, qna, help, onChangeMenuBar, onChangeMenuOp
         axios.get(`http://10.156.145.170:8080/user/profile`, {})
         .then(res => {
             console.log(res);
-            handleMenuOption(0);
+            handleMenuOption(0, onChangeMenuOption);
             onChangeMenuBar(false);
             history.push({
                 pathname: '/profile',
@@ -187,51 +178,51 @@ const QnAPage = ({ auth, menu, title, qna, help, onChangeMenuBar, onChangeMenuOp
 
     let pageIncrementBtn = null;
     if(pageNumbers.length > maxPageNumLimit) {
-        pageIncrementBtn = <QnAPageStyle.btnLi onClick={handleNextBtn}>{chr}</QnAPageStyle.btnLi>
+        pageIncrementBtn = <TablePageStyle.btnLi onClick={handleNextBtn}>{chr}</TablePageStyle.btnLi>
     }
 
     let pageDecrementBtn = null;
     if(minPageNumLimit >= 1) {
-        pageDecrementBtn = <QnAPageStyle.btnLi onClick={handlePrevBtn}>{chr}</QnAPageStyle.btnLi>
+        pageDecrementBtn = <TablePageStyle.btnLi onClick={handlePrevBtn}>{chr}</TablePageStyle.btnLi>
     }
 
     return (
-        <QnAPageStyle.Container>
-            <QnAPageStyle.Contents menu={menu}>
-                <QnAPageStyle.MainContents>
-                    <QnAPageStyle.TextContents>
-                        <QnAPageStyle.Header>QnA</QnAPageStyle.Header>
-                        <QnAPageStyle.UnderBar></QnAPageStyle.UnderBar>
-                        <QnAPageStyle.WritenBtn menu={menu}>질문하기</QnAPageStyle.WritenBtn>
-                    </QnAPageStyle.TextContents>
-                    <QnAPageStyle.Input menu={menu}>
-                        <QnAPageStyle.Trtag>
-                            <QnAPageStyle.Headertable>제목</QnAPageStyle.Headertable>
-                            <QnAPageStyle.Headertable>답변</QnAPageStyle.Headertable>
-                            <QnAPageStyle.Headertable>좋아요</QnAPageStyle.Headertable>
-                        </QnAPageStyle.Trtag>
+        <TablePageStyle.Container>
+            <TablePageStyle.Contents menu={menu}>
+                <TablePageStyle.MainContents>
+                    <TablePageStyle.TextContents>
+                        <TablePageStyle.Header>{pageTitle}</TablePageStyle.Header>
+                        <TablePageStyle.UnderBar></TablePageStyle.UnderBar>
+                        <TablePageStyle.WritenBtn menu={menu}>{writeButton}</TablePageStyle.WritenBtn>
+                    </TablePageStyle.TextContents>
+                    <TablePageStyle.Input menu={menu}>
+                        <TablePageStyle.Trtag>
+                            <TablePageStyle.Headertable>제목</TablePageStyle.Headertable>
+                            <TablePageStyle.Headertable>{answerType}</TablePageStyle.Headertable>
+                            <TablePageStyle.Headertable>좋아요</TablePageStyle.Headertable>
+                        </TablePageStyle.Trtag>
                         <QnAListPage lists={currentPosts(posts)}/>
-                    </QnAPageStyle.Input>
-                    <QnAPageStyle.PageUl>
-                        <QnAPageStyle.btnLi onClick={handlePrevBtn}>
-                            <QnAPageStyle.pageBtn>◁</QnAPageStyle.pageBtn>
-                        </QnAPageStyle.btnLi>
+                    </TablePageStyle.Input>
+                    <TablePageStyle.PageUl>
+                        <TablePageStyle.btnLi onClick={handlePrevBtn}>
+                            <TablePageStyle.pageBtn>◁</TablePageStyle.pageBtn>
+                        </TablePageStyle.btnLi>
                         {pageDecrementBtn}
                         <Pagination pageNumbers={pageNumbers} paginate={setCurrentPage} currentPage={currentPage} maxPageNumLimit={maxPageNumLimit} minPageNumLimit={minPageNumLimit}></Pagination>
                         {pageIncrementBtn}
-                        <QnAPageStyle.btnLi onClick={handleNextBtn}>
-                            <QnAPageStyle.pageBtn>▷</QnAPageStyle.pageBtn>
-                        </QnAPageStyle.btnLi>
-                    </QnAPageStyle.PageUl>
-                </QnAPageStyle.MainContents>
-            </QnAPageStyle.Contents>
-            <QnAPageStyle.MainHeader>
-                <Header auth={auth} menu={menu} onChangeMenuBar={onChangeMenuBar} handleMenuOption={handleMenuOption} handleSignIn={handleSignIn} handleSignUp={handleSignUp} onChangeAuth={onChangeAuth} handleProfile={handleProfile}></Header>
-            </QnAPageStyle.MainHeader>
-            <QnAPageStyle.MainSide menu={menu}>
-                <SideBar auth={auth} menu={menu} title={title} qna={qna} help={help} handleMenuOption={handleMenuOption} onChangeMenuBar={onChangeMenuBar} handleSignIn={handleSignIn} handleSignUp={handleSignUp} handleProfile={handleProfile} onChangeAuth={onChangeAuth}></SideBar>
-            </QnAPageStyle.MainSide>
-        </QnAPageStyle.Container>
+                        <TablePageStyle.btnLi onClick={handleNextBtn}>
+                            <TablePageStyle.pageBtn>▷</TablePageStyle.pageBtn>
+                        </TablePageStyle.btnLi>
+                    </TablePageStyle.PageUl>
+                </TablePageStyle.MainContents>
+            </TablePageStyle.Contents>
+            <TablePageStyle.MainHeader>
+                <Header auth={auth} menu={menu} onChangeMenuBar={onChangeMenuBar} handleMenuOption={handleMenuOption} handleSignIn={handleSignIn} handleSignUp={handleSignUp} onChangeAuth={onChangeAuth} handleProfile={handleProfile} onChangeMenuOption={onChangeMenuOption}></Header>
+            </TablePageStyle.MainHeader>
+            <TablePageStyle.MainSide menu={menu}>
+                <SideBar auth={auth} menu={menu} title={title} qna={qna} help={help} handleMenuOption={handleMenuOption} onChangeMenuBar={onChangeMenuBar} handleSignIn={handleSignIn} handleSignUp={handleSignUp} handleProfile={handleProfile} onChangeAuth={onChangeAuth} onChangeMenuOption={onChangeMenuOption}></SideBar>
+            </TablePageStyle.MainSide>
+        </TablePageStyle.Container>
     )
 }
 
@@ -253,6 +244,6 @@ let mapDispatchToProps = (dispatch) => {
     }
 }
 
-const QnAPageConnect = connect(mapStateToProps, mapDispatchToProps)(QnAPage);
+const TablePageConnect = connect(mapStateToProps, mapDispatchToProps)(TablePage);
 
-export default QnAPageConnect;
+export default TablePageConnect;

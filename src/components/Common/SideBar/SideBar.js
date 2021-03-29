@@ -4,13 +4,13 @@ import * as SideBarStyle from '../../../assets/styles/Common/SideBar/SideBar';
 import { RiQuestionAnswerLine } from 'react-icons/ri';
 import { IoMdHelp } from 'react-icons/io';
 
-const SideBar = ({ auth, menu, qna, help, onChangeMenuBar, handleMenuOption, handleSignIn, handleSignUp, handleProfile, onChangeAuth }) => {
+const SideBar = ({ auth, menu, qna, help, onChangeMenuBar, handleMenuOption, handleSignIn, handleSignUp, handleProfile, onChangeAuth, onChangeMenuOption }) => {
     let history = useHistory();
 
     const handleLogout = () => {
         onChangeAuth(false);
         onChangeMenuBar(false);
-        handleMenuOption(0);
+        handleMenuOption(0, onChangeMenuOption);
         localStorage.removeItem('userInfo');
         history.push({
             pathname: '/'
@@ -19,7 +19,7 @@ const SideBar = ({ auth, menu, qna, help, onChangeMenuBar, handleMenuOption, han
 
     const handleQna = () => {
         onChangeMenuBar(false);
-        handleMenuOption(1);
+        handleMenuOption(1, onChangeMenuOption);
         history.push({
             pathname: '/qna'
         })
@@ -46,7 +46,7 @@ const SideBar = ({ auth, menu, qna, help, onChangeMenuBar, handleMenuOption, han
                 <SideBarStyle.MenuName menu={menu}>QnA</SideBarStyle.MenuName>
             </SideBarStyle.MenuDiv>
 
-            <SideBarStyle.MenuDiv menu={menu} backColor={help} onClick={() => auth ? handleMenuOption(2) : alert("로그인해주세요")}>
+            <SideBarStyle.MenuDiv menu={menu} backColor={help} onClick={() => auth ? handleMenuOption(2, onChangeMenuOption) : alert("로그인해주세요")}>
                 <SideBarStyle.IconDiv menu={menu}>
                     <IoMdHelp color="white" size="45"></IoMdHelp>
                 </SideBarStyle.IconDiv>
