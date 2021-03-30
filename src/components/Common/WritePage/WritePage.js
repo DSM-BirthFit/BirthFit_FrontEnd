@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useHistory} from 'react-router-dom';
 import * as WritePageStyle from '../../../assets/styles/Common/WritePage/WritePage';
 
@@ -13,29 +13,51 @@ import { setMenu, setSideBar, setAuth, setWrite } from '../../../actions';
 const WritePage = ({ auth, menu, title, qna, help, writeTitle, writeText, writeLen, headTiitle, url, headButton, TitleText, onChangeAuth, onChangeMenuBar, onChangeMenuOption, onChangeWrite}) => {
     let history = useHistory();
 
+    useEffect(() => {
+        if(localStorage.getItem('userInfo') && auth===false) {
+            onChangeAuth(true);
+            if(url==='help') {
+                handleMenuOption(2, onChangeMenuOption);
+            } else {
+                handleMenuOption(1, onChangeMenuOption);
+            }
+        } 
+        if(!localStorage.getItem('userInfo')) {
+            onChangeAuth(false);
+            history.push('/');
+        }
+    }, [])
+
     const handleWriteTitle = (value) => {
         if(value.length <= 90 ) {
             onChangeWrite(value, writeText, value.length);
         } 
     }
 
+    const handleWriteCancel = () => {
+        onChangeWrite('', '', 0);
+        history.push({
+            pathname: `/${url}`
+        })
+    }
+
     return (
         <WritePageStyle.Container>
-            <WritePageStyle.Contents>
+            <WritePageStyle.Contents menu={menu}>
                 <WritePageStyle.MainContents>
                     <WritePageStyle.TextContents>
                         <WritePageStyle.Header>{headTiitle}</WritePageStyle.Header>
                         <WritePageStyle.UnderBar></WritePageStyle.UnderBar>
-                        <WritePageStyle.CancelBtn menu={menu}>작성 취소</WritePageStyle.CancelBtn>
+                        <WritePageStyle.CancelBtn menu={menu} onClick={() => handleWriteCancel()}>작성 취소</WritePageStyle.CancelBtn>
                         <WritePageStyle.WritenBtn onClick={() => handleWriteSubmit(writeTitle, writeText, history, url, onChangeWrite)}>{headButton}</WritePageStyle.WritenBtn>
                     </WritePageStyle.TextContents>
                     <WritePageStyle.Input>
                         <WritePageStyle.InputTitle>
                             <WritePageStyle.InputTitleText>{TitleText}</WritePageStyle.InputTitleText>
-                            <WritePageStyle.TitleInput onChange={(e) => handleWriteTitle(e.target.value)} value={writeTitle}/>
+                            <WritePageStyle.TitleInput menu={menu} onChange={(e) => handleWriteTitle(e.target.value)} value={writeTitle}/>
                             <WritePageStyle.LimitText>({writeLen}/90)</WritePageStyle.LimitText>
                         </WritePageStyle.InputTitle>
-                        <WritePageStyle.ContentText onChange={(e) => onChangeWrite(writeTitle, e.target.value, writeLen)} value={writeText}/>
+                        <WritePageStyle.ContentText menu={menu} onChange={(e) => onChangeWrite(writeTitle, e.target.value, writeLen)} value={writeText}/>
                     </WritePageStyle.Input>
                 </WritePageStyle.MainContents>
             </WritePageStyle.Contents>

@@ -49,6 +49,10 @@ export const UnderBar = styled.div`
     width: 300px;
     height: 5px;
     background: #99F8FF;
+
+    @media screen and (max-width: 800px) {
+        width: 40vw;
+    }
 `;
 
 export const CancelBtn = styled.button`
@@ -67,9 +71,10 @@ export const CancelBtn = styled.button`
     right: 220px;
     cursor: pointer;
 
-    @media screen and (max-width: 800px) {
+    @media screen and (max-width: 900px) {
         width: 20vw;
         font-size: 3vw;
+        right: 21vw;
     }
 `;
 
@@ -89,7 +94,7 @@ export const WritenBtn = styled.button`
     right: 0px;
     cursor: pointer;
 
-    @media screen and (max-width: 800px) {
+    @media screen and (max-width: 900px) {
         width: 20vw;
         font-size: 3vw;
     }
@@ -109,17 +114,39 @@ export const InputTitleText = styled.div`
     font-weight: bold;
     margin-right: 20px;
     color: #394B5A;
+    
+    @media screen and (max-width: 800px) {
+        font-size: 4vw;
+        margin-right: 10px;
+    }
 `;
 
 export const TitleInput = styled.input`
     margin-top: 2px;
-    width: 1200px;
     font-size: 25px;
     padding: 5px 10px;
     outline: none;
     border: 1px solid #394B5A;
     border-radius: 3px;
     color: #394B5A;
+    width: ${props => props.menu ? '69.7vw' : '79.7vw'};
+
+    @media screen and (max-width: 1250px) {
+        width: ${props => props.menu ? '68vw' : '78vw'};
+    }
+
+    @media screen and (max-width: 1000px) {
+        width: ${props => props.menu ? '67vw' : '77vw'};
+    }
+
+    @media screen and (max-width: 880px) {
+        width: ${props => props.menu ? '65vw' : '75vw'};
+    }
+
+    @media screen and (max-width: 800px) {
+        width: 75vw;
+        font-size: 4vw;
+    }
 `;
 
 export const LimitText = styled.div`
@@ -134,10 +161,14 @@ export const ContentText = styled.textarea`
     border: 1px solid #394B5A;
     border-radius: 3px;
     color: #394B5A;
-    width: 1280px;
+    width: ${props => props.menu ? '75vw' : '85vw'};
     height: 400px;
     font-size: 20px;
     font-family: 'Noto Sans KR', sans-serif;
+
+    @media screen and (max-width: 800px) {
+        width: 85vw;
+    }
 `;
 
 export const MainHeader = styled.div`

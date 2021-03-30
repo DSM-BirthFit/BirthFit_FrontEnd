@@ -32,7 +32,6 @@ const TablePage = ({ auth, menu, title, qna, help, pageTitle, writeButton, answe
 
         axios.get(`http://10.156.145.170:8080/${url}?page=${num}`, {})
         .then(res => {
-            console.log(res);
             setPosts(res.data.listResponse);
             setTotalElement(res.data.totalElement);
             setTotalPage(res.data.totalPage);
