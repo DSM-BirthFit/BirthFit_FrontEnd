@@ -46,3 +46,23 @@ export const handleProfile = (onChangeMenuOption, onChangeMenuBar, history) => {
     })
     .catch(err => {console.log(err);})
 }
+
+export const PutRefreshToken = () => {
+    const local = JSON.parse(localStorage.getItem('userInfo'));
+
+    axios.defaults.headers.common['X-Refresh-Token'] = `${local.tokenType} ${local.refreshToken}`;
+
+    axios.put(`http://10.156.145.170:8080/user`, {})
+    .then(res => {
+        console.log(res);
+        localStorage.removeItem('userInfo');
+        localStorage.setItem(
+            "userInfo",
+            JSON.stringify({
+                accessToken: res.data.accessToken,
+                refreshToken: res.data.refreshToken,
+                tokenType: res.data.tokenType 
+            })
+        );
+    })
+}

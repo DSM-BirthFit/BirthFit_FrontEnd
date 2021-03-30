@@ -6,7 +6,7 @@ import Header from '../Header/Header';
 import SideBar from '../SideBar/SideBar';
 import QnAListPage from './TableListPage/TableListPage';
 import Pagination from '../Pagination/Pagination';
-import { handleMenuOption, handleSignIn, handleSignUp } from '../Controllers/user';
+import { handleMenuOption, handleSignIn, handleSignUp, PutRefreshToken } from '../Controllers/user';
 
 import { connect } from 'react-redux';
 import { setMenu, setSideBar, setAuth } from '../../../actions';
@@ -38,13 +38,30 @@ const TablePage = ({ auth, menu, title, qna, help, pageTitle, writeButton, answe
             setTotalPage(res.data.totalPage);
         })
         .catch(err => {
-            console.log(err);
+            console.log(err.response);
+            if(err.response.data.code === 403)
+                PutRefreshToken();
+            axios.get(`http://10.156.145.170:8080/${url}?page=${num}`, {})
+            .then(res => {
+                console.log(res);
+                setPosts(res.data.listResponse);
+                setTotalElement(res.data.totalElement);
+                setTotalPage(res.data.totalPage);
+            })
+            .catch(err => {
+                console.log(err);
+            })
         })
     }
 
     useEffect(() => {
         if(localStorage.getItem('userInfo') && auth===false) {
             onChangeAuth(true);
+            if(url==='help') {
+                handleMenuOption(2, onChangeMenuOption);
+            } else {
+                handleMenuOption(1, onChangeMenuOption);
+            }
         } 
         if(!localStorage.getItem('userInfo')) {
             onChangeAuth(false);
