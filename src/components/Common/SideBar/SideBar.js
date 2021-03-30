@@ -25,6 +25,14 @@ const SideBar = ({ auth, menu, qna, help, onChangeMenuBar, handleMenuOption, han
         })
     }
 
+    const handleHelp = () => {
+        onChangeMenuBar(false);
+        handleMenuOption(2, onChangeMenuOption);
+        history.push({
+            pathname: '/help'
+        })
+    }
+
     return (
         <SideBarStyle.Container menu={menu}>
             { auth ?
@@ -34,8 +42,8 @@ const SideBar = ({ auth, menu, qna, help, onChangeMenuBar, handleMenuOption, han
                 </SideBarStyle.MenuUser>
                 :
                 <SideBarStyle.MenuUser menu={menu}>
-                    <SideBarStyle.UserBtn onClick={() => handleSignIn()}>SIGN IN</SideBarStyle.UserBtn>
-                    <SideBarStyle.UserBtn onClick={() => handleSignUp()}>SIGN UP</SideBarStyle.UserBtn>
+                    <SideBarStyle.UserBtn onClick={() => handleSignIn(onChangeMenuBar, history)}>SIGN IN</SideBarStyle.UserBtn>
+                    <SideBarStyle.UserBtn onClick={() => handleSignUp(onChangeMenuBar, history)}>SIGN UP</SideBarStyle.UserBtn>
                 </SideBarStyle.MenuUser>
             }
 
@@ -46,7 +54,7 @@ const SideBar = ({ auth, menu, qna, help, onChangeMenuBar, handleMenuOption, han
                 <SideBarStyle.MenuName menu={menu}>QnA</SideBarStyle.MenuName>
             </SideBarStyle.MenuDiv>
 
-            <SideBarStyle.MenuDiv menu={menu} backColor={help} onClick={() => auth ? handleMenuOption(2, onChangeMenuOption) : alert("로그인해주세요")}>
+            <SideBarStyle.MenuDiv menu={menu} backColor={help} onClick={() => auth ? handleHelp() : alert("로그인해주세요")}>
                 <SideBarStyle.IconDiv menu={menu}>
                     <IoMdHelp color="white" size="45"></IoMdHelp>
                 </SideBarStyle.IconDiv>

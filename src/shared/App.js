@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch} from 'react-router-dom';
-import { Main, SignIn, SignUp, Forgot, Profile, QnA } from './../pages';
+import { Main, SignIn, SignUp, Forgot, Profile, QnA, Help, HelpWrite, QnAWrite } from './../pages';
 
 const App = () => {
   return (
@@ -11,7 +11,10 @@ const App = () => {
         <Route path="/signup" component={SignUp}/>
         <Route path="/forgot" component={Forgot}/>
         <Route path="/profile" component={Profile}/>
-        <Route path="/qna" component={QnA}/>
+        <Route path="/qna" exact component={QnA}/>
+        <Route path="/qna/write" component={QnAWrite}/>
+        <Route path="/help" exact component={Help}/>
+        <Route path="/help/write" component={HelpWrite}/>
       </Switch>
     </BrowserRouter>
   );

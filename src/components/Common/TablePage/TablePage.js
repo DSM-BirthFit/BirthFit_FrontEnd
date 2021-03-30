@@ -1,94 +1,46 @@
 import React, {useState, useEffect} from "react";
 import { useHistory } from 'react-router';
-import * as TablePageStyle from '../../../assets/styles/TablePage/TablePage'
+import * as TablePageStyle from '../../../assets/styles/Common/TablePage/TablePage'
 
 import Header from '../Header/Header';
 import SideBar from '../SideBar/SideBar';
 import QnAListPage from './TableListPage/TableListPage';
 import Pagination from '../Pagination/Pagination';
-import {handleMenuOption} from '../Controllers/user';
+import { handleMenuOption, handleSignIn, handleSignUp } from '../Controllers/user';
 
 import { connect } from 'react-redux';
 import { setMenu, setSideBar, setAuth } from '../../../actions';
 
 const axios = require('axios');
 
-const TablePage = ({ auth, menu, title, qna, help, pageTitle, writeButton, answerType, onChangeMenuBar, onChangeMenuOption, onChangeAuth }) => {
+const TablePage = ({ auth, menu, title, qna, help, pageTitle, writeButton, answerType, url, onChangeMenuBar, onChangeMenuOption, onChangeAuth }) => {
     let history = useHistory();
      
-    const [posts, setPosts] = useState([
-        {   
-            id: 1,
-            title: 'qna title 135 in',
-            answer: 5,
-            like: 10            
-        },
-        {   
-            id: 1,
-            title: 'qna title 135 in',
-            answer: 5,
-            like: 10            
-        },
-        {   
-            id: 1,
-            title: 'qna title 135 in',
-            answer: 5,
-            like: 10            
-        },
-        {   
-            id: 1,
-            title: 'qna title 135 in',
-            answer: 5,
-            like: 10            
-        },
-        {   
-            id: 1,
-            title: 'qna title 135 in',
-            answer: 5,
-            like: 10            
-        },
-        {   
-            id: 1,
-            title: 'qna title 135 in',
-            answer: 5,
-            like: 10            
-        },
-        {   
-            id: 1,
-            title: 'qna title 135 in',
-            answer: 5,
-            like: 10            
-        },
-        {   
-            id: 1,
-            title: 'qna title 135 in',
-            answer: 5,
-            like: 10            
-        },
-        {   
-            id: 1,
-            title: 'qna title 135 in',
-            answer: 5,
-            like: 10            
-        },
-        {   
-            id: 1,
-            title: 'qna title 135 in',
-            answer: 5,
-            like: 10            
-        },
-        {   
-            id: 1,
-            title: 'qna title 135 in',
-            answer: 5,
-            like: 10            
-        },
-    ]),
+    const [posts, setPosts] = useState([]),
           [currentPage, setCurrentPage] = useState(1),
           [postsPerPage, setPostsPerPage] = useState(10),
           [pageNumLimit, setPageNumLimit] = useState(10),
           [maxPageNumLimit, setMaxPageNumLimit] = useState(10),
-          [minPageNumLimit, setMinPageNumLimit] = useState(0);
+          [minPageNumLimit, setMinPageNumLimit] = useState(0),
+          [totalPage, setTotalPage] = useState(0),
+          [totalElement, setTotalElement] = useState(0);
+
+    const pageAxios = (num) => {
+        const local = JSON.parse(localStorage.getItem('userInfo'));
+        
+        axios.defaults.headers.common['Authorization'] = `${local.tokenType} ${local.accessToken}`;
+
+        axios.get(`http://10.156.145.170:8080/${url}?page=${num}`, {})
+        .then(res => {
+            console.log(res);
+            setPosts(res.data.listResponse);
+            setTotalElement(res.data.totalElement);
+            setTotalPage(res.data.totalPage);
+        })
+        .catch(err => {
+            console.log(err);
+        })
+    }
 
     useEffect(() => {
         if(localStorage.getItem('userInfo') && auth===false) {
@@ -98,21 +50,13 @@ const TablePage = ({ auth, menu, title, qna, help, pageTitle, writeButton, answe
             onChangeAuth(false);
             history.push('/');
         }
+
+        pageAxios(0);
     }, [])
 
-    const handleSignIn = () => {
-        onChangeMenuBar(false);
-        history.push({
-            pathname: '/signin'
-        })
-    }
-
-    const handleSignUp = () => {
-        onChangeMenuBar(false);
-        history.push({
-            pathname: '/signup'
-        })
-    }
+    useEffect(() => {
+        pageAxios(currentPage-1);
+    }, [currentPage])
 
     const handleProfile = () => {
         const local = JSON.parse(localStorage.getItem('userInfo'));
@@ -142,20 +86,14 @@ const TablePage = ({ auth, menu, title, qna, help, pageTitle, writeButton, answe
 
     const pageNumbers = [];
 
-    for (let i = 1; i <= Math.ceil(posts.length / postsPerPage); i++) {
+    for (let i = 1; i <= totalPage; i++) {
         pageNumbers.push(i);
-    }
-
-    const currentPosts = (tmp) => {
-        let currentPosts = 0;
-        currentPosts = tmp.slice(indexOfFirst, indexOfLast);
-        return currentPosts;
     }
 
     const handlePrevBtn = () => {
         if(currentPage != pageNumbers[0]) {
             setCurrentPage(currentPage - 1);
-    
+
             if((currentPage - 1)%pageNumLimit==0) {
                 setMaxPageNumLimit(maxPageNumLimit - pageNumLimit);
                 setMinPageNumLimit(minPageNumLimit - pageNumLimit);
@@ -166,7 +104,7 @@ const TablePage = ({ auth, menu, title, qna, help, pageTitle, writeButton, answe
     const handleNextBtn = () => {
         if(currentPage != pageNumbers[pageNumbers.length - 1]) {
             setCurrentPage(currentPage + 1);
-    
+
             if(currentPage+1> maxPageNumLimit) {
                 setMaxPageNumLimit(maxPageNumLimit + pageNumLimit);
                 setMinPageNumLimit(minPageNumLimit + pageNumLimit);
@@ -186,6 +124,12 @@ const TablePage = ({ auth, menu, title, qna, help, pageTitle, writeButton, answe
         pageDecrementBtn = <TablePageStyle.btnLi onClick={handlePrevBtn}>{chr}</TablePageStyle.btnLi>
     }
 
+    const handleWrite = () => {
+        history.push({
+            pathname: `/${url}/write`
+        })
+    }
+
     return (
         <TablePageStyle.Container>
             <TablePageStyle.Contents menu={menu}>
@@ -193,7 +137,7 @@ const TablePage = ({ auth, menu, title, qna, help, pageTitle, writeButton, answe
                     <TablePageStyle.TextContents>
                         <TablePageStyle.Header>{pageTitle}</TablePageStyle.Header>
                         <TablePageStyle.UnderBar></TablePageStyle.UnderBar>
-                        <TablePageStyle.WritenBtn menu={menu}>{writeButton}</TablePageStyle.WritenBtn>
+                        <TablePageStyle.WritenBtn menu={menu} onClick={() => handleWrite()}>{writeButton}</TablePageStyle.WritenBtn>
                     </TablePageStyle.TextContents>
                     <TablePageStyle.Input menu={menu}>
                         <TablePageStyle.Trtag>
@@ -201,7 +145,7 @@ const TablePage = ({ auth, menu, title, qna, help, pageTitle, writeButton, answe
                             <TablePageStyle.Headertable>{answerType}</TablePageStyle.Headertable>
                             <TablePageStyle.Headertable>좋아요</TablePageStyle.Headertable>
                         </TablePageStyle.Trtag>
-                        <QnAListPage lists={currentPosts(posts)}/>
+                        <QnAListPage lists={posts} url={url}/>
                     </TablePageStyle.Input>
                     <TablePageStyle.PageUl>
                         <TablePageStyle.btnLi onClick={handlePrevBtn}>

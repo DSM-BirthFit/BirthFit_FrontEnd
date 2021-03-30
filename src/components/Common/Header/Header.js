@@ -37,8 +37,8 @@ const Header = ({ auth, menu, onChangeMenuBar, handleMenuOption, handleSignIn, h
                 </HeaderStyle.RightMenu>
                 :
                 <HeaderStyle.RightMenu>
-                    <HeaderStyle.FirstBtn onClick={() => handleSignUp()}>SIGN UP</HeaderStyle.FirstBtn>
-                    <HeaderStyle.SecondBtn onClick={() => handleSignIn()}>SIGN IN</HeaderStyle.SecondBtn>
+                    <HeaderStyle.FirstBtn onClick={() => handleSignUp(onChangeMenuBar, history)}>SIGN UP</HeaderStyle.FirstBtn>
+                    <HeaderStyle.SecondBtn onClick={() => handleSignIn(onChangeMenuBar, history)}>SIGN IN</HeaderStyle.SecondBtn>
                 </HeaderStyle.RightMenu>
             }
         </HeaderStyle.Container>

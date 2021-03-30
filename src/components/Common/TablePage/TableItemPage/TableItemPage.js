@@ -1,5 +1,5 @@
 import React from "react";
-import * as TableItemStyle from '../../../../assets/styles/TablePage/TableItemPage';
+import * as TableItemStyle from '../../../../assets/styles/Common/TablePage/TableItemPage';
 
 const TablePage = ({ id, title, answer, like }) => {
     return (

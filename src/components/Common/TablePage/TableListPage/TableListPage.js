@@ -1,10 +1,13 @@
 import React from "react";
 import TableItemPage from '../TableItemPage/TableItemPage';
 
-const TablePage = ({lists}) => {
+const TablePage = ({lists, url}) => {
     const tableItemPage = lists.map(
         list => (
-            <TableItemPage id={list.id} title={list.title} answer={list.answer} like={list.like} />
+            url === "help" ?
+            <TableItemPage id={list.helpId} title={list.title} answer={list.comment} like={list.like} />
+            :
+            <TableItemPage id={list.qnaId} title={list.title} answer={list.answer} like={list.like} />
         )
     ) 
 

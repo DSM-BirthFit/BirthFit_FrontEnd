@@ -1,4 +1,4 @@
-import { SET_AUTH, SET_FORGOT, SET_MENU, SET_SIDEBAR, SET_SIGNIN, SET_SIGNUP, SET_PROFILE } from '../actions';
+import { SET_AUTH, SET_FORGOT, SET_MENU, SET_SIDEBAR, SET_SIGNIN, SET_SIGNUP, SET_PROFILE, SET_WRITE } from '../actions';
 import { combineReducers } from 'redux';
 
 const headIntialState = {
@@ -122,13 +122,33 @@ const profile = (state=profileIntialState, action) => {
     }
 }
 
+const writeIntialState = {
+    title: "",
+    text: "",
+    len: 0
+}
+
+const write = (state=writeIntialState, action) => {
+    switch(action.type) {
+        case SET_WRITE:
+            return Object.assign({}, state, {
+                title: action.title,
+                text: action.text,
+                len: action.len
+            })
+        default:
+            return state
+    }
+}
+
 const reducerApp = combineReducers({
     head,
     sidebar,
     signin,
     signup,
     forgot,
-    profile
+    profile,
+    write
 })
 
 

@@ -5,6 +5,7 @@ export const SET_SIGNIN = 'SET_SIGNIN';
 export const SET_SIGNUP = 'SET_SIGNUP';
 export const SET_FORGOT = 'SET_FORGOT';
 export const SET_PROFILE = 'SET_PROFILE';
+export const SET_WRITE = 'SET_WRITE';
 
 export const setAuth = (auth) => {
     return {
@@ -65,5 +66,14 @@ export const setProfile = (id, pw) => {
         type: SET_PROFILE,
         id: id,
         pw: pw
+    }
+}
+
+export const setWrite = (title, text, len) => {
+    return {
+        type: SET_WRITE,
+        title: title,
+        text: text,
+        len: len
     }
 }
