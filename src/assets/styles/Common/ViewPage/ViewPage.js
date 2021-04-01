@@ -126,6 +126,7 @@ export const CommentInput = styled.textarea`
     border-bottom: 3px solid #394B5A;
     color: #394B5A;
     width: 1125px;
+    background: transparent;
     height: ${props=>props.height}
 `;
 
@@ -133,7 +134,7 @@ export const CommentInput = styled.textarea`
 export const CommentBottom = styled.div`
     width: 1125px;
     position: relative;
-    height: 70px;
+    height: 60px;
     display: ${props => props.display ? 'display' : 'none'}
 `;
 
@@ -177,6 +178,44 @@ export const Submitcomment = styled.button`
     border: 3px solid #99F8FF;
     border-radius: 5px;
     color: white;
+`;
+
+export const List = styled.div`
+    margin-top: ${props => props.display ? '20px' : '50px'}
+`;
+
+export const Bottom = styled.div`
+
+`;
+
+export const QnABottom = styled.div`
+`;
+
+export const HelpBottom = styled.div`
+`;
+
+export const QnAImage = styled.img`
+    position: fixed;
+    top: 300px;
+    z-index: 0;
+
+    @media screen and (max-width: 1550px) {
+        left: 65vw;
+        width: 400px;
+        height: auto;
+    }
+`;
+
+export const HelpImage = styled.img`
+    position: fixed;
+    top: 300px;
+    z-index: 0;
+
+    @media screen and (max-width: 1550px) {
+        left: 65vw;
+        width: 500px;
+        height: auto;
+    }
 `;
 
 
