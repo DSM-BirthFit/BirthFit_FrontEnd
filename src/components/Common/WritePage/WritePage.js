@@ -26,7 +26,7 @@ const WritePage = ({ auth, menu, title, qna, help, writeTitle, writeText, writeL
             onChangeAuth(false);
             history.push('/');
         }
-    }, [])
+    }, []);
 
     const handleWriteTitle = (value) => {
         if(value.length <= 90 ) {
@@ -55,7 +55,7 @@ const WritePage = ({ auth, menu, title, qna, help, writeTitle, writeText, writeL
                         <WritePageStyle.InputTitle>
                             <WritePageStyle.InputTitleText>{TitleText}</WritePageStyle.InputTitleText>
                             <WritePageStyle.TitleInput menu={menu} onChange={(e) => handleWriteTitle(e.target.value)} value={writeTitle}/>
-                            <WritePageStyle.LimitText>({writeLen}/90)</WritePageStyle.LimitText>
+                            <WritePageStyle.LimitText>({writeLen} / 90)</WritePageStyle.LimitText>
                         </WritePageStyle.InputTitle>
                         <WritePageStyle.ContentText menu={menu} onChange={(e) => onChangeWrite(writeTitle, e.target.value, writeLen)} value={writeText}/>
                     </WritePageStyle.Input>

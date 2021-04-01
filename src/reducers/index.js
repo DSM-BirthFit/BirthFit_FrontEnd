@@ -1,4 +1,4 @@
-import { SET_AUTH, SET_FORGOT, SET_MENU, SET_SIDEBAR, SET_SIGNIN, SET_SIGNUP, SET_PROFILE, SET_WRITE } from '../actions';
+import { SET_AUTH, SET_FORGOT, SET_MENU, SET_SIDEBAR, SET_SIGNIN, SET_SIGNUP, SET_PROFILE, SET_WRITE, SET_VIEW, SET_COMMENT } from '../actions';
 import { combineReducers } from 'redux';
 
 const headIntialState = {
@@ -141,6 +141,52 @@ const write = (state=writeIntialState, action) => {
     }
 }
 
+const viewIntialState = {
+    answer: [],
+    contents: '',
+    createdAt: '',
+    isLike: 0,
+    isMine: true,
+    title: '',
+    userId: '',
+    view: 0
+}
+
+const view = (state=viewIntialState, action) => {
+    switch(action.type) {
+        case SET_VIEW:
+            return Object.assign({}, state, {
+                answer: action.answer,
+                contents: action.contents,
+                createdAt: action.createdAt,
+                isLike: action.isLike,
+                isMine: action.isMine,
+                title: action.title,
+                userId: action.userId,
+                view: action.view
+            })
+        default:
+            return state
+    }
+}
+
+const commentIntialState = {
+    comment: '',
+    len: 0
+}
+
+const comment = (state=commentIntialState, action) => {
+    switch(action.type) {
+        case SET_COMMENT:
+            return Object.assign({}, state, {
+                comment: action.comment,
+                len: action.len
+            }) 
+        default:
+            return state
+    }
+}
+
 const reducerApp = combineReducers({
     head,
     sidebar,
@@ -148,7 +194,9 @@ const reducerApp = combineReducers({
     signup,
     forgot,
     profile,
-    write
+    write,
+    view,
+    comment
 })
 
 

@@ -1,3 +1,5 @@
+import {PutRefreshToken} from './user';
+
 const axios = require('axios');
 
 export const handleWriteSubmit = (title, text, history, url, onChangeWrite) => {
@@ -16,5 +18,9 @@ export const handleWriteSubmit = (title, text, history, url, onChangeWrite) => {
             pathname: `/${url}`
         })
     })
-    .catch(err => {console.log(err);})
+    .catch(err => {
+        console.log(err);
+        PutRefreshToken();
+        handleWriteSubmit(title, text, history, url, onChangeWrite);
+    })
 }

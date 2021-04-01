@@ -7,3 +7,5 @@ export {default as QnA} from './QnA';
 export {default as Help} from './Help';
 export {default as HelpWrite} from './HelpWrite';
 export {default as QnAWrite} from './QnAWrite';
+export {default as QnAView} from './QnAView';
+export {default as HelpView} from './HelpView';

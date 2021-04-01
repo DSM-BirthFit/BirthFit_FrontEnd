@@ -37,9 +37,7 @@ const TablePage = ({ auth, menu, title, qna, help, pageTitle, writeButton, answe
             setTotalPage(res.data.totalPage);
         })
         .catch(err => {
-            console.log(err.response);
-            if(err.response.data.code === 403)
-                PutRefreshToken();
+            PutRefreshToken();
             axios.get(`http://10.156.145.170:8080/${url}?page=${num}`, {})
             .then(res => {
                 console.log(res);

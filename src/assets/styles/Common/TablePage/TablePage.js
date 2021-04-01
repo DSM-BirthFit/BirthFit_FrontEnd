@@ -97,6 +97,9 @@ export const Headertable = styled.th`
         padding-left: 10px;
         text-align: start;
         width: 80%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
 
         @media screen and (max-width: 800px) {
             width: 70%;

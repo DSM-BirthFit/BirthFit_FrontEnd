@@ -9,6 +9,7 @@ export const Tdtag  = styled.td`
 
     &:nth-child(1) {
         padding-left: 10px;
+        cursor: pointer;
     }
 
     &:nth-child(2), &:nth-child(3) {

@@ -6,6 +6,8 @@ export const SET_SIGNUP = 'SET_SIGNUP';
 export const SET_FORGOT = 'SET_FORGOT';
 export const SET_PROFILE = 'SET_PROFILE';
 export const SET_WRITE = 'SET_WRITE';
+export const SET_VIEW = 'SET_VIEW';
+export const SET_COMMENT = 'SET_COMMENT';
 
 export const setAuth = (auth) => {
     return {
@@ -74,6 +76,28 @@ export const setWrite = (title, text, len) => {
         type: SET_WRITE,
         title: title,
         text: text,
+        len: len
+    }
+}
+
+export const setView = (answer, contents, createdAt, isLike, isMine, title, userId, view) => {
+    return {
+        type: SET_VIEW,
+        answer: answer,
+        contents: contents,
+        createdAt: createdAt,
+        isLike: isLike,
+        isMine: isMine,
+        title: title,
+        userId: userId,
+        view: view
+    }
+}
+
+export const setComment = (comment, len) => {
+    return {
+        type: SET_COMMENT,
+        comment: comment,
         len: len
     }
 }
