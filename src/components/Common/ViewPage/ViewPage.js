@@ -24,8 +24,8 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, contents, created
           [display, setDisplay] = useState(false),
           [commentLen, setCommentLen] = useState(0),
           [answerHeight, setAnswerHeight] = useState('18px'),
-          [answerEdit, setAnswerEdit] = useState(false),
-          [submitAnswer, setSubmitAnswer] = useState({commentId: -1, userId: "", content: "", isMine: false}),
+          [submitAnswer, setSubmitAnswer] = useState([0, {commentId: -1, userId: "", content: "", isMine: false}]),
+          [editAnswer, setEditAnswer] = useState([-1, '']),
           [deleteAnswer, setDeleteAnswer] = useState(-1);
 
     useEffect(() => {
@@ -44,7 +44,6 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, contents, created
     }, []);
 
     useEffect(() => {
-        console.log("getAnswer change");
         const local = JSON.parse(localStorage.getItem('userInfo'));
     
         axios.defaults.headers.common['Authorization'] = `${local.tokenType} ${local.accessToken}`;
@@ -91,7 +90,11 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, contents, created
         .then(res => {
             onChangeCommet('', 0);
             setDisplay(false);
-            setSubmitAnswer({commentId: answer[answer.length-1].commentId+1, userId: userId, content: comment, isMine: isMine});
+            axios.get(`http://10.156.145.170:8080/user/profile`, {})
+            .then(res => {
+                setSubmitAnswer([1, {commentId: answer.length == 0 ? 0 : answer[answer.length-1].commentId+1, userId: res.data.userId, content: comment, isMine: true}]);
+            })
+            .catch(err => {console.log(err);})
         })
         .catch(err => {
             console.log(err);
@@ -102,7 +105,11 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, contents, created
             .then(res => {
                 onChangeCommet('', 0);
                 setDisplay(false);
-                setSubmitAnswer({commentId: answer[answer.length-1].commentId+1, userId: userId, content: comment, isMine: isMine});
+                axios.get(`http://10.156.145.170:8080/user/profile`, {})
+                .then(res => {
+                    setSubmitAnswer([1, {commentId: answer.length == 0 ? 0 : answer[answer.length-1].commentId+1, userId: res.data.userId, content: comment, isMine: true}]);
+                })
+                .catch(err => {console.log(err);})
             })
             .catch(err => {
                 console.log(err);
@@ -111,15 +118,16 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, contents, created
     }
 
     useEffect(() => {
-        if(submitAnswer !== -1){
+        if(submitAnswer[0] !== 0){
             let array = answer;
-            array.splice(array.length, 1, {
-                commentId :submitAnswer.commentId,
-                userId: submitAnswer.userId,
-                content: submitAnswer.content,
-                isMine: submitAnswer.isMine,
+            array.push({
+                commentId :submitAnswer[1].commentId,
+                userId: submitAnswer[1].userId,
+                content: submitAnswer[1].content,
+                isMine: submitAnswer[1].isMine,
             });
-            setSubmitAnswer(-1);
+            console.log(array);
+            setSubmitAnswer([0, {commentId: -1, userId: "", content: "", isMine: false}]);
             setCommentLen(array.length);
             onChnageView(array, contents, createdAt, isLike, isMine, viewTitle, userId, view);
         }
@@ -189,7 +197,7 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, contents, created
         setAnswerHeight(sTextarea.style.height);
     }
 
-    const handleAnswerEditSubmit = ({ commentId, text, setText, setEdit }) => {
+    const handleAnswerEditSubmit = (commentId, text, setText, setEdit) => {
         const local = JSON.parse(localStorage.getItem('userInfo'));
     
         axios.defaults.headers.common['Authorization'] = `${local.tokenType} ${local.accessToken}`;
@@ -199,7 +207,6 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, contents, created
             content: text
         })
         .then(res => {
-            console.log(res);
             setText('');
             setEdit(false);
         })
@@ -211,7 +218,6 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, contents, created
                 content: text
             })
             .then(res => {
-                console.log(res);
                 setText('');
                 setEdit(false);
             })
@@ -219,11 +225,26 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, contents, created
                 console.log(err);
             })
         })
+
+        setEditAnswer([commentId, text]);
     }
+
+    useEffect(() => {
+        if(editAnswer[0] !== -1) {
+            let array = answer;
+            var num = 0; 
+            array.find(function(value) {
+                num++;
+                return value.commentId === editAnswer[0];
+            })
+
+            array.splice(num-1, 1, {commentId :array[num-1].commentId, userId: array[num-1].userId, content: editAnswer[1], isMine: array[num-1].isMine,})
+            setEditAnswer([-1, '']);
+        }
+    }, [editAnswer])
 
     const handleAnswerDeleteSubmit = (commentId) => {
         const local = JSON.parse(localStorage.getItem('userInfo'));
-        console.log(commentId);
         var middle = url === "help" ? "comment" : "answer";
 
         axios.defaults.headers.common['Authorization'] = `${local.tokenType} ${local.accessToken}`;
@@ -259,7 +280,6 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, contents, created
         }
     }, [deleteAnswer])
 
-
     return (
         <ViewPageStyle.Container>
             <ViewPageStyle.Contents menu={menu}>
@@ -280,7 +300,7 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, contents, created
                         { url !== "help" ?
                             <ViewPageStyle.QnAPage>
                                 <ViewPageStyle.QnAHeader>A</ViewPageStyle.QnAHeader>
-                                <AnswerList lists={commentLen > 0 ? answer : []} height={answerHeight} ySize={AnswerySize} url={url} edit={answerEdit} handleAnswerDeleteSubmit={handleAnswerDeleteSubmit}/>
+                                <AnswerList lists={commentLen > 0 ? answer : []} height={answerHeight} ySize={AnswerySize} url={url} handleAnswerEditSubmit={handleAnswerEditSubmit} handleAnswerDeleteSubmit={handleAnswerDeleteSubmit}/>
                             </ViewPageStyle.QnAPage>
                           :
                             <ViewPageStyle.HelpPage>
@@ -298,7 +318,7 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, contents, created
                                         </ViewPageStyle.CommentBtn>
                                     </ViewPageStyle.CommentBottom>
                                     <ViewPageStyle.List display={display}>
-                                        <AnswerList lists={commentLen > 0 ? answer : []} height={answerHeight} ySize={AnswerySize} url={url} edit={answerEdit} handleAnswerDeleteSubmit={handleAnswerDeleteSubmit}/>
+                                        <AnswerList lists={commentLen > 0 ? answer : []} height={answerHeight} ySize={AnswerySize} url={url} handleAnswerEditSubmit={handleAnswerEditSubmit} handleAnswerDeleteSubmit={handleAnswerDeleteSubmit}/>
                                     </ViewPageStyle.List>
                                 </ViewPageStyle.CommntPage>
                             </ViewPageStyle.HelpPage>
