@@ -5,6 +5,7 @@ import introImg from '../../assets/images/intro.jpg';
 
 import Header from '../Common/Header/Header';
 import SideBar from '../Common/SideBar/SideBar';
+import { handleMenuOption, handleSignIn, handleSignUp, handleProfile } from '../Common/Controllers/user';
 
 import { connect } from 'react-redux';
 import { setAuth, setMenu, setSideBar, } from '../../actions';
@@ -22,56 +23,24 @@ const MainPage = ({ auth, menu, title, qna, help, onChangeMenuBar, onChangeAuth,
         if(localStorage.getItem('userInfo') && auth===false) {
             onChangeAuth(true)
         }
-    }, [])
+    }, []);
 
-    const handleMenuOption = (num) => {
-        if(num === 0) {
-            onChangeMenuOption(true, false, false);
-        } else if(num === 1) {
-            onChangeMenuOption(false, true, false);
-        } else if(num === 2){
-            onChangeMenuOption(false, false, true);
-        }
-    }
-
-    const handleSignIn = () => {
+    const handleQna = () => {
         onChangeMenuBar(false);
-        handleMenuOption(0, onChangeMenuOption);
+        handleMenuOption(1, onChangeMenuOption);
         history.push({
-            pathname: '/signin'
+            pathname: '/qna'
         })
     }
 
-    const handleSignUp = () => {
+    const handleHelp = () => {
         onChangeMenuBar(false);
-        handleMenuOption(0, onChangeMenuOption);
+        handleMenuOption(2, onChangeMenuOption);
         history.push({
-            pathname: '/signup'
+            pathname: '/help'
         })
     }
 
-    const handleProfile = () => {
-        const local = JSON.parse(localStorage.getItem('userInfo'));
-        
-        axios.defaults.headers.common['Authorization'] = `${local.tokenType} ${local.accessToken}`;
-
-        axios.get(`http://10.156.145.170:8080/user/profile`, {})
-        .then(res => {
-            console.log(res);
-            onChangeMenuBar(false);
-            handleMenuOption(0, onChangeMenuOption);
-            history.push({
-                pathname: '/profile',
-                state: {
-                    user: {
-                        userEmail: res.data.email,
-                        userId: res.data.userId
-                    }
-                }
-            })
-        })
-        .catch(err => {console.log(err);})
-    }
 
     return (
         <MainPageStyle.Container>
@@ -83,8 +52,8 @@ const MainPage = ({ auth, menu, title, qna, help, onChangeMenuBar, onChangeAuth,
                         <MainPageStyle.DetailText>{detailText}</MainPageStyle.DetailText>
                     </MainPageStyle.TextContents>
                     <MainPageStyle.MainBtn>
-                        <MainPageStyle.QnABtn>QnA</MainPageStyle.QnABtn>
-                        <MainPageStyle.HelpBtn>Help</MainPageStyle.HelpBtn>
+                        <MainPageStyle.QnABtn onClick={() => auth ? handleQna() : alert("로그인해주세요")}>QnA</MainPageStyle.QnABtn>
+                        <MainPageStyle.HelpBtn onClick={() => auth ? handleHelp() : alert("로그인해주세요")}>Help</MainPageStyle.HelpBtn>
                     </MainPageStyle.MainBtn>
                 </MainPageStyle.MainContents>
                 <MainPageStyle.IntroImg src={introImg}/>

@@ -1,10 +1,10 @@
 import React from 'react';
 import AnswerItem from '../AnswerItem/AnswerItem';
 
-const AnswerList = ({url, lists}) => {
+const AnswerList = ({url, height, ySize, lists, edit, handleAnswerDeleteSubmit }) => {
     const answerItem = lists.map(
         list => (
-            <AnswerItem commentId={list.commentId} content={list.content} isMine={list.isMine} userId={list.userId} url={url}/>
+            <AnswerItem commentId={url === "help" ? list.commentId : list.qnaId } content={list.content} isMine={list.isMine} userId={list.userId} height={height} ySize={ySize} url={url} edit={edit} handleAnswerDeleteSubmit={handleAnswerDeleteSubmit}/>
         )
     )
     return answerItem

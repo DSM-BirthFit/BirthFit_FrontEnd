@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {useHistory, useParams} from 'react-router-dom';
 import * as ViewPageStyle from '../../../assets/styles/Common/ViewPage/ViewPage';
 import { BsChatDots } from 'react-icons/bs';
+import { IoIosHeart, IoIosHeartEmpty } from 'react-icons/io';
 
 import Header from '../Header/Header';
 import SideBar from '../SideBar/SideBar';
@@ -11,18 +12,21 @@ import HelpImg from '../../../assets/images/help.jpg';
 import { handleMenuOption, handleSignIn, handleSignUp, handleProfile, PutRefreshToken } from '../Controllers/user';
 
 import { connect } from 'react-redux';
-import { setMenu, setSideBar, setAuth, setView, setComment } from '../../../actions';
+import { setMenu, setSideBar, setAuth, setView, setComment, setLike } from '../../../actions';
 
 const axios = require('axios');
 
-const ViewPage = ({ auth, menu, title, qna, help, url, answer, contents, createdAt, isLike, isMine, viewTitle, userId, view, comment, len,  onChangeAuth, onChangeMenuBar, onChangeMenuOption , onChnageView, onChangeCommet}) => {
+const ViewPage = ({ auth, menu, title, qna, help, url, answer, contents, createdAt, isLike, isMine, viewTitle, userId, view, comment, len,  onChangeAuth, onChangeMenuBar, onChangeMenuOption , onChnageView, onChangeCommet, onChangeLike}) => {
     let history = useHistory();
     const { id } = useParams();
 
-    const [getAnswer, setGetAnswer] = useState(false),
-          [height, setHeight] = useState('35px'),
+    const [height, setHeight] = useState('35px'),
           [display, setDisplay] = useState(false),
-          [commentLen, setCommentLen] = useState(0);
+          [commentLen, setCommentLen] = useState(0),
+          [answerHeight, setAnswerHeight] = useState('18px'),
+          [answerEdit, setAnswerEdit] = useState(false),
+          [submitAnswer, setSubmitAnswer] = useState({commentId: -1, userId: "", content: "", isMine: false}),
+          [deleteAnswer, setDeleteAnswer] = useState(-1);
 
     useEffect(() => {
         if(localStorage.getItem('userInfo') && auth===false) {
@@ -54,7 +58,6 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, contents, created
                 setCommentLen(res.data.comment.length);
                 onChnageView(res.data.comment, res.data.content, res.data.createdAt, res.data.isLike, res.data.isMine, res.data.title, res.data.userId, res.data.view);
             }
-            setGetAnswer(false);
         })
         .catch(err => {
             console.log(err);
@@ -62,14 +65,13 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, contents, created
             axios.get(`http://10.156.145.170:8080/${url}/${id}`, {})
             .then(res => {
                 onChnageView(res.data.answer, res.data.content, res.data.createdAt, res.data.isLike, res.data.isMine, res.data.title, res.data.userId, res.data.view);
-                setGetAnswer(false);
             })
             .catch(err => {
                 console.log(err);
             }) 
         }) 
 
-    }, [getAnswer]);
+    }, []);
 
     const ySize = () => {
         var sTextarea = document.getElementById("text_content");
@@ -87,7 +89,9 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, contents, created
             content: comment
         })
         .then(res => {
-            setGetAnswer(true);
+            onChangeCommet('', 0);
+            setDisplay(false);
+            setSubmitAnswer({commentId: answer[answer.length-1].commentId+1, userId: userId, content: comment, isMine: isMine});
         })
         .catch(err => {
             console.log(err);
@@ -96,13 +100,165 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, contents, created
                 content: comment
             })
             .then(res => {
-                setGetAnswer(true);
+                onChangeCommet('', 0);
+                setDisplay(false);
+                setSubmitAnswer({commentId: answer[answer.length-1].commentId+1, userId: userId, content: comment, isMine: isMine});
             })
             .catch(err => {
                 console.log(err);
             }) 
         }) 
     }
+
+    useEffect(() => {
+        if(submitAnswer !== -1){
+            let array = answer;
+            array.splice(array.length, 1, {
+                commentId :submitAnswer.commentId,
+                userId: submitAnswer.userId,
+                content: submitAnswer.content,
+                isMine: submitAnswer.isMine,
+            });
+            setSubmitAnswer(-1);
+            setCommentLen(array.length);
+            onChnageView(array, contents, createdAt, isLike, isMine, viewTitle, userId, view);
+        }
+    }, [submitAnswer])
+
+    const handleEditPage = () => {
+        history.push({
+            pathname: `/${url}/edit/${id}`,
+            state: {
+                title: viewTitle,
+                contents: contents,
+                len: viewTitle.length,
+                userId: ''
+            }
+        })
+    }
+
+    const handleDeletePost = () => {
+        axios.delete(`http://10.156.145.170:8080/${url}/${id}`,{})
+        .then(res => {
+            console.log(res);
+            history.push({
+                pathname: `/${url}`
+            })
+        })
+        .catch(err => {
+            console.log(err);
+            PutRefreshToken();
+            axios.delete(`http://10.156.145.170:8080/${url}/${id}`,{})
+            .then(res => {
+                console.log(res);
+                history.push({
+                    pathname: `/${url}`
+                })
+            })
+            .catch(err => {
+                console.log(err);
+            })
+        })
+    }
+
+    const handleAnswer = () => {
+        const local = JSON.parse(localStorage.getItem('userInfo'));
+    
+        axios.defaults.headers.common['Authorization'] = `${local.tokenType} ${local.accessToken}`;
+
+        axios.get(`http://10.156.145.170:8080/user/profile`, {})
+        .then(res => {
+            console.log(res);
+            history.push({
+                pathname: `/qna/answer/${id}`,
+                state: {
+                    title: '',
+                    contents: '',
+                    len: 0,
+                    userId: res.data.userId
+                }
+            })
+        })
+        .catch(err => {console.log(err);})
+    }
+
+    const AnswerySize = () => {
+        var sTextarea = document.getElementById("answer_content");
+        sTextarea.style.height = "1px";
+        sTextarea.style.height = sTextarea.scrollHeight +5 + "px";
+        setAnswerHeight(sTextarea.style.height);
+    }
+
+    const handleAnswerEditSubmit = ({ commentId, text, setText, setEdit }) => {
+        const local = JSON.parse(localStorage.getItem('userInfo'));
+    
+        axios.defaults.headers.common['Authorization'] = `${local.tokenType} ${local.accessToken}`;
+
+        axios.put(`http://10.156.145.170:8080/help/comment/${commentId}`,
+        {
+            content: text
+        })
+        .then(res => {
+            console.log(res);
+            setText('');
+            setEdit(false);
+        })
+        .catch(err => {
+            console.log(err);
+            PutRefreshToken();
+            axios.put(`http://10.156.145.170:8080/help/comment/${commentId}`,
+            {
+                content: text
+            })
+            .then(res => {
+                console.log(res);
+                setText('');
+                setEdit(false);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+        })
+    }
+
+    const handleAnswerDeleteSubmit = (commentId) => {
+        const local = JSON.parse(localStorage.getItem('userInfo'));
+        console.log(commentId);
+        var middle = url === "help" ? "comment" : "answer";
+
+        axios.defaults.headers.common['Authorization'] = `${local.tokenType} ${local.accessToken}`;
+
+        axios.delete(`http://10.156.145.170:8080/${url}/${middle}/${commentId}`,{})
+        .then(res => {
+            console.log(res);
+        })
+        .catch(err => {
+            console.log(err);
+            PutRefreshToken();
+            axios.delete(`http://10.156.145.170:8080/${url}/${middle}/${commentId}`,{})
+            .then(res => {
+                console.log(res);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+        })
+
+        setDeleteAnswer(commentId);
+    }
+
+    useEffect(() => {
+        if(deleteAnswer !== -1){
+            let array = answer;
+            var cha = array.filter(function(value, index, array) {
+                return url==="help" ? value.commentId !== deleteAnswer : value.qnaId != deleteAnswer;
+            })
+            setDeleteAnswer(-1);
+            setCommentLen(cha.length);
+            onChnageView(cha, contents, createdAt, isLike, isMine, viewTitle, userId, view);
+        }
+    }, [deleteAnswer])
+
 
     return (
         <ViewPageStyle.Container>
@@ -124,7 +280,7 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, contents, created
                         { url !== "help" ?
                             <ViewPageStyle.QnAPage>
                                 <ViewPageStyle.QnAHeader>A</ViewPageStyle.QnAHeader>
-                                <AnswerList lists={commentLen>0 ? answer : []} url={url}/>
+                                <AnswerList lists={commentLen > 0 ? answer : []} height={answerHeight} ySize={AnswerySize} url={url} edit={answerEdit} handleAnswerDeleteSubmit={handleAnswerDeleteSubmit}/>
                             </ViewPageStyle.QnAPage>
                           :
                             <ViewPageStyle.HelpPage>
@@ -142,40 +298,35 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, contents, created
                                         </ViewPageStyle.CommentBtn>
                                     </ViewPageStyle.CommentBottom>
                                     <ViewPageStyle.List display={display}>
-                                        <AnswerList lists={commentLen > 0 ? answer : []} url={url}/>
+                                        <AnswerList lists={commentLen > 0 ? answer : []} height={answerHeight} ySize={AnswerySize} url={url} edit={answerEdit} handleAnswerDeleteSubmit={handleAnswerDeleteSubmit}/>
                                     </ViewPageStyle.List>
                                 </ViewPageStyle.CommntPage>
                             </ViewPageStyle.HelpPage>
                         }
                     </ViewPageStyle.Input>
                     <ViewPageStyle.Bottom>
-                        {url !== "help" ?
-                            <ViewPageStyle.QnABottom>
-                                {isMine ?
-                                    <div>
-                                        {/*수정하기 삭제하기*/}
-                                    </div>
-                                :
-                                    <div>
-                                        {/*답변하기*/}
-                                    </div>
-                                }
-                                <div>
-                                    {/*좋아요*/}
-                                </div>
-                            </ViewPageStyle.QnABottom>
+                        { isLike ?
+                            <ViewPageStyle.Heart url={url} isMine={isMine} onClick={() => onChangeLike(false)}>
+                                <IoIosHeart color="#FF9999" size="45"></IoIosHeart>
+                            </ViewPageStyle.Heart>
                         :
-                            <ViewPageStyle.HelpBottom>
-                                {isMine &&
-                                    <div>
-                                        {/*수정하기 삭제하기*/}
-                                    </div>
-                                }
-                                <div>
-                                    {/*좋아요*/}
-                                </div>
-                            </ViewPageStyle.HelpBottom>
+                            <ViewPageStyle.Heart url={url} isMine={isMine} onClick={() => onChangeLike(true)}>
+                                <IoIosHeartEmpty color="#FF9999" size="45"></IoIosHeartEmpty>
+                            </ViewPageStyle.Heart>
+
                         }
+                        {isMine &&
+                            <ViewPageStyle.isMine>
+                                <ViewPageStyle.ViewEdit onClick={() => handleEditPage()}>수정하기</ViewPageStyle.ViewEdit>
+                                <ViewPageStyle.ViewDelete onClick={() => handleDeletePost()}>삭제하기</ViewPageStyle.ViewDelete>
+                            </ViewPageStyle.isMine>
+                        }
+                        {url !== "help" && !isMine &&
+                            <ViewPageStyle.isMine>
+                                <ViewPageStyle.AnswerButton onClick={() => handleAnswer()}>답변하기</ViewPageStyle.AnswerButton>
+                            </ViewPageStyle.isMine>
+                        }
+                        
                     </ViewPageStyle.Bottom>
                 </ViewPageStyle.MainContents>
             </ViewPageStyle.Contents>
@@ -220,7 +371,8 @@ let mapDispatchToProps = (dispatch) => {
         onChangeMenuOption: (title, qna, help) => dispatch(setSideBar(title, qna, help)),
         onChangeAuth: (auth) => dispatch(setAuth(auth)),
         onChnageView: (answer, contents, createdAt, isLike, isMine, title, userId, view) => dispatch(setView(answer, contents, createdAt, isLike, isMine, title, userId, view)),
-        onChangeCommet: (comment, len) => dispatch(setComment(comment, len))
+        onChangeCommet: (comment, len) => dispatch(setComment(comment, len)),
+        onChangeLike: (like) => dispatch(setLike(like))
     }
 }
 

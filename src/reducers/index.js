@@ -1,4 +1,4 @@
-import { SET_AUTH, SET_FORGOT, SET_MENU, SET_SIDEBAR, SET_SIGNIN, SET_SIGNUP, SET_PROFILE, SET_WRITE, SET_VIEW, SET_COMMENT } from '../actions';
+import { SET_AUTH, SET_FORGOT, SET_MENU, SET_SIDEBAR, SET_SIGNIN, SET_SIGNUP, SET_PROFILE, SET_WRITE, SET_VIEW, SET_COMMENT, SET_LIKE } from '../actions';
 import { combineReducers } from 'redux';
 
 const headIntialState = {
@@ -164,6 +164,10 @@ const view = (state=viewIntialState, action) => {
                 title: action.title,
                 userId: action.userId,
                 view: action.view
+            })
+        case SET_LIKE:
+            return Object.assign({}, state, {
+                isLike: action.like
             })
         default:
             return state

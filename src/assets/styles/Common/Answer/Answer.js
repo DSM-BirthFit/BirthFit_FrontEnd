@@ -73,5 +73,19 @@ export const Content = styled.div`
     background: transparent;
     border: none;
     word-break:break-all;
+    margin-bottom: 5px;
 `;
 
+export const Write = styled.textarea`
+    margin-left: 30px;
+    width: 980px;
+    font-size: 17px;
+    color: white;
+    background: transparent;
+    border: none;
+    word-break:break-all;
+    margin-bottom: 5px;
+    outline: none;
+    font-family: 'Noto Sans KR', sans-serif;
+    height: ${props=>props.height}
+`;

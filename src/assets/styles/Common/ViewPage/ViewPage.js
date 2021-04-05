@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 
 export const Container = styled.div`
     height: 100vh;
@@ -185,13 +185,91 @@ export const List = styled.div`
 `;
 
 export const Bottom = styled.div`
-
+    position: relative;
+    height: 70px;
+    margin-bottom: 50px;
 `;
 
-export const QnABottom = styled.div`
+export const Heart = styled.div`
+    ${props => 
+    props.isMine ?
+        css`{
+            margin-left: 700px;
+        }`
+    :
+        props.url === "help" ?
+        css`{
+            margin-left: 1050px;
+        }`
+        :
+        css`{
+            margin-left: 900px;
+        }`
+    }
+    width: 45px;
+    height: 45px;
+    cursor: pointer;
 `;
 
-export const HelpBottom = styled.div`
+export const isMine = styled.div`
+    position: absolute;
+    top: 0px;
+    right: 60px;
+`;
+
+export const ViewEdit = styled.button`
+    width: 140px;
+    font-size: 20px;
+    font-weight: bold;
+    background: transparent;
+    border: 3px solid #99F8FF;
+    border-radius: 5px;
+    padding: 5px 20px;
+    outline: none;
+    color: #99F8FF;
+    cursor: pointer;
+    margin-right: 20px;
+
+    &:hover {
+        color: white;
+        background: #99F8FF;
+    }
+`;
+
+export const ViewDelete = styled.button`
+    width: 140px;
+    font-size: 20px;
+    font-weight: bold;
+    background: transparent;
+    border: 3px solid #FF9999;
+    border-radius: 5px;
+    padding: 5px 20px;
+    outline: none;
+    color: #FF9999;
+    cursor: pointer;
+
+    &:hover {
+        color: white;
+        background: #FF9999;
+    }
+`;
+
+export const AnswerButton = styled.button`
+    width: 140px;
+    font-size: 20px;
+    font-weight: bold;
+    background: transparent;
+    border: 3px solid #99F8FF;
+    border-radius: 5px;
+    padding: 5px 20px;
+    outline: none;
+    color: #99F8FF;
+    cursor: pointer;
+
+    &:hover {
+        color: white;
+        background: #99F8FF;
+    }
 `;
 
 export const QnAImage = styled.img`

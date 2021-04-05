@@ -1,5 +1,5 @@
-import React, {useEffect} from 'react';
-import {useHistory} from 'react-router-dom';
+import React, {useState, useEffect} from 'react';
+import {useHistory, useLocation, useParams} from 'react-router-dom';
 import * as WritePageStyle from '../../../assets/styles/Common/WritePage/WritePage';
 
 import Header from '../Header/Header';
@@ -10,21 +10,30 @@ import { handleWriteSubmit } from '../Controllers/write';
 import { connect } from 'react-redux';
 import { setMenu, setSideBar, setAuth, setWrite } from '../../../actions';
 
-const WritePage = ({ auth, menu, title, qna, help, writeTitle, writeText, writeLen, headTiitle, url, headButton, TitleText, onChangeAuth, onChangeMenuBar, onChangeMenuOption, onChangeWrite}) => {
+const WritePage = ({ auth, menu, title, qna, help, writeTitle, writeText, writeLen, headTiitle, url, option, headButton, TitleText, onChangeAuth, onChangeMenuBar, onChangeMenuOption, onChangeWrite}) => {
     let history = useHistory();
+    let location = useLocation();
+    const { id } = useParams();
+    const [user, setUser] = useState('');
+
 
     useEffect(() => {
         if(localStorage.getItem('userInfo') && auth===false) {
             onChangeAuth(true);
             if(url==='help') {
                 handleMenuOption(2, onChangeMenuOption);
-            } else {
+            } else if(url==='qna') {
                 handleMenuOption(1, onChangeMenuOption);
             }
         } 
         if(!localStorage.getItem('userInfo')) {
             onChangeAuth(false);
             history.push('/');
+        }
+        if (typeof (location.state) !== 'undefined' && location.state !== null) {
+            const { title, contents, len, userId } = location.state;
+            onChangeWrite(title, contents, len);
+            setUser(userId);
         }
     }, []);
 
@@ -36,9 +45,15 @@ const WritePage = ({ auth, menu, title, qna, help, writeTitle, writeText, writeL
 
     const handleWriteCancel = () => {
         onChangeWrite('', '', 0);
-        history.push({
-            pathname: `/${url}`
-        })
+        if(option === 'none') {
+            history.push({
+                pathname: `/${url}`
+            })
+        } else {
+            history.push({
+                pathname: `/${url}/${id}`
+            })
+        }
     }
 
     return (
@@ -49,12 +64,16 @@ const WritePage = ({ auth, menu, title, qna, help, writeTitle, writeText, writeL
                         <WritePageStyle.Header>{headTiitle}</WritePageStyle.Header>
                         <WritePageStyle.UnderBar></WritePageStyle.UnderBar>
                         <WritePageStyle.CancelBtn menu={menu} onClick={() => handleWriteCancel()}>작성 취소</WritePageStyle.CancelBtn>
-                        <WritePageStyle.WritenBtn onClick={() => handleWriteSubmit(writeTitle, writeText, history, url, onChangeWrite)}>{headButton}</WritePageStyle.WritenBtn>
+                        <WritePageStyle.WritenBtn onClick={() => handleWriteSubmit(writeTitle, writeText, history, url, option, id, onChangeWrite)}>{headButton}</WritePageStyle.WritenBtn>
                     </WritePageStyle.TextContents>
                     <WritePageStyle.Input>
                         <WritePageStyle.InputTitle>
                             <WritePageStyle.InputTitleText>{TitleText}</WritePageStyle.InputTitleText>
-                            <WritePageStyle.TitleInput menu={menu} onChange={(e) => handleWriteTitle(e.target.value)} value={writeTitle}/>
+                            { user === '' ?
+                                <WritePageStyle.TitleInput menu={menu} onChange={(e) => handleWriteTitle(e.target.value)} value={writeTitle}/>
+                            :
+                                <WritePageStyle.TitleInput menu={menu} readOnly value={user + "님의 답변"}/>
+                            }
                             <WritePageStyle.LimitText>({writeLen} / 90)</WritePageStyle.LimitText>
                         </WritePageStyle.InputTitle>
                         <WritePageStyle.ContentText menu={menu} onChange={(e) => onChangeWrite(writeTitle, e.target.value, writeLen)} value={writeText}/>

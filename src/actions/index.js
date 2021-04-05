@@ -8,6 +8,7 @@ export const SET_PROFILE = 'SET_PROFILE';
 export const SET_WRITE = 'SET_WRITE';
 export const SET_VIEW = 'SET_VIEW';
 export const SET_COMMENT = 'SET_COMMENT';
+export const SET_LIKE = 'SET_LIKE';
 
 export const setAuth = (auth) => {
     return {
@@ -91,6 +92,13 @@ export const setView = (answer, contents, createdAt, isLike, isMine, title, user
         title: title,
         userId: userId,
         view: view
+    }
+}
+
+export const setLike = (like) => {
+    return {
+        type: SET_LIKE,
+        like: like
     }
 }
 

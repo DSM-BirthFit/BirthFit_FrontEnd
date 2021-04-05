@@ -9,3 +9,6 @@ export {default as HelpWrite} from './HelpWrite';
 export {default as QnAWrite} from './QnAWrite';
 export {default as QnAView} from './QnAView';
 export {default as HelpView} from './HelpView';
+export {default as QnAEdit} from './QnAEdit';
+export {default as HelpEdit} from './HelpEdit';
+export {default as AnswerWrite} from './AnswerWrite';
