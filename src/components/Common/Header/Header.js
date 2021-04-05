@@ -33,7 +33,7 @@ const Header = ({ auth, menu, onChangeMenuBar, handleMenuOption, handleSignIn, h
             { auth ? 
                 <HeaderStyle.RightMenu>
                     <HeaderStyle.FirstBtn onClick={() => handleLogout()}>SIGN OUT</HeaderStyle.FirstBtn>
-                    <HeaderStyle.SecondBtn onClick={() => handleProfile()}>PROFILE</HeaderStyle.SecondBtn>
+                    <HeaderStyle.SecondBtn onClick={() => handleProfile(onChangeMenuOption, onChangeMenuBar, history)}>PROFILE</HeaderStyle.SecondBtn>
                 </HeaderStyle.RightMenu>
                 :
                 <HeaderStyle.RightMenu>

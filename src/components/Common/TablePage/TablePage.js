@@ -6,7 +6,7 @@ import Header from '../Header/Header';
 import SideBar from '../SideBar/SideBar';
 import QnAListPage from './TableListPage/TableListPage';
 import Pagination from '../Pagination/Pagination';
-import { handleMenuOption, handleSignIn, handleSignUp, PutRefreshToken } from '../Controllers/user';
+import { handleMenuOption, handleSignIn, handleSignUp, handleProfile, PutRefreshToken } from '../Controllers/user';
 
 import { connect } from 'react-redux';
 import { setMenu, setSideBar, setAuth } from '../../../actions';
@@ -71,29 +71,6 @@ const TablePage = ({ auth, menu, title, qna, help, pageTitle, writeButton, answe
     useEffect(() => {
         pageAxios(currentPage-1);
     }, [currentPage])
-
-    const handleProfile = () => {
-        const local = JSON.parse(localStorage.getItem('userInfo'));
-        
-        axios.defaults.headers.common['Authorization'] = `${local.tokenType} ${local.accessToken}`;
-
-        axios.get(`http://10.156.145.170:8080/user/profile`, {})
-        .then(res => {
-            console.log(res);
-            handleMenuOption(0, onChangeMenuOption);
-            onChangeMenuBar(false);
-            history.push({
-                pathname: '/profile',
-                state: {
-                    user: {
-                        userEmail: res.data.email,
-                        userId: res.data.userId
-                    }
-                }
-            })
-        })
-        .catch(err => {console.log(err);})
-    }
 
     const indexOfLast = currentPage * postsPerPage;
     const indexOfFirst = indexOfLast - postsPerPage;

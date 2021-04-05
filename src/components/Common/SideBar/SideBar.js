@@ -37,7 +37,7 @@ const SideBar = ({ auth, menu, qna, help, onChangeMenuBar, handleMenuOption, han
         <SideBarStyle.Container menu={menu}>
             { auth ?
                 <SideBarStyle.MenuUser menu={menu}>
-                    <SideBarStyle.UserBtn onClick={() => handleProfile()}>PROFILE</SideBarStyle.UserBtn>
+                    <SideBarStyle.UserBtn onClick={() => handleProfile(onChangeMenuOption, onChangeMenuBar, history)}>PROFILE</SideBarStyle.UserBtn>
                     <SideBarStyle.UserBtn onClick={() => handleLogout()}>SIGN OUT</SideBarStyle.UserBtn>
                 </SideBarStyle.MenuUser>
                 :
