@@ -169,7 +169,7 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, contents, created
         })
     }
 
-    const handleAnswer = () => {
+    const handleAnswer = (num, answerContents) => {
         const local = JSON.parse(localStorage.getItem('userInfo'));
     
         axios.defaults.headers.common['Authorization'] = `${local.tokenType} ${local.accessToken}`;
@@ -178,12 +178,13 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, contents, created
         .then(res => {
             console.log(res);
             history.push({
-                pathname: `/qna/answer/${id}`,
+                pathname: answerContents==='' ? `/qna/answer/${id}` : `/qna/answer/edit/${id}`,
                 state: {
                     title: '',
-                    contents: '',
+                    contents: answerContents,
                     len: 0,
-                    userId: res.data.userId
+                    userId: res.data.userId,
+                    num: answerContents==='' ? -1 : num
                 }
             })
         })
@@ -300,7 +301,7 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, contents, created
                         { url !== "help" ?
                             <ViewPageStyle.QnAPage>
                                 <ViewPageStyle.QnAHeader>A</ViewPageStyle.QnAHeader>
-                                <AnswerList lists={commentLen > 0 ? answer : []} height={answerHeight} ySize={AnswerySize} url={url} handleAnswerEditSubmit={handleAnswerEditSubmit} handleAnswerDeleteSubmit={handleAnswerDeleteSubmit}/>
+                                <AnswerList lists={commentLen > 0 ? answer : []} height={answerHeight} ySize={AnswerySize} url={url} handleAnswer={handleAnswer} handleAnswerEditSubmit={handleAnswerEditSubmit} handleAnswerDeleteSubmit={handleAnswerDeleteSubmit}/>
                             </ViewPageStyle.QnAPage>
                           :
                             <ViewPageStyle.HelpPage>
@@ -318,7 +319,7 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, contents, created
                                         </ViewPageStyle.CommentBtn>
                                     </ViewPageStyle.CommentBottom>
                                     <ViewPageStyle.List display={display}>
-                                        <AnswerList lists={commentLen > 0 ? answer : []} height={answerHeight} ySize={AnswerySize} url={url} handleAnswerEditSubmit={handleAnswerEditSubmit} handleAnswerDeleteSubmit={handleAnswerDeleteSubmit}/>
+                                        <AnswerList lists={commentLen > 0 ? answer : []} height={answerHeight} ySize={AnswerySize} url={url} handleAnswer={handleAnswer} handleAnswerEditSubmit={handleAnswerEditSubmit} handleAnswerDeleteSubmit={handleAnswerDeleteSubmit}/>
                                     </ViewPageStyle.List>
                                 </ViewPageStyle.CommntPage>
                             </ViewPageStyle.HelpPage>
@@ -343,7 +344,7 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, contents, created
                         }
                         {url !== "help" && !isMine &&
                             <ViewPageStyle.isMine>
-                                <ViewPageStyle.AnswerButton onClick={() => handleAnswer()}>답변하기</ViewPageStyle.AnswerButton>
+                                <ViewPageStyle.AnswerButton onClick={() => handleAnswer(-1, '')}>답변하기</ViewPageStyle.AnswerButton>
                             </ViewPageStyle.isMine>
                         }
                         

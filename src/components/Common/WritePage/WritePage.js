@@ -14,8 +14,8 @@ const WritePage = ({ auth, menu, title, qna, help, writeTitle, writeText, writeL
     let history = useHistory();
     let location = useLocation();
     const { id } = useParams();
-    const [user, setUser] = useState('');
-
+    const [user, setUser] = useState(''),
+          [thisId, setThisId] = useState(-1);
 
     useEffect(() => {
         if(localStorage.getItem('userInfo') && auth===false) {
@@ -31,9 +31,12 @@ const WritePage = ({ auth, menu, title, qna, help, writeTitle, writeText, writeL
             history.push('/');
         }
         if (typeof (location.state) !== 'undefined' && location.state !== null) {
-            const { title, contents, len, userId } = location.state;
+            const { title, contents, len, userId, num } = location.state;
             onChangeWrite(title, contents, len);
             setUser(userId);
+            if(num !== -1) {
+                setThisId(num);
+            }
         }
     }, []);
 
@@ -64,7 +67,7 @@ const WritePage = ({ auth, menu, title, qna, help, writeTitle, writeText, writeL
                         <WritePageStyle.Header>{headTiitle}</WritePageStyle.Header>
                         <WritePageStyle.UnderBar></WritePageStyle.UnderBar>
                         <WritePageStyle.CancelBtn menu={menu} onClick={() => handleWriteCancel()}>작성 취소</WritePageStyle.CancelBtn>
-                        <WritePageStyle.WritenBtn onClick={() => handleWriteSubmit(writeTitle, writeText, history, url, option, id, onChangeWrite)}>{headButton}</WritePageStyle.WritenBtn>
+                        <WritePageStyle.WritenBtn onClick={() => handleWriteSubmit(writeTitle, writeText, history, url, option, id, onChangeWrite, thisId)}>{headButton}</WritePageStyle.WritenBtn>
                     </WritePageStyle.TextContents>
                     <WritePageStyle.Input>
                         <WritePageStyle.InputTitle>

@@ -95,6 +95,7 @@ export const QnAHeader = styled.div`
     font-size: 30px;
     font-weight: bold;
     color: #394B5A;
+    height: 60px;
 `;
 
 export const HelpPage = styled.div`

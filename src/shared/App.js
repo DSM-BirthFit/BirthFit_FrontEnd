@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch} from 'react-router-dom';
-import { Main, SignIn, SignUp, Forgot, Profile, QnA, Help, QnAWrite, HelpWrite, QnAView, HelpView, QnAEdit, HelpEdit, AnswerWrite } from './../pages';
+import { Main, SignIn, SignUp, Forgot, Profile, QnA, Help, QnAWrite, HelpWrite, QnAView, HelpView, QnAEdit, HelpEdit, AnswerWrite, AnswerEdit } from './../pages';
 
 const App = () => {
   return (
@@ -15,7 +15,8 @@ const App = () => {
         <Route path="/qna/write" exact component={QnAWrite}/>
         <Route path="/qna/:id" exact component={QnAView}/>
         <Route path="/qna/edit/:id" exact  component={QnAEdit}/>
-        <Route path="/qna/answer/:id" component={AnswerWrite}/>
+        <Route path="/qna/answer/:id" exact component={AnswerWrite}/>
+        <Route path="/qna/answer/edit/:id" component={AnswerEdit}/>
         <Route path="/help" exact component={Help}/>
         <Route path="/help/write" component={HelpWrite}/>
         <Route path="/help/:id" exact component={HelpView}/>

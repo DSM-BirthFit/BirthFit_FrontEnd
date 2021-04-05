@@ -12,3 +12,4 @@ export {default as HelpView} from './HelpView';
 export {default as QnAEdit} from './QnAEdit';
 export {default as HelpEdit} from './HelpEdit';
 export {default as AnswerWrite} from './AnswerWrite';
+export {default as AnswerEdit} from './AnswerEdit';
