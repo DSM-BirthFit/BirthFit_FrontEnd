@@ -6,7 +6,7 @@ import profileImg from '../../assets/images/profile.jpg';
 import Header from '../Common/Header/Header';
 import SideBar from '../Common/SideBar/SideBar';
 import ProfileList from './ProfileList/ProfileList';
-import { PutRefreshToken } from '../Common/Controllers/user';
+import { handleMenuOption, handleSignIn, handleSignUp, handleProfile, PutRefreshToken } from '../Common/Controllers/user';
 
 import { connect } from 'react-redux';
 import { setMenu, setSideBar, setAuth, setProfile } from '../../actions';
@@ -61,72 +61,6 @@ const ProfilePage = ({ auth, menu, title, qna, help, id, pw, onChangeMenuBar, on
             history.push('/')
         }
     }, [])
-
-    const handleMenuOption = (num) => {
-        if(num === 0) {
-            onChangeMenuOption(true, false, false);
-        } else if(num === 1) {
-            onChangeMenuOption(false, true, false);
-        } else if(num === 2){
-            onChangeMenuOption(false, false, true);
-        }
-    }
-
-    const handleSignIn = () => {
-        onChangeMenuBar(false);
-        history.push({
-            pathname: '/signin'
-        })
-    }
-
-    const handleSignUp = () => {
-        onChangeMenuBar(false);
-        history.push({
-            pathname: '/signup'
-        })
-    }
-
-    const handleProfile = () => {
-        const local = JSON.parse(localStorage.getItem('userInfo'));
-        
-        axios.defaults.headers.common['Authorization'] = `${local.tokenType} ${local.accessToken}`;
-
-        axios.get(`http://10.156.145.170:8080/user/profile`, {})
-        .then(res => {
-            console.log(res);
-            onChangeMenuBar(false);
-            history.push({
-                pathname: '/profile',
-                state: {
-                    user: {
-                        userEmail: res.data.email,
-                        userId: res.data.userId
-                    }
-                }
-            })
-        })
-        .catch(err => {
-            console.log(err);
-            PutRefreshToken();
-            axios.get(`http://10.156.145.170:8080/user/profile`, {})
-            .then(res => {
-                console.log(res);
-                onChangeMenuBar(false);
-                history.push({
-                    pathname: '/profile',
-                    state: {
-                        user: {
-                            userEmail: res.data.email,
-                            userId: res.data.userId
-                        }
-                    }
-                })
-            })
-            .catch(err => {
-                console.log(err);
-            })
-        })
-    }
 
     const handleChangeInput = (input, num) => {
         setChangeInput({id: num, value: input});

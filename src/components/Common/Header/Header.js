@@ -1,7 +1,8 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import * as HeaderStyle from '../../../assets/styles/Common/Header/Header';
-import { AiOutlineMenu } from 'react-icons/ai'
+import { AiOutlineMenu } from 'react-icons/ai';
+import { handleLogout } from '../Controllers/user';
 
 const Header = ({ auth, menu, onChangeMenuBar, handleMenuOption, handleSignIn, handleSignUp, handleProfile, onChangeAuth, onChangeMenuOption }) => {
     let history = useHistory();
@@ -9,16 +10,6 @@ const Header = ({ auth, menu, onChangeMenuBar, handleMenuOption, handleSignIn, h
     const handleMain = () => {
         onChangeMenuBar(false);
         handleMenuOption(0, onChangeMenuOption);
-        history.push({
-            pathname: '/'
-        })
-    }
-
-    const handleLogout = () => {
-        onChangeAuth(false);
-        onChangeMenuBar(false);
-        handleMenuOption(0, onChangeMenuOption);
-        localStorage.removeItem('userInfo');
         history.push({
             pathname: '/'
         })
@@ -32,7 +23,7 @@ const Header = ({ auth, menu, onChangeMenuBar, handleMenuOption, handleSignIn, h
             <HeaderStyle.MainTitle onClick={() => {handleMenuOption(0, onChangeMenuOption);handleMain()}}>Birth<HeaderStyle.HighLightTitle>Fit</HeaderStyle.HighLightTitle></HeaderStyle.MainTitle>
             { auth ? 
                 <HeaderStyle.RightMenu>
-                    <HeaderStyle.FirstBtn onClick={() => handleLogout()}>SIGN OUT</HeaderStyle.FirstBtn>
+                    <HeaderStyle.FirstBtn onClick={() => handleLogout(onChangeAuth, onChangeMenuBar, onChangeMenuOption, history)}>SIGN OUT</HeaderStyle.FirstBtn>
                     <HeaderStyle.SecondBtn onClick={() => handleProfile(onChangeMenuOption, onChangeMenuBar, history)}>PROFILE</HeaderStyle.SecondBtn>
                 </HeaderStyle.RightMenu>
                 :

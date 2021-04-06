@@ -3,19 +3,10 @@ import { useHistory } from 'react-router-dom';
 import * as SideBarStyle from '../../../assets/styles/Common/SideBar/SideBar';
 import { RiQuestionAnswerLine } from 'react-icons/ri';
 import { IoMdHelp } from 'react-icons/io';
+import { handleLogout } from '../Controllers/user';
 
 const SideBar = ({ auth, menu, qna, help, onChangeMenuBar, handleMenuOption, handleSignIn, handleSignUp, handleProfile, onChangeAuth, onChangeMenuOption }) => {
     let history = useHistory();
-
-    const handleLogout = () => {
-        onChangeAuth(false);
-        onChangeMenuBar(false);
-        handleMenuOption(0, onChangeMenuOption);
-        localStorage.removeItem('userInfo');
-        history.push({
-            pathname: '/'
-        })
-    }
 
     const handleQna = () => {
         onChangeMenuBar(false);
@@ -38,7 +29,7 @@ const SideBar = ({ auth, menu, qna, help, onChangeMenuBar, handleMenuOption, han
             { auth ?
                 <SideBarStyle.MenuUser menu={menu}>
                     <SideBarStyle.UserBtn onClick={() => handleProfile(onChangeMenuOption, onChangeMenuBar, history)}>PROFILE</SideBarStyle.UserBtn>
-                    <SideBarStyle.UserBtn onClick={() => handleLogout()}>SIGN OUT</SideBarStyle.UserBtn>
+                    <SideBarStyle.UserBtn onClick={() => handleLogout(onChangeAuth, onChangeMenuBar, onChangeMenuOption, history)}>SIGN OUT</SideBarStyle.UserBtn>
                 </SideBarStyle.MenuUser>
                 :
                 <SideBarStyle.MenuUser menu={menu}>

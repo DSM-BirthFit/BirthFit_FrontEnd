@@ -145,7 +145,8 @@ const viewIntialState = {
     answer: [],
     contents: '',
     createdAt: '',
-    isLike: 0,
+    likeCount: 0,
+    isLike: false,
     isMine: true,
     title: '',
     userId: '',
@@ -159,6 +160,7 @@ const view = (state=viewIntialState, action) => {
                 answer: action.answer,
                 contents: action.contents,
                 createdAt: action.createdAt,
+                likeCount: action.likeCount,
                 isLike: action.isLike,
                 isMine: action.isMine,
                 title: action.title,
@@ -166,9 +168,17 @@ const view = (state=viewIntialState, action) => {
                 view: action.view
             })
         case SET_LIKE:
-            return Object.assign({}, state, {
-                isLike: action.like
-            })
+            if(action.like) {
+                return Object.assign({}, state, {
+                    likeCount: state.likeCount + 1,
+                    isLike: action.like
+                })
+            } else {
+                return Object.assign({}, state, {
+                    likeCount: state.likeCount - 1,
+                    isLike: action.like
+                })
+            }
         default:
             return state
     }

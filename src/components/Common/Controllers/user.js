@@ -47,6 +47,16 @@ export const handleProfile = (onChangeMenuOption, onChangeMenuBar, history) => {
     .catch(err => {console.log(err);})
 }
 
+export const handleLogout = (onChangeAuth, onChangeMenuBar, onChangeMenuOption, history) => {
+    onChangeAuth(false);
+    onChangeMenuBar(false);
+    handleMenuOption(0, onChangeMenuOption);
+    localStorage.removeItem('userInfo');
+    history.push({
+        pathname: '/'
+    })
+}
+
 export const PutRefreshToken = () => {
     const local = JSON.parse(localStorage.getItem('userInfo'));
 

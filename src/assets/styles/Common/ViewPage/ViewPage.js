@@ -207,9 +207,15 @@ export const Heart = styled.div`
             margin-left: 900px;
         }`
     }
-    width: 45px;
-    height: 45px;
+    width: 80px;
     cursor: pointer;
+`;
+
+export const HeartCount = styled.div`
+    float: right;
+    color: #FF9999;
+    font-size: 30px;
+
 `;
 
 export const isMine = styled.div`

@@ -16,7 +16,7 @@ import { setMenu, setSideBar, setAuth, setView, setComment, setLike } from '../.
 
 const axios = require('axios');
 
-const ViewPage = ({ auth, menu, title, qna, help, url, answer, contents, createdAt, isLike, isMine, viewTitle, userId, view, comment, len,  onChangeAuth, onChangeMenuBar, onChangeMenuOption , onChnageView, onChangeCommet, onChangeLike}) => {
+const ViewPage = ({ auth, menu, title, qna, help, url, answer, contents, createdAt, likeCount, isLike, isMine, viewTitle, userId, view, comment, len,  onChangeAuth, onChangeMenuBar, onChangeMenuOption , onChnageView, onChangeCommet, onChangeLike}) => {
     let history = useHistory();
     const { id } = useParams();
 
@@ -52,10 +52,10 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, contents, created
         .then(res => {
             if(url !== 'help') {
                 setCommentLen(res.data.answer.length);
-                onChnageView(res.data.answer, res.data.content, res.data.createdAt, res.data.isLike, res.data.isMine, res.data.title, res.data.userId, res.data.view);
+                onChnageView(res.data.answer, res.data.content, res.data.createdAt, res.data.likeCount, res.data.isLike, res.data.isMine, res.data.title, res.data.userId, res.data.view);
             } else {
                 setCommentLen(res.data.comment.length);
-                onChnageView(res.data.comment, res.data.content, res.data.createdAt, res.data.isLike, res.data.isMine, res.data.title, res.data.userId, res.data.view);
+                onChnageView(res.data.comment, res.data.content, res.data.createdAt, res.data.likeCount, res.data.isLike, res.data.isMine, res.data.title, res.data.userId, res.data.view);
             }
         })
         .catch(err => {
@@ -63,7 +63,7 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, contents, created
             PutRefreshToken();
             axios.get(`http://10.156.145.170:8080/${url}/${id}`, {})
             .then(res => {
-                onChnageView(res.data.answer, res.data.content, res.data.createdAt, res.data.isLike, res.data.isMine, res.data.title, res.data.userId, res.data.view);
+                onChnageView(res.data.answer, res.data.content, res.data.createdAt, res.data.likeCount, res.data.isLike, res.data.isMine, res.data.title, res.data.userId, res.data.view);
             })
             .catch(err => {
                 console.log(err);
@@ -129,7 +129,7 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, contents, created
             console.log(array);
             setSubmitAnswer([0, {commentId: -1, userId: "", content: "", isMine: false}]);
             setCommentLen(array.length);
-            onChnageView(array, contents, createdAt, isLike, isMine, viewTitle, userId, view);
+            onChnageView(array, contents, createdAt, likeCount, isLike, isMine, viewTitle, userId, view);
         }
     }, [submitAnswer])
 
@@ -277,7 +277,7 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, contents, created
             })
             setDeleteAnswer(-1);
             setCommentLen(cha.length);
-            onChnageView(cha, contents, createdAt, isLike, isMine, viewTitle, userId, view);
+            onChnageView(cha, contents, createdAt, likeCount, isLike, isMine, viewTitle, userId, view);
         }
     }, [deleteAnswer])
 
@@ -329,10 +329,12 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, contents, created
                         { isLike ?
                             <ViewPageStyle.Heart url={url} isMine={isMine} onClick={() => onChangeLike(false)}>
                                 <IoIosHeart color="#FF9999" size="45"></IoIosHeart>
+                                <ViewPageStyle.HeartCount>{likeCount}</ViewPageStyle.HeartCount>
                             </ViewPageStyle.Heart>
                         :
                             <ViewPageStyle.Heart url={url} isMine={isMine} onClick={() => onChangeLike(true)}>
                                 <IoIosHeartEmpty color="#FF9999" size="45"></IoIosHeartEmpty>
+                                <ViewPageStyle.HeartCount>{likeCount}</ViewPageStyle.HeartCount>
                             </ViewPageStyle.Heart>
 
                         }
@@ -376,6 +378,7 @@ let mapStateToProps = (state) => {
         answer: state.view.answer,
         contents: state.view.contents,
         createdAt: state.view.createdAt,
+        likeCount: state.view.likeCount,
         isLike: state.view.isLike,
         isMine: state.view.isMine,
         viewTitle: state.view.title,
@@ -391,7 +394,7 @@ let mapDispatchToProps = (dispatch) => {
         onChangeMenuBar: (menu) => dispatch(setMenu(menu)),
         onChangeMenuOption: (title, qna, help) => dispatch(setSideBar(title, qna, help)),
         onChangeAuth: (auth) => dispatch(setAuth(auth)),
-        onChnageView: (answer, contents, createdAt, isLike, isMine, title, userId, view) => dispatch(setView(answer, contents, createdAt, isLike, isMine, title, userId, view)),
+        onChnageView: (answer, contents, createdAt, likeCount, isLike, isMine, title, userId, view) => dispatch(setView(answer, contents, createdAt, likeCount, isLike, isMine, title, userId, view)),
         onChangeCommet: (comment, len) => dispatch(setComment(comment, len)),
         onChangeLike: (like) => dispatch(setLike(like))
     }
