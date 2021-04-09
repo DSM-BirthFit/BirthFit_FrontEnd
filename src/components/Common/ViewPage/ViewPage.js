@@ -269,6 +269,30 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, contents, created
         setDeleteAnswer(commentId);
     }
 
+    const handleChangeLike = () => {
+        const local = JSON.parse(localStorage.getItem('userInfo'));
+
+        var req = url==="help" ? "helpId" : "qnaId";
+
+        axios.defaults.headers.common['Authorization'] = `${local.tokenType} ${local.accessToken}`;
+
+        axios.put(`http://10.156.145.170:8080/${url}/${id}/like`,{})
+        .then(res => {
+            console.log(res);
+        })
+        .catch(err => {
+            console.log(err);
+            PutRefreshToken();
+            axios.put(`http://10.156.145.170:8080/${url}/${id}/like`,{})
+            .then(res => {
+                console.log(res);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+        })
+    }
+
     useEffect(() => {
         if(deleteAnswer !== -1){
             let array = answer;
@@ -327,12 +351,12 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, contents, created
                     </ViewPageStyle.Input>
                     <ViewPageStyle.Bottom>
                         { isLike ?
-                            <ViewPageStyle.Heart url={url} isMine={isMine} onClick={() => onChangeLike(false)}>
+                            <ViewPageStyle.Heart url={url} isMine={isMine} onClick={() => {onChangeLike(false);handleChangeLike();}}>
                                 <IoIosHeart color="#FF9999" size="45"></IoIosHeart>
                                 <ViewPageStyle.HeartCount>{likeCount}</ViewPageStyle.HeartCount>
                             </ViewPageStyle.Heart>
                         :
-                            <ViewPageStyle.Heart url={url} isMine={isMine} onClick={() => onChangeLike(true)}>
+                            <ViewPageStyle.Heart url={url} isMine={isMine} onClick={() => {onChangeLike(true);handleChangeLike();}}>
                                 <IoIosHeartEmpty color="#FF9999" size="45"></IoIosHeartEmpty>
                                 <ViewPageStyle.HeartCount>{likeCount}</ViewPageStyle.HeartCount>
                             </ViewPageStyle.Heart>

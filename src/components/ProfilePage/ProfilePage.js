@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { useHistory, useLocation } from 'react-router';
 import * as ProfilePageStyle from '../../assets/styles/ProfilePage/ProfilePage';
 import profileImg from '../../assets/images/profile.jpg';
+import BasicUserImg from '../../assets/images/user.jpg';
 
 import Header from '../Common/Header/Header';
 import SideBar from '../Common/SideBar/SideBar';
@@ -41,7 +42,8 @@ const ProfilePage = ({ auth, menu, title, qna, help, id, pw, onChangeMenuBar, on
                 warning: '',
               }
           ]),
-          [changeInput, setChangeInput] = useState({id: -1, value: ''});
+          [changeInput, setChangeInput] = useState({id: -1, value: ''}),
+          [imgUrl, setImgUrl] = useState(BasicUserImg);
     
     useEffect(() => {
         if(typeof (location.state) !== 'undefined' && location.state !== null) {
@@ -52,15 +54,15 @@ const ProfilePage = ({ auth, menu, title, qna, help, id, pw, onChangeMenuBar, on
         }
     }, [])
 
-    useEffect(() => {
-        if(localStorage.getItem('userInfo') && auth===false) {
-            onChangeAuth(true);
-        } 
-        if(!localStorage.getItem('userInfo')) {
-            onChangeAuth(false);
-            history.push('/')
-        }
-    }, [])
+    // useEffect(() => {
+    //     if(localStorage.getItem('userInfo') && auth===false) {
+    //         onChangeAuth(true);
+    //     } 
+    //     if(!localStorage.getItem('userInfo')) {
+    //         onChangeAuth(false);
+    //         history.push('/')
+    //     }
+    // }, [])
 
     const handleChangeInput = (input, num) => {
         setChangeInput({id: num, value: input});
@@ -132,6 +134,11 @@ const ProfilePage = ({ auth, menu, title, qna, help, id, pw, onChangeMenuBar, on
         }
     }
 
+    const handleProfileImage = (e) => {
+        e.preventDefault();
+        setImgUrl(URL.createObjectURL(e.target.files[0]));
+    }
+    
     return (
         <ProfilePageStyle.Container>
             <ProfilePageStyle.Contents menu={menu}>
@@ -140,6 +147,18 @@ const ProfilePage = ({ auth, menu, title, qna, help, id, pw, onChangeMenuBar, on
                         <ProfilePageStyle.Header>Profile</ProfilePageStyle.Header>
                         <ProfilePageStyle.UnderBar></ProfilePageStyle.UnderBar>
                     </ProfilePageStyle.TextContents>
+                    <ProfilePageStyle.ImageChange>
+                        <ProfilePageStyle.ImageChangeTitle>Profile Photo</ProfilePageStyle.ImageChangeTitle>
+                        <ProfilePageStyle.ImageCircle src={imgUrl}></ProfilePageStyle.ImageCircle>
+                        <ProfilePageStyle.ImageText>
+                            <ProfilePageStyle.ImageDescription>Select an image file on your computer.</ProfilePageStyle.ImageDescription>
+                            <ProfilePageStyle.ChooseImage>
+                                <ProfilePageStyle.ChooseLabel for="choose_file">CHOOSE IMAGE</ProfilePageStyle.ChooseLabel>
+                                <ProfilePageStyle.ChooseInput type="file" id="choose_file" onChange={(e) => handleProfileImage(e)}/>
+                            </ProfilePageStyle.ChooseImage>
+                            <ProfilePageStyle.ResetImage type="button" value="RESET IMAGE" onClick={() => setImgUrl(BasicUserImg)}/>
+                        </ProfilePageStyle.ImageText>
+                    </ProfilePageStyle.ImageChange>
                     <ProfilePageStyle.Input>
                         <ProfileList user={user} lists={inputList} handleChangeInput={handleChangeInput}/>
                         <ProfilePageStyle.UpdateBtn onClick={() => handleUpdateProfile()}>UPDATE PROFILE</ProfilePageStyle.UpdateBtn>

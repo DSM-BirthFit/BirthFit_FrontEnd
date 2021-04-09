@@ -1,4 +1,5 @@
-import styled, {css} from 'styled-components';
+import styled from 'styled-components';
+import ChooseImg from '../../images/forgot.jpg';
 
 export const Container = styled.div`
     height: 100vh;
@@ -27,7 +28,7 @@ export const Contents = styled.div`
 export const MainContents = styled.div`
     position: relative;
     z-index: 1;
-    margin-bottom: 70px;
+    margin-bottom: 100px;
 `;
 
 export const TextContents = styled.div`
@@ -49,6 +50,79 @@ export const UnderBar = styled.div`
     width: 300px;
     height: 5px;
     background: #99F8FF;
+`;
+
+export const ImageChange = styled.div`
+    position: relative;
+    height: 220px;
+`;
+
+export const ImageChangeTitle = styled.div`
+    font-size: 20px;
+    font-weight: bold;
+    color: #394B5A;
+    margin-bottom: 20px;
+`;
+
+export const ImageCircle = styled.div`
+    background-image: url(${props => props.src});
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 130px;
+    height: 130px;
+    border-radius: 150px;
+    border: 3px solid #394B5A;
+    position: relative;
+    left: 0px;
+`;
+
+export const ImageText = styled.div`
+    position: relative;
+    left: 200px;
+    top: -140px;
+`;
+
+export const ImageDescription = styled.div`
+    font-size: 13px;
+    color: #394B5A;
+`;
+
+export const ChooseImage = styled.div`
+    margin-top: 25px;
+`;
+
+export const ChooseLabel = styled.label`
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    background: #99F8FF;
+    border: 3px solid #99F8FF;
+    border-radius: 5px;
+    width: 200px;
+    height: 50px;
+    padding: 12px 20px;
+    cursor: pointer;
+`;
+
+export const ChooseInput = styled.input.attrs(props => ({
+    type: "file"
+}))`
+    display: none;
+`;
+
+export const ResetImage = styled.input`
+    color: #FF9999;
+    font-size: 18px;
+    font-weight: bold;
+    background: white;
+    border: 3px solid #FF9999;
+    border-radius: 5px;
+    width: 184px;
+    height: 50px;
+    cursor: pointer;
+    margin-top: 25px;
+    outline: none;
 `;
 
 export const Input = styled.div`
