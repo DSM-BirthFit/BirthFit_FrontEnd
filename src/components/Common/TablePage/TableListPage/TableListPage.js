@@ -1,7 +1,7 @@
 import React from "react";
 import TableItemPage from '../TableItemPage/TableItemPage';
 
-const TablePage = ({lists, url}) => {
+const TableListPage = ({lists, url}) => {
     const tableItemPage = lists.map(
         list => (
             url === "help" ?
@@ -14,4 +14,4 @@ const TablePage = ({lists, url}) => {
     return tableItemPage;
 }
 
-export default TablePage;
+export default TableListPage;

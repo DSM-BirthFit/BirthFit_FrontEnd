@@ -18,7 +18,6 @@ const TablePage = ({ auth, menu, title, qna, help, pageTitle, writeButton, answe
      
     const [posts, setPosts] = useState([]),
           [currentPage, setCurrentPage] = useState(1),
-          [postsPerPage, setPostsPerPage] = useState(10),
           [pageNumLimit, setPageNumLimit] = useState(10),
           [maxPageNumLimit, setMaxPageNumLimit] = useState(10),
           [minPageNumLimit, setMinPageNumLimit] = useState(0),
@@ -71,9 +70,6 @@ const TablePage = ({ auth, menu, title, qna, help, pageTitle, writeButton, answe
     useEffect(() => {
         pageAxios(currentPage-1);
     }, [currentPage])
-
-    const indexOfLast = currentPage * postsPerPage;
-    const indexOfFirst = indexOfLast - postsPerPage;
 
     const pageNumbers = [];
 

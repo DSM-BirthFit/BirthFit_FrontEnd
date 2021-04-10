@@ -55,6 +55,15 @@ export const UnderBar = styled.div`
 export const ImageChange = styled.div`
     position: relative;
     height: 220px;
+
+    @media screen and (max-width: 1305px) {
+        width: 35vw;
+    }
+
+    @media screen and (max-width: 750px) {
+        width: 50vw;  
+        height: 350px;
+    }
 `;
 
 export const ImageChangeTitle = styled.div`
@@ -62,6 +71,10 @@ export const ImageChangeTitle = styled.div`
     font-weight: bold;
     color: #394B5A;
     margin-bottom: 20px;
+
+    @media screen and (max-width: 800px) {
+        font-size: 3vw;
+    }
 `;
 
 export const ImageCircle = styled.div`
@@ -71,21 +84,39 @@ export const ImageCircle = styled.div`
     background-position: center;
     width: 130px;
     height: 130px;
-    border-radius: 150px;
+    border-radius: 1000px;
     border: 3px solid #394B5A;
     position: relative;
     left: 0px;
+    margin-bottom: 20px;
 `;
 
 export const ImageText = styled.div`
     position: relative;
-    left: 200px;
-    top: -140px;
+    left: 15vw;
+    top: -160px;
+
+    @media screen and (min-width: 800px) and (max-width: 1050px) {
+        left: 18vw;
+    }
+
+    @media screen and (min-width: 751px) and (max-width: 800px) {
+        left: 20vw;
+    }
+
+    @media screen and (max-width: 750px) {
+        top: 0px;
+        left: 0px;
+    }
 `;
 
 export const ImageDescription = styled.div`
     font-size: 13px;
     color: #394B5A;
+
+    @media screen and (min-width: 750px) and (max-width: 1303px) {
+        width: 200px;
+    }
 `;
 
 export const ChooseImage = styled.div`
@@ -99,10 +130,13 @@ export const ChooseLabel = styled.label`
     background: #99F8FF;
     border: 3px solid #99F8FF;
     border-radius: 5px;
-    width: 200px;
-    height: 50px;
     padding: 12px 20px;
-    cursor: pointer;
+    cursor: pointer;    
+
+    @media screen and (min-width: 751px) and (max-width: 1050px) {
+        width: 100px;
+        font-size: 13px;
+    }
 `;
 
 export const ChooseInput = styled.input.attrs(props => ({
@@ -123,6 +157,11 @@ export const ResetImage = styled.input`
     cursor: pointer;
     margin-top: 25px;
     outline: none;
+
+    @media screen and (min-width: 751px) and (max-width: 1050px) {
+        width: 144px;
+        font-size: 13px;
+    }
 `;
 
 export const Input = styled.div`
