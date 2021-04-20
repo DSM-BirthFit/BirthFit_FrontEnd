@@ -1,4 +1,5 @@
 import styled, {css} from 'styled-components';
+import sampleImg from '../../../images/user.jpg';
 
 export const Container = styled.div`
     height: 100vh;
@@ -33,7 +34,6 @@ export const MainContents = styled.div`
 export const TextContents = styled.div`
     position: relative;
     padding-bottom: 30px;
-    border-bottom: 5px solid #99F8FF;
 `;
 
 export const Header = styled.div`
@@ -60,28 +60,43 @@ export const HeaderTitle = styled.div`
 
 export const TitleContents = styled.div`
     font-size: 20px;
-    margin-top: 20px;
+    margin-top: 40px;
     margin-left: 70px;
     width: 880px;
-    word-break:break-all;
+    word-break: break-all;
+    color: #394B5A;
 `;
 
 export const Information = styled.div`
-    position: absolute;
+    position: relative;
     top: 20px;
-    right: 0px;
-    text-align: right;
     line-height: 30px;
+    width: 350px;
+    border-bottom: 5px solid #99F8FF;
+    padding-bottom: 20px;
+`;
+
+export const UserImage = styled.div`
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+    background: url(${sampleImg}) center center no-repeat;
+    background-size: contain;
+    float: left;
+    margin-right: 20px;
+    margin-top: 10px;
 `;
 
 export const UserId = styled.div`
+    font-size: 22px;
+    font-weight: bold;
+    color: #394B5A;
 `;
 
-export const CreateAt = styled.div`
+export const CreateAtViews = styled.div`
+    color: #394B5A;
 `;
 
-export const Views = styled.div`
-`;
 
 export const Input = styled.div`
     margin-left: 30px;
@@ -128,7 +143,7 @@ export const CommentInput = styled.textarea`
     color: #394B5A;
     width: 1125px;
     background: transparent;
-    height: ${props=>props.height}
+    height: ${props=>props.height};
 `;
 
 

@@ -313,13 +313,13 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, contents, created
                         <ViewPageStyle.Header>
                             <ViewPageStyle.QType>{url==="qna" && 'Q.' }</ViewPageStyle.QType>
                             <ViewPageStyle.HeaderTitle url={url}>{viewTitle}</ViewPageStyle.HeaderTitle>
-                            <ViewPageStyle.TitleContents>{contents}</ViewPageStyle.TitleContents>
                         </ViewPageStyle.Header>
                         <ViewPageStyle.Information>
+                            <ViewPageStyle.UserImage></ViewPageStyle.UserImage>
                             <ViewPageStyle.UserId>{userId}</ViewPageStyle.UserId>
-                            <ViewPageStyle.CreateAt>{createdAt}</ViewPageStyle.CreateAt>
-                            <ViewPageStyle.Views>조회수 {view}</ViewPageStyle.Views>
+                            <ViewPageStyle.CreateAtViews>{createdAt} | 조회수 {view}</ViewPageStyle.CreateAtViews>
                         </ViewPageStyle.Information>
+                        <ViewPageStyle.TitleContents>{contents}</ViewPageStyle.TitleContents>
                     </ViewPageStyle.TextContents>
                     <ViewPageStyle.Input>
                         { url !== "help" ?
