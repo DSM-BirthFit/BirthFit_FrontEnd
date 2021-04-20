@@ -2,7 +2,9 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import * as HeaderStyle from '../../../assets/styles/Common/Header/Header';
 import { AiOutlineMenu } from 'react-icons/ai';
+import { BsBell } from 'react-icons/bs';
 import { handleLogout } from '../Controllers/user';
+import userImg from '../../../assets/images/user.jpg';
 
 const Header = ({ auth, menu, onChangeMenuBar, handleMenuOption, handleSignIn, handleSignUp, handleProfile, onChangeAuth, onChangeMenuOption }) => {
     let history = useHistory();
@@ -23,8 +25,12 @@ const Header = ({ auth, menu, onChangeMenuBar, handleMenuOption, handleSignIn, h
             <HeaderStyle.MainTitle onClick={() => {handleMenuOption(0, onChangeMenuOption);handleMain()}}>Birth<HeaderStyle.HighLightTitle>Fit</HeaderStyle.HighLightTitle></HeaderStyle.MainTitle>
             { auth ? 
                 <HeaderStyle.RightMenu>
-                    <HeaderStyle.FirstBtn onClick={() => handleLogout(onChangeAuth, onChangeMenuBar, onChangeMenuOption, history)}>SIGN OUT</HeaderStyle.FirstBtn>
-                    <HeaderStyle.SecondBtn onClick={() => handleProfile(onChangeMenuOption, onChangeMenuBar, history)}>PROFILE</HeaderStyle.SecondBtn>
+                    <HeaderStyle.UserInfo src={userImg}></HeaderStyle.UserInfo>
+                    <HeaderStyle.AlarmIcon>
+                        <BsBell size="30" color="white"></BsBell>
+                    </HeaderStyle.AlarmIcon>
+                    {/* <HeaderStyle.FirstBtn onClick={() => handleLogout(onChangeAuth, onChangeMenuBar, onChangeMenuOption, history)}>SIGN OUT</HeaderStyle.FirstBtn>
+                    <HeaderStyle.SecondBtn onClick={() => handleProfile(onChangeMenuOption, onChangeMenuBar, history)}>PROFILE</HeaderStyle.SecondBtn> */}
                 </HeaderStyle.RightMenu>
                 :
                 <HeaderStyle.RightMenu>

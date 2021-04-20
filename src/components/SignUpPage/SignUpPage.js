@@ -33,7 +33,7 @@ const SignUpPage = ({ auth, menu, title, qna, help, email, authent, id, pw, conp
             { 
                 id: 2,
                 name: 'ID',
-                btn: false,
+                btn: true,
                 warning: '',
             },
             { 
@@ -189,6 +189,16 @@ const SignUpPage = ({ auth, menu, title, qna, help, email, authent, id, pw, conp
             .catch(err => {
                 console.log(err);
                 setInputChange({value: false, id: 1});
+            })
+        } else if(num === 2) {
+            axios.get(`http://10.156.145.170:8080/user/userId?userId=${id}`, {})
+            .then( res => {
+                console.log(res);
+                if(res.data)
+                    inputList.splice(2, 1, {id: 2, name: inputList[2].name, btn: inputList[2].btn, warning: 'This id is exist'});
+            })
+            .catch( err => {
+                console.log(err);
             })
         }
     }

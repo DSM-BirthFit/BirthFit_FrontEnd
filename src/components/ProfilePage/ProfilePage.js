@@ -54,15 +54,15 @@ const ProfilePage = ({ auth, menu, title, qna, help, id, pw, onChangeMenuBar, on
         }
     }, [])
 
-    // useEffect(() => {
-    //     if(localStorage.getItem('userInfo') && auth===false) {
-    //         onChangeAuth(true);
-    //     } 
-    //     if(!localStorage.getItem('userInfo')) {
-    //         onChangeAuth(false);
-    //         history.push('/')
-    //     }
-    // }, [])
+    useEffect(() => {
+        if(localStorage.getItem('userInfo') && auth===false) {
+            onChangeAuth(true);
+        } 
+        if(!localStorage.getItem('userInfo')) {
+            onChangeAuth(false);
+            history.push('/')
+        }
+    }, [])
 
     const handleChangeInput = (input, num) => {
         setChangeInput({id: num, value: input});

@@ -36,14 +36,27 @@ export const HighLightTitle = styled.span`
 
 export const RightMenu = styled.div`
     position: absolute;
-    right: 1%;
+    right: 2%;
     top: 10px;
     font-size: 25px;
     font-weight: bold;
+`;
 
-    @media screen and (max-width: 750px) {
-        display: none;
-    }
+export const UserInfo = styled.div`
+    background: url(${props => props.src}) no-repeat center center;
+    background-size: cover;
+    height: 42px;
+    width: 42px;
+    border-radius: 100px;
+    float: right;
+    cursor: pointer;
+`;
+
+export const AlarmIcon = styled.div`
+    float: right;
+    margin-right: 30px;
+    margin-top: 5px;
+    cursor: pointer;
 `;
 
 export const FirstBtn = styled.div`
