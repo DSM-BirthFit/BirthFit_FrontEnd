@@ -143,7 +143,7 @@ export const IntroImg = styled.img`
 export const MainHeader = styled.div`
     position:fixed;
     width: 100%;
-    z-index: 3;
+    z-index: 7;
 `;
 
 export const MaineSide = styled.div`
