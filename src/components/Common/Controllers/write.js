@@ -70,7 +70,7 @@ export const handleWriteSubmit = (title, text, history, url, option, id, onChang
     } else if(option === "answer"){
         if(thisId === -1) {
             axios.post(`http://10.156.145.170:8080/qna/answer/${id}`, {
-                content: text
+                answer: text
             })
             .then(res => {
                 console.log(res);
@@ -98,7 +98,7 @@ export const handleWriteSubmit = (title, text, history, url, option, id, onChang
             })
         } else {
             axios.put(`http://10.156.145.170:8080/qna/answer/${thisId}`, {
-                content: text
+                answer: text
             })
             .then(res => {
                 console.log(res);

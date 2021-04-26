@@ -51,9 +51,11 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, contents, created
         axios.get(`http://10.156.145.170:8080/${url}/${id}`, {})
         .then(res => {
             if(url !== 'help') {
+                console.log(res);
                 setCommentLen(res.data.answer.length);
                 onChnageView(res.data.answer, res.data.content, res.data.createdAt, res.data.likeCount, res.data.isLike, res.data.isMine, res.data.title, res.data.userId, res.data.view);
             } else {
+                console.log(res);
                 setCommentLen(res.data.comment.length);
                 onChnageView(res.data.comment, res.data.content, res.data.createdAt, res.data.likeCount, res.data.isLike, res.data.isMine, res.data.title, res.data.userId, res.data.view);
             }
@@ -85,14 +87,14 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, contents, created
         axios.defaults.headers.common['Authorization'] = `${local.tokenType} ${local.accessToken}`;
 
         axios.post(`http://10.156.145.170:8080/${url}/comment/${id}`, {
-            content: comment
+            comment: comment
         })
         .then(res => {
             onChangeCommet('', 0);
             setDisplay(false);
             axios.get(`http://10.156.145.170:8080/user/profile`, {})
             .then(res => {
-                setSubmitAnswer([1, {commentId: answer.length == 0 ? 0 : answer[answer.length-1].commentId+1, userId: res.data.userId, content: comment, isMine: true}]);
+                setSubmitAnswer([1, {commentId: answer.length == 0 ? 0 : answer[answer.length-1].commentId+1, userId: res.data.userId, comment: comment, isMine: true}]);
             })
             .catch(err => {console.log(err);})
         })
@@ -100,7 +102,7 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, contents, created
             console.log(err);
             PutRefreshToken();
             axios.post(`http://10.156.145.170:8080/${url}/comment/${id}`, {
-                content: comment
+                comment: comment
             })
             .then(res => {
                 onChangeCommet('', 0);
@@ -205,7 +207,7 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, contents, created
 
         axios.put(`http://10.156.145.170:8080/help/comment/${commentId}`,
         {
-            content: text
+            comment: text
         })
         .then(res => {
             setText('');
@@ -216,7 +218,7 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, contents, created
             PutRefreshToken();
             axios.put(`http://10.156.145.170:8080/help/comment/${commentId}`,
             {
-                content: text
+                comment: text
             })
             .then(res => {
                 setText('');
@@ -239,7 +241,7 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, contents, created
                 return value.commentId === editAnswer[0];
             })
 
-            array.splice(num-1, 1, {commentId :array[num-1].commentId, userId: array[num-1].userId, content: editAnswer[1], isMine: array[num-1].isMine,})
+            array.splice(num-1, 1, {commentId :array[num-1].commentId, userId: array[num-1].userId, comment: editAnswer[1], isMine: array[num-1].isMine,})
             setEditAnswer([-1, '']);
         }
     }, [editAnswer])
