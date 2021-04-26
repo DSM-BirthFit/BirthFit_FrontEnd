@@ -1,13 +1,14 @@
 import React, {useState} from 'react';
 import * as AnswerItemStyle from '../../../../assets/styles/Common/Answer/Answer';
 
-const AnswerItem = ({ commentId, content, isMine, userId, height, ySize, url, handleAnswer, handleAnswerEditSubmit, handleAnswerDeleteSubmit }) => {
+const AnswerItem = ({ commentId, userImg, content, isMine, userId, height, ySize, url, handleAnswer, handleAnswerEditSubmit, handleAnswerDeleteSubmit }) => {
     const [edit, setEdit] = useState(false),
           [text, setText] = useState(content);
 
     return (
         <AnswerItemStyle.Container id={commentId}>
             <AnswerItemStyle.Header>
+                <AnswerItemStyle.userImage src={userImg}></AnswerItemStyle.userImage>
                 <AnswerItemStyle.User>{userId}{url!=="help" && '님의 댓글'}</AnswerItemStyle.User>
                 {isMine && !edit &&
                     <AnswerItemStyle.Btn>

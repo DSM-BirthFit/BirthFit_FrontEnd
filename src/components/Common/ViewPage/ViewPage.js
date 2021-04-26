@@ -16,7 +16,7 @@ import { setMenu, setSideBar, setAuth, setView, setComment, setLike } from '../.
 
 const axios = require('axios');
 
-const ViewPage = ({ auth, menu, title, qna, help, url, answer, contents, createdAt, likeCount, isLike, isMine, viewTitle, userId, view, comment, len,  onChangeAuth, onChangeMenuBar, onChangeMenuOption , onChnageView, onChangeCommet, onChangeLike}) => {
+const ViewPage = ({ auth, menu, title, qna, help, url, answer, userImage, contents, createdAt, likeCount, isLike, isMine, viewTitle, userId, view, comment, len,  onChangeAuth, onChangeMenuBar, onChangeMenuOption , onChnageView, onChangeCommet, onChangeLike}) => {
     let history = useHistory();
     const { id } = useParams();
 
@@ -53,11 +53,11 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, contents, created
             if(url !== 'help') {
                 console.log(res);
                 setCommentLen(res.data.answer.length);
-                onChnageView(res.data.answer, res.data.content, res.data.createdAt, res.data.likeCount, res.data.isLike, res.data.isMine, res.data.title, res.data.userId, res.data.view);
+                onChnageView(res.data.answer, res.data.userImage, res.data.content, res.data.createdAt, res.data.likeCount, res.data.isLike, res.data.isMine, res.data.title, res.data.userId, res.data.view);
             } else {
                 console.log(res);
                 setCommentLen(res.data.comment.length);
-                onChnageView(res.data.comment, res.data.content, res.data.createdAt, res.data.likeCount, res.data.isLike, res.data.isMine, res.data.title, res.data.userId, res.data.view);
+                onChnageView(res.data.comment, res.data.userImage, res.data.content, res.data.createdAt, res.data.likeCount, res.data.isLike, res.data.isMine, res.data.title, res.data.userId, res.data.view);
             }
         })
         .catch(err => {
@@ -109,7 +109,7 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, contents, created
                 setDisplay(false);
                 axios.get(`http://10.156.145.170:8080/user/profile`, {})
                 .then(res => {
-                    setSubmitAnswer([1, {commentId: answer.length == 0 ? 0 : answer[answer.length-1].commentId+1, userId: res.data.userId, content: comment, isMine: true}]);
+                    setSubmitAnswer([1, {commentId: answer.length == 0 ? 0 : answer[answer.length-1].commentId+1, userId: res.data.userId, comment: comment, isMine: true}]);
                 })
                 .catch(err => {console.log(err);})
             })
@@ -317,7 +317,7 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, contents, created
                             <ViewPageStyle.HeaderTitle url={url}>{viewTitle}</ViewPageStyle.HeaderTitle>
                         </ViewPageStyle.Header>
                         <ViewPageStyle.Information>
-                            <ViewPageStyle.UserImage></ViewPageStyle.UserImage>
+                            <ViewPageStyle.UserImage src={userImage}></ViewPageStyle.UserImage>
                             <ViewPageStyle.UserId>{userId}</ViewPageStyle.UserId>
                             <ViewPageStyle.CreateAtViews>{createdAt} | 조회수 {view}</ViewPageStyle.CreateAtViews>
                         </ViewPageStyle.Information>
@@ -402,6 +402,7 @@ let mapStateToProps = (state) => {
         qna: state.sidebar.qna,
         help: state.sidebar.help,
         answer: state.view.answer,
+        userImage: state.view.userImage,
         contents: state.view.contents,
         createdAt: state.view.createdAt,
         likeCount: state.view.likeCount,
@@ -420,7 +421,7 @@ let mapDispatchToProps = (dispatch) => {
         onChangeMenuBar: (menu) => dispatch(setMenu(menu)),
         onChangeMenuOption: (title, qna, help) => dispatch(setSideBar(title, qna, help)),
         onChangeAuth: (auth) => dispatch(setAuth(auth)),
-        onChnageView: (answer, contents, createdAt, likeCount, isLike, isMine, title, userId, view) => dispatch(setView(answer, contents, createdAt, likeCount, isLike, isMine, title, userId, view)),
+        onChnageView: (answer, userImage, contents, createdAt, likeCount, isLike, isMine, title, userId, view) => dispatch(setView(answer, userImage, contents, createdAt, likeCount, isLike, isMine, title, userId, view)),
         onChangeCommet: (comment, len) => dispatch(setComment(comment, len)),
         onChangeLike: (like) => dispatch(setLike(like))
     }

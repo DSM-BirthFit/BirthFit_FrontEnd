@@ -143,6 +143,7 @@ const write = (state=writeIntialState, action) => {
 
 const viewIntialState = {
     answer: [],
+    userImage: '',
     contents: '',
     createdAt: '',
     likeCount: 0,
@@ -158,6 +159,7 @@ const view = (state=viewIntialState, action) => {
         case SET_VIEW:
             return Object.assign({}, state, {
                 answer: action.answer,
+                userImage: action.userImage,
                 contents: action.contents,
                 createdAt: action.createdAt,
                 likeCount: action.likeCount,

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import NullImage from '../../../images/user.jpg'
 
 export const Container = styled.div`
     margin-left: 12.5px;
@@ -11,6 +12,16 @@ export const Container = styled.div`
 export const Header = styled.div`
     position: relative;
     margin-bottom: 10px;
+    display: flex;
+`;
+
+export const userImage = styled.div`
+    background: url(${props => props.src == null ? NullImage : props.src}) center center no-repeat;
+    background-size: contain;
+    border-radius: 150px;
+    width: 30px;
+    height: 30px;
+    margin-right: 20px;
 `;
 
 export const User = styled.div`
