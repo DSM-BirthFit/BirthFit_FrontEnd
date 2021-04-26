@@ -14,14 +14,9 @@ export const Contents = styled.div`
     top: 12%;
     left: ${props => props.menu ? 20 : 10}%;
 
-    @media screen and (mix-width: 701px), screen and (max-width: 875px) {
-        left: 60%;
-        transform: translateX(-55%);
-    }
 
     @media screen and (max-width: 750px) {
-        left: 50%;
-        transform: translateX(-50%);
+        left: 10%;
     }
 `;
 
@@ -39,6 +34,10 @@ export const TextContents = styled.div`
 export const Header = styled.div`
     color: #394B5A;
     width: 1200px;
+
+    @media screen and (max-width: 800px) {
+        font-size: 7vw;
+    }
 `;
 
 export const QType = styled.div`
@@ -80,7 +79,7 @@ export const UserImage = styled.div`
     width: 50px;
     height: 50px;
     border-radius: 50px;
-    background: url(${sampleImg}) center center no-repeat;
+    background: url(${props => props.src === null ? sampleImg : props.src}) center center no-repeat;
     background-size: contain;
     float: left;
     margin-right: 20px;
@@ -141,17 +140,19 @@ export const CommentInput = styled.textarea`
     border: none;
     border-bottom: 3px solid #394B5A;
     color: #394B5A;
-    width: 1125px;
+    width: 73vw;
     background: transparent;
     height: ${props=>props.height};
+
+    
 `;
 
 
 export const CommentBottom = styled.div`
-    width: 1125px;
+    width: 73vw;
     position: relative;
     height: 60px;
-    display: ${props => props.display ? 'display' : 'none'}
+    display: ${props => props.display ? 'display' : 'none'};
 `;
 
 export const CommnetLength = styled.div`
@@ -197,7 +198,7 @@ export const Submitcomment = styled.button`
 `;
 
 export const List = styled.div`
-    margin-top: ${props => props.display ? '20px' : '50px'}
+    margin-top: ${props => props.display ? '20px' : '50px'};
 `;
 
 export const Bottom = styled.div`
@@ -304,6 +305,20 @@ export const QnAImage = styled.img`
         width: 400px;
         height: auto;
     }
+
+    @media screen and (max-width: 1110px) {
+        opacity: 0.5;
+        left: 20vw;
+    }
+
+    @media screen and (max-width: 1000px) {
+        left: 0vw;
+    }
+
+    @media screen and (max-width: 751px) {
+        width: 60vw;
+        height: auto;
+    }
 `;
 
 export const HelpImage = styled.img`
@@ -314,6 +329,26 @@ export const HelpImage = styled.img`
     @media screen and (max-width: 1550px) {
         left: 65vw;
         width: 500px;
+        height: auto;
+    }
+
+    @media screen and (max-width: 1400px) {
+        left: 55vw;
+        width: 500px;
+        height: auto;
+    }
+
+    @media screen and (max-width: 1110px) {
+        opacity: 0.5;
+        left: 20vw;
+    }
+
+    @media screen and (max-width: 1000px) {
+        left: 15vw;
+    }
+
+    @media screen and (max-width: 751px) {
+        width: 60vw;
         height: auto;
     }
 `;

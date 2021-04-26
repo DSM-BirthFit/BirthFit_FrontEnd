@@ -81,10 +81,11 @@ export const setWrite = (title, text, len) => {
     }
 }
 
-export const setView = (answer, contents, createdAt, likeCount, isLike, isMine, title, userId, view) => {
+export const setView = (answer, userImage, contents, createdAt, likeCount, isLike, isMine, title, userId, view) => {
     return {
         type: SET_VIEW,
         answer: answer,
+        userImage: userImage,
         contents: contents,
         createdAt: createdAt,
         likeCount: likeCount,
