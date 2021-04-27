@@ -29,7 +29,7 @@ const TablePage = ({ auth, menu, title, qna, help, pageTitle, writeButton, answe
         
         axios.defaults.headers.common['Authorization'] = `${local.tokenType} ${local.accessToken}`;
 
-        axios.get(`http://10.156.145.170:8080/${url}?page=${num}`, {})
+        axios.get(`http://10.156.145.170:8000/${url}?page=${num}`, {})
         .then(res => {
             setPosts(res.data.listResponse);
             setTotalElement(res.data.totalElement);
@@ -37,7 +37,7 @@ const TablePage = ({ auth, menu, title, qna, help, pageTitle, writeButton, answe
         })
         .catch(err => {
             PutRefreshToken();
-            axios.get(`http://10.156.145.170:8080/${url}?page=${num}`, {})
+            axios.get(`http://10.156.145.170:8000/${url}?page=${num}`, {})
             .then(res => {
                 console.log(res);
                 setPosts(res.data.listResponse);

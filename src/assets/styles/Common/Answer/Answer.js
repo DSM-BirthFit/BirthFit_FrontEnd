@@ -2,17 +2,21 @@ import styled from 'styled-components';
 import NullImage from '../../../images/user.jpg'
 
 export const Container = styled.div`
-    margin-left: 12.5px;
     margin-bottom: 30px;
-    width: 1060px;
+    width: 69vw;
     padding: 20px;
     background: rgba(57, 75, 90, 0.5);
 `;
 
 export const Header = styled.div`
-    position: relative;
     margin-bottom: 10px;
     display: flex;
+    justify-content: space-between;
+`;
+
+export const UserInfo = styled.div`
+    display: flex;
+    flex-grow: 20;
 `;
 
 export const userImage = styled.div`
@@ -31,9 +35,9 @@ export const User = styled.div`
 `;
 
 export const Btn = styled.div`
-    position: absolute;
-    right: 0px;
-    top: 0px;
+    display: flex;
+    flex-grow: 1;
+    justify-content: flex-end;
 `;
 
 export const Edit = styled.button`
@@ -78,7 +82,7 @@ export const UnderBar = styled.div`
 
 export const Content = styled.div`
     margin-left: 30px;
-    width: 980px;
+    width: 60vw;
     font-size: 17px;
     color: white;
     background: transparent;

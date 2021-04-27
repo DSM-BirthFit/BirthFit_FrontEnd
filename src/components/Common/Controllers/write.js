@@ -8,7 +8,7 @@ export const handleWriteSubmit = (title, text, history, url, option, id, onChang
     axios.defaults.headers.common['Authorization'] = `${local.tokenType} ${local.accessToken}`;
 
     if(option === "none") {
-        axios.post(`http://10.156.145.170:8080/${url}`, {
+        axios.post(`http://10.156.145.170:8000/${url}`, {
             title: title,
             content: text
         })
@@ -22,7 +22,7 @@ export const handleWriteSubmit = (title, text, history, url, option, id, onChang
         .catch(err => {
             console.log(err);
             PutRefreshToken();
-            axios.post(`http://10.156.145.170:8080/${url}`, {
+            axios.post(`http://10.156.145.170:8000/${url}`, {
                 title: title,
                 content: text
             })
@@ -38,7 +38,7 @@ export const handleWriteSubmit = (title, text, history, url, option, id, onChang
             })
         })
     } else if(option === 'edit') {
-        axios.put(`http://10.156.145.170:8080/${url}/${id}`, {
+        axios.put(`http://10.156.145.170:8000/${url}/${id}`, {
             title: title,
             content: text
         })
@@ -52,7 +52,7 @@ export const handleWriteSubmit = (title, text, history, url, option, id, onChang
         .catch(err => {
             console.log(err);
             PutRefreshToken();
-            axios.put(`http://10.156.145.170:8080/${url}/${id}`, {
+            axios.put(`http://10.156.145.170:8000/${url}/${id}`, {
                 title: title,
                 content: text
             })
@@ -69,7 +69,7 @@ export const handleWriteSubmit = (title, text, history, url, option, id, onChang
         })
     } else if(option === "answer"){
         if(thisId === -1) {
-            axios.post(`http://10.156.145.170:8080/qna/answer/${id}`, {
+            axios.post(`http://10.156.145.170:8000/qna/answer/${id}`, {
                 answer: text
             })
             .then(res => {
@@ -82,7 +82,7 @@ export const handleWriteSubmit = (title, text, history, url, option, id, onChang
             .catch(err => {
                 console.log(err);
                 PutRefreshToken();
-                axios.post(`http://10.156.145.170:8080/qna/answer/${id}`, {
+                axios.post(`http://10.156.145.170:8000/qna/answer/${id}`, {
                     content: text
                 })
                 .then(res => {
@@ -97,7 +97,7 @@ export const handleWriteSubmit = (title, text, history, url, option, id, onChang
                 })
             })
         } else {
-            axios.put(`http://10.156.145.170:8080/qna/answer/${thisId}`, {
+            axios.put(`http://10.156.145.170:8000/qna/answer/${thisId}`, {
                 answer: text
             })
             .then(res => {
@@ -110,7 +110,7 @@ export const handleWriteSubmit = (title, text, history, url, option, id, onChang
             .catch(err => {
                 console.log(err);
                 PutRefreshToken();
-                axios.put(`http://10.156.145.170:8080/qna/answer/${thisId}`, {
+                axios.put(`http://10.156.145.170:8000/qna/answer/${thisId}`, {
                     content: text
                 })
                 .then(res => {

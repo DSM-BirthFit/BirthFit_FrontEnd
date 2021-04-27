@@ -118,7 +118,7 @@ const ProfilePage = ({ auth, menu, title, qna, help, id, pw, onChangeMenuBar, on
 
             axios.defaults.headers.common['Authorization'] = `${local.tokenType} ${local.accessToken}`;
 
-            axios.put(`http://10.156.145.170:8080/user/profile`, {
+            axios.put(`http://10.156.145.170:8000/user/profile`, {
                 userId: thisId,
                 password: pw
             })

@@ -1,4 +1,4 @@
-import styled, {css} from 'styled-components';
+import styled from 'styled-components';
 import sampleImg from '../../../images/user.jpg';
 
 export const Container = styled.div`
@@ -24,6 +24,7 @@ export const MainContents = styled.div`
     position: relative;
     z-index: 1;
     background: rgba(255,255,255,0.5);
+    width: 83vw;
 `;
 
 export const TextContents = styled.div`
@@ -34,6 +35,8 @@ export const TextContents = styled.div`
 export const Header = styled.div`
     color: #394B5A;
     width: 1200px;
+    width: 83vw;
+    display:flex;
 
     @media screen and (max-width: 800px) {
         font-size: 7vw;
@@ -41,7 +44,6 @@ export const Header = styled.div`
 `;
 
 export const QType = styled.div`
-    position: absolute;
     font-size: 50px;
     font-weight: bold;
 `;
@@ -49,19 +51,16 @@ export const QType = styled.div`
 export const HeaderTitle = styled.div`
     font-size: 50px;
     font-weight: bold;
-    position: relative;
-    top: 0px;
     word-break:break-all;
     height: auto;
-    width: ${props => props.url==="qna" ? '900px' : '1000px'};
-    margin-left: ${props => props.url==="qna" ? '70px' : '0px'};
+    width: ${props => props.url==="qna" ? '80vw' : '83vw'};
 `;
 
 export const TitleContents = styled.div`
     font-size: 20px;
     margin-top: 40px;
     margin-left: 70px;
-    width: 880px;
+    width: 60vw;
     word-break: break-all;
     color: #394B5A;
 `;
@@ -202,42 +201,36 @@ export const List = styled.div`
 `;
 
 export const Bottom = styled.div`
-    position: relative;
     height: 70px;
     margin-bottom: 50px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    margin-right: 4vw;
+
+    @media screen and (max-width: 750px) {
+        flex-direction: column;
+        margin-top: 90px;
+    }
 `;
 
 export const Heart = styled.div`
-    ${props => 
-    props.isMine ?
-        css`{
-            margin-left: 700px;
-        }`
-    :
-        props.url === "help" ?
-        css`{
-            margin-left: 1050px;
-        }`
-        :
-        css`{
-            margin-left: 900px;
-        }`
-    }
     width: 80px;
     cursor: pointer;
+    margin-right: 20px;
 `;
 
 export const HeartCount = styled.div`
     float: right;
     color: #FF9999;
     font-size: 30px;
-
 `;
 
 export const isMine = styled.div`
-    position: absolute;
-    top: 0px;
-    right: 60px;
+    @media screen and (max-width: 750px) {
+        display: flex;
+        flex-direction: column;
+    }
 `;
 
 export const ViewEdit = styled.button`

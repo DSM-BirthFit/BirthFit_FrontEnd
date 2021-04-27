@@ -148,7 +148,7 @@ const SignUpPage = ({ auth, menu, title, qna, help, email, authent, id, pw, conp
         console.log(checkWarn);
 
         if(!checkWarn && email !== '' && authent !== '' && id !== '' && pw !== '' && conpw !== '') {
-            axios.post(`http://10.156.145.170:8080/user/join`, {
+            axios.post(`http://10.156.145.170:8000/user/join`, {
                 email: email,
                 userId: id,
                 password: pw
@@ -168,7 +168,7 @@ const SignUpPage = ({ auth, menu, title, qna, help, email, authent, id, pw, conp
 
     const handleSend = (num) => {
         if(num === 0) {
-            axios.post(`http://10.156.145.170:8080/email/send?email=${email}`, {
+            axios.post(`http://10.156.145.170:8000/email/send?email=${email}`, {
                 email: email
             })
             .then(res => {
@@ -179,7 +179,7 @@ const SignUpPage = ({ auth, menu, title, qna, help, email, authent, id, pw, conp
                 setInputChange({value: email, id: 0});
             })
         } else if(num === 1) {
-            axios.put(`http://10.156.145.170:8080/email/verify`, {
+            axios.put(`http://10.156.145.170:8000/email/verify`, {
                 email: email,
                 code: authent
             })
@@ -191,7 +191,7 @@ const SignUpPage = ({ auth, menu, title, qna, help, email, authent, id, pw, conp
                 setInputChange({value: false, id: 1});
             })
         } else if(num === 2) {
-            axios.get(`http://10.156.145.170:8080/user/userId?userId=${id}`, {})
+            axios.get(`http://10.156.145.170:8000/user/userId?userId=${id}`, {})
             .then( res => {
                 console.log(res);
                 if(res.data)

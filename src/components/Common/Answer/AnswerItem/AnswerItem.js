@@ -8,18 +8,20 @@ const AnswerItem = ({ commentId, userImg, content, isMine, userId, height, ySize
     return (
         <AnswerItemStyle.Container id={commentId}>
             <AnswerItemStyle.Header>
-                <AnswerItemStyle.userImage src={userImg}></AnswerItemStyle.userImage>
-                <AnswerItemStyle.User>{userId}{url!=="help" && '님의 댓글'}</AnswerItemStyle.User>
+                <AnswerItemStyle.UserInfo>
+                    <AnswerItemStyle.userImage src={userImg}></AnswerItemStyle.userImage>
+                    <AnswerItemStyle.User>{userId}{url!=="help" && '님의 댓글'}</AnswerItemStyle.User>
+                </AnswerItemStyle.UserInfo>
                 {isMine && !edit &&
                     <AnswerItemStyle.Btn>
-                        <AnswerItemStyle.Edit onClick={() => url !== "help" ? handleAnswer(commentId, content) : setEdit(!edit)}>수정하기</AnswerItemStyle.Edit>
-                        <AnswerItemStyle.Delete onClick={() => handleAnswerDeleteSubmit(commentId)}>삭제하기</AnswerItemStyle.Delete>
+                        <AnswerItemStyle.Edit onClick={() => url !== "help" ? handleAnswer(commentId, content) : setEdit(!edit)}>수정</AnswerItemStyle.Edit>
+                        <AnswerItemStyle.Delete onClick={() => handleAnswerDeleteSubmit(commentId)}>삭제</AnswerItemStyle.Delete>
                     </AnswerItemStyle.Btn>
                 }
                 { isMine && edit &&
                     <AnswerItemStyle.Btn>
-                        <AnswerItemStyle.Edit onClick={() => handleAnswerEditSubmit(commentId, text, setText, setEdit)}>수정완료</AnswerItemStyle.Edit>
-                        <AnswerItemStyle.Delete onClick={() => setEdit(!edit)}>작성취소</AnswerItemStyle.Delete>
+                        <AnswerItemStyle.Edit onClick={() => handleAnswerEditSubmit(commentId, text, setText, setEdit)}>완료</AnswerItemStyle.Edit>
+                        <AnswerItemStyle.Delete onClick={() => setEdit(!edit)}>취소</AnswerItemStyle.Delete>
                     </AnswerItemStyle.Btn>
                 }
             </AnswerItemStyle.Header>
