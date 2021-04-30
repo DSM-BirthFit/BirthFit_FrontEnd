@@ -219,10 +219,10 @@ let mapStateToProps = (state) => {
         title: state.sidebar.title,
         qna: state.sidebar.qna,
         help: state.sidebar.help,
-        email: state.forgot.email,
-        authent: state.forgot.authent,
-        pw: state.forgot.pw,
-        conpw: state.forgot.conpw,
+        email: state.user.email,
+        authent: state.user.authent,
+        pw: state.user.pw,
+        conpw: state.user.conpw,
     }
 }
 

@@ -185,8 +185,8 @@ let mapStateToProps = (state) => {
         title: state.sidebar.title,
         qna: state.sidebar.qna,
         help: state.sidebar.help,
-        id: state.profile.id,
-        pw: state.profile.pw
+        id: state.user.id,
+        pw: state.user.pw
     }
 }
 

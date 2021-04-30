@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useEffect } from "react";
 import { useHistory } from 'react-router';
 import * as TablePageStyle from '../../../assets/styles/Common/TablePage/TablePage'
 

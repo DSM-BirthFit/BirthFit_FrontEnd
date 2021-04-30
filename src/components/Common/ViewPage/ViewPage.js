@@ -27,7 +27,7 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, userImage, conten
           [display, setDisplay] = useState(false),
           [commentLen, setCommentLen] = useState(0),
           [answerHeight, setAnswerHeight] = useState('18px'),
-          [submitAnswer, setSubmitAnswer] = useState([0, {commentId: -1, userId: "", content: "", isMine: false}]),
+          [submitAnswer, setSubmitAnswer] = useState([0, {commentId: -1, userId: "", comment: "", isMine: false}]),
           [editAnswer, setEditAnswer] = useState([-1, '']),
           [deleteAnswer, setDeleteAnswer] = useState(-1);
 
@@ -128,13 +128,13 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, userImage, conten
             array.push({
                 commentId :submitAnswer[1].commentId,
                 userId: submitAnswer[1].userId,
-                content: submitAnswer[1].content,
+                comment: submitAnswer[1].comment,
                 isMine: submitAnswer[1].isMine,
             });
-            console.log(array);
-            setSubmitAnswer([0, {commentId: -1, userId: "", content: "", isMine: false}]);
+            console.log(contents);
+            setSubmitAnswer([0, {commentId: -1, userId: "", comment: "", isMine: false}]);
             setCommentLen(array.length);
-            onChnageView(array, contents, createdAt, likeCount, isLike, isMine, viewTitle, userId, view);
+            onChnageView(array, userImage, contents, createdAt, likeCount, isLike, isMine, viewTitle, userId, view);
         }
     }, [submitAnswer])
 
@@ -306,7 +306,7 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, userImage, conten
             })
             setDeleteAnswer(-1);
             setCommentLen(cha.length);
-            onChnageView(cha, contents, createdAt, likeCount, isLike, isMine, viewTitle, userId, view);
+            onChnageView(cha, userImage, contents, createdAt, likeCount, isLike, isMine, viewTitle, userId, view);
         }
     }, [deleteAnswer])
 
@@ -414,8 +414,8 @@ let mapStateToProps = (state) => {
         viewTitle: state.view.title,
         userId: state.view.userId,
         view: state.view.view,
-        comment: state.comment.comment,
-        len: state.comment.len
+        comment: state.write.comment,
+        len: state.write.len
     }
 }
 

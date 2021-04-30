@@ -240,11 +240,11 @@ let mapStateToProps = (state) => {
         title: state.sidebar.title,
         qna: state.sidebar.qna,
         help: state.sidebar.help,
-        email: state.signup.email,
-        authent: state.signup.authent,
-        id: state.signup.id,
-        pw: state.signup.pw,
-        conpw: state.signup.conpw,
+        email: state.user.email,
+        authent: state.user.authent,
+        id: state.user.id,
+        pw: state.user.pw,
+        conpw: state.user.conpw,
     }
 }
 
