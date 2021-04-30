@@ -1,8 +1,9 @@
-import { SET_WRITE } from '../actions/Write';
+import { SET_WRITE, SET_COMMENT } from '../actions/Write';
 
 const writeIntialState = {
     title: "",
     text: "",
+    comment: "",
     len: 0
 }
 
@@ -14,6 +15,11 @@ const write = (state=writeIntialState, action) => {
                 text: action.text,
                 len: action.len
             })
+        case SET_COMMENT:
+            return Object.assign({}, state, {
+                comment: action.comment,
+                len: action.len
+            }) 
         default:
             return state
     }

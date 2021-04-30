@@ -15,7 +15,7 @@ import { connect } from 'react-redux';
 import { setMenu, setAuth } from '../../../actions/Head';
 import { setSideBar } from '../../../actions/Sidebar';
 import { setView, setLike } from '../../../actions/View';
-import { setComment } from '../../../actions/Comment';
+import { setComment } from '../../../actions/Write';
 
 const axios = require('axios');
 
