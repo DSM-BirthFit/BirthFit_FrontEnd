@@ -11,20 +11,13 @@ import { handleMenuOption, handleSignIn, handleSignUp, handleProfile, PutRefresh
 import { connect } from 'react-redux';
 import { setMenu, setAuth } from '../../../actions/Head';
 import { setSideBar } from '../../../actions/Sidebar';
+import { setCurrentPage, setMaxPageNumLimit, setMinPageNumLimit, setPageNumLimit, setPost } from '../../../actions/Post';
 
 const axios = require('axios');
 
-const TablePage = ({ auth, menu, title, qna, help, pageTitle, writeButton, answerType, url, onChangeMenuBar, onChangeMenuOption, onChangeAuth }) => {
+const TablePage = ({ auth, menu, title, qna, help, pageTitle, writeButton, answerType, url, currentPage, pageNumLimit, currentPosts, pageNumbers, maxPageNumLimit, minPageNumLimit, onChangeMenuBar, onChangeMenuOption, onChangeAuth, onChangePost, onChangeCurrentpage, onChangeMaxPageNumLimit, onChangeMinPageNumLimit, onChangePageNumLimit }) => {
     let history = useHistory();
      
-    const [posts, setPosts] = useState([]),
-          [currentPage, setCurrentPage] = useState(1),
-          [pageNumLimit, setPageNumLimit] = useState(10),
-          [maxPageNumLimit, setMaxPageNumLimit] = useState(10),
-          [minPageNumLimit, setMinPageNumLimit] = useState(0),
-          [totalPage, setTotalPage] = useState(0),
-          [totalElement, setTotalElement] = useState(0);
-
     const pageAxios = (num) => {
         const local = JSON.parse(localStorage.getItem('userInfo'));
         
@@ -32,18 +25,17 @@ const TablePage = ({ auth, menu, title, qna, help, pageTitle, writeButton, answe
 
         axios.get(`http://10.156.145.170:8000/${url}?page=${num}`, {})
         .then(res => {
-            setPosts(res.data.listResponse);
-            setTotalElement(res.data.totalElement);
-            setTotalPage(res.data.totalPage);
+            onChangePageNumLimit(10);
+            onChangePost(res.data.listResponse);
+            onChangeCurrentpage(1);
         })
         .catch(err => {
             PutRefreshToken();
             axios.get(`http://10.156.145.170:8000/${url}?page=${num}`, {})
             .then(res => {
-                console.log(res);
-                setPosts(res.data.listResponse);
-                setTotalElement(res.data.totalElement);
-                setTotalPage(res.data.totalPage);
+                onChangePageNumLimit(10);
+                onChangePost(res.data.listResponse);
+                onChangeCurrentpage(1);
             })
             .catch(err => {
                 console.log(err);
@@ -72,11 +64,12 @@ const TablePage = ({ auth, menu, title, qna, help, pageTitle, writeButton, answe
         pageAxios(currentPage-1);
     }, [currentPage])
 
-    const pageNumbers = [];
-
-    for (let i = 1; i <= totalPage; i++) {
-        pageNumbers.push(i);
-    }
+    let num = 0;
+    pageNumbers.map(number => {
+        if(number < maxPageNumLimit+1 && number > minPageNumLimit){
+            num++;
+        }
+    })
 
     const handlePrevBtn = () => {
         if(currentPage != pageNumbers[0]) {
@@ -133,14 +126,20 @@ const TablePage = ({ auth, menu, title, qna, help, pageTitle, writeButton, answe
                             <TablePageStyle.Headertable>{answerType}</TablePageStyle.Headertable>
                             <TablePageStyle.Headertable>좋아요</TablePageStyle.Headertable>
                         </TablePageStyle.Trtag>
-                        <QnAListPage lists={posts} url={url}/>
+                        <QnAListPage lists={currentPosts} url={url}/>
                     </TablePageStyle.Input>
                     <TablePageStyle.PageUl>
                         <TablePageStyle.btnLi onClick={handlePrevBtn}>
                             <TablePageStyle.pageBtn>◁</TablePageStyle.pageBtn>
                         </TablePageStyle.btnLi>
                         {pageDecrementBtn}
-                        <Pagination pageNumbers={pageNumbers} paginate={setCurrentPage} currentPage={currentPage} maxPageNumLimit={maxPageNumLimit} minPageNumLimit={minPageNumLimit}></Pagination>
+                        <Pagination 
+                            pageNumbers={pageNumbers} 
+                            paginate={setCurrentPage} 
+                            currentPage={currentPage} 
+                            maxPageNumLimit={maxPageNumLimit} 
+                            minPageNumLimit={minPageNumLimit}
+                        />
                         {pageIncrementBtn}
                         <TablePageStyle.btnLi onClick={handleNextBtn}>
                             <TablePageStyle.pageBtn>▷</TablePageStyle.pageBtn>
@@ -165,6 +164,12 @@ let mapStateToProps = (state) => {
         title: state.sidebar.title,
         qna: state.sidebar.qna,
         help: state.sidebar.help,
+        pageNumbers: state.post.pageNumbers,
+        pageNumLimit: state.post.pageNumLimit,
+        currentPage: state.post.currentPage,
+        currentPosts: state.post.currentPosts,
+        maxPageNumLimit: state.post.maxPageNumLimit,
+        minPageNumLimit: state.post.minPageNumLimit
     }
 }
 
@@ -173,6 +178,11 @@ let mapDispatchToProps = (dispatch) => {
         onChangeMenuBar: (menu) => dispatch(setMenu(menu)),
         onChangeMenuOption: (title, qna, help) => dispatch(setSideBar(title, qna, help)),
         onChangeAuth: (auth) => dispatch(setAuth(auth)),
+        onChangePageNumLimit: (pageNumLimit) => dispatch(setPageNumLimit(pageNumLimit)),
+        onChangePost: (post) => dispatch(setPost(post)),
+        onChangeCurrentpage: (currentPage) => dispatch(setCurrentPage(currentPage)),
+        onChangeMaxPageNumLimit: (maxPageNumLimit) => dispatch(setMaxPageNumLimit(maxPageNumLimit)),
+        onChangeMinPageNumLimit: (minPageNumLimit) => dispatch(setMinPageNumLimit(minPageNumLimit))
     }
 }
 

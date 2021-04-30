@@ -4,6 +4,7 @@ import sidebar from './Sidebar';
 import user from './User';
 import write from './Write';
 import view from './View';
+import post from './Post';
 
 const reducerApp = combineReducers({
     head,
@@ -11,6 +12,7 @@ const reducerApp = combineReducers({
     user,
     write,
     view,
+    post
 })
 
 export default reducerApp;

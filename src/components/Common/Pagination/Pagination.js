@@ -2,6 +2,13 @@ import React from 'react';
 import * as PaginationStyle from '../../../assets/styles/Common/Pagination/Pagination';
 
 const Pagination = ({ pageNumbers, paginate, currentPage, maxPageNumLimit, minPageNumLimit }) => {
+  
+  let num = 0;
+  pageNumbers.map(number => {
+    if(number < maxPageNumLimit+1 && number > minPageNumLimit){
+      num++;
+    }
+  })
 
   const pagination = pageNumbers.map((number) => {
     if(number < maxPageNumLimit+1 && number > minPageNumLimit){
