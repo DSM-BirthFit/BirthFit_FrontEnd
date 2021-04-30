@@ -17,9 +17,15 @@ const post = (state=postIntialState, action) => {
                 pageNumLimit: action.pageNumLimit
             })
         case SET_TOTALPAGE:
+            const sampleNumber = [];
+            
+            for(let i=1;i<=action.totalPage;i++) {
+                sampleNumber.push(i);
+            }
+
             return Object.assign({}, state, {
                 totalPage: action.totalPage,
-                pageNumbers: [1,2]
+                pageNumbers: sampleNumber
             })
         case SET_CURRENTPAGE:
             return Object.assign({}, state, {

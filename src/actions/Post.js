@@ -11,10 +11,10 @@ export const setPageNumLimit = (pageNumLimit) => {
     }
 }
 
-export const setTotal = (totlaPage) => {
+export const setTotal = (totalPage) => {
     return {
         type: SET_TOTALPAGE,
-        totlaPage
+        totalPage
     }
 }
 
