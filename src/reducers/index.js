@@ -5,6 +5,7 @@ import user from './User';
 import write from './Write';
 import view from './View';
 import post from './Post';
+import alarm from './Alarm';
 
 const reducerApp = combineReducers({
     head,
@@ -12,7 +13,8 @@ const reducerApp = combineReducers({
     user,
     write,
     view,
-    post
+    post,
+    alarm
 })
 
 export default reducerApp;

@@ -6,13 +6,14 @@ import { BsBell } from 'react-icons/bs';
 import { handleLogout } from '../Controllers/user';
 import AlarmList from '../Alarm/AlarmList';
 import userImg from '../../../assets/images/user.jpg';
+import { setAlarm, setAlarmList } from '../../../actions/Alarm';
+import { connect } from 'react-redux';
 
-const Header = ({ auth, menu, onChangeMenuBar, handleMenuOption, handleSignIn, handleSignUp, handleProfile, onChangeAuth, onChangeMenuOption }) => {
+const Header = ({ auth, menu, alarm, alarmLists, onChangeAlarm, onChangeAlarmList, onChangeMenuBar, handleMenuOption, handleSignIn, handleSignUp, handleProfile, onChangeAuth, onChangeMenuOption }) => {
     let history = useHistory();
 
     const [userInfo, setUserInfo] = useState(false),
-          [alarm, setAlarm] = useState(false),
-          [alarmList, setAlarmList] = useState([
+          alarmList = [
               {
                 alarm_id: 1,
                 user_name: "userTest",
@@ -48,7 +49,11 @@ const Header = ({ auth, menu, onChangeMenuBar, handleMenuOption, handleSignIn, h
                 content: 'asdfasdfasdfasdfasdfasdfasdfasdasdfasdfasdfasdfasdfsdfd',
                 date: '오전 11:22'
               }
-          ]);
+          ];
+
+    useEffect(() => {
+        onChangeAlarmList(alarmList);
+    }, [])
 
     const handleMain = () => {
         onChangeMenuBar(false);
@@ -67,7 +72,7 @@ const Header = ({ auth, menu, onChangeMenuBar, handleMenuOption, handleSignIn, h
             { auth ? 
                 <HeaderStyle.RightMenu>
                     <HeaderStyle.UserInfo src={userImg} onClick={() => {setAlarm(false);setUserInfo(!userInfo);}}></HeaderStyle.UserInfo>
-                    <HeaderStyle.AlarmIcon onClick={() => {setUserInfo(false);setAlarm(!alarm);}}>
+                    <HeaderStyle.AlarmIcon onClick={() => {setUserInfo(false);onChangeAlarm(!alarm);}}>
                         <BsBell size="30" color="white"></BsBell>
                         <HeaderStyle.AlarmTure/>
                     </HeaderStyle.AlarmIcon>
@@ -91,7 +96,7 @@ const Header = ({ auth, menu, onChangeMenuBar, handleMenuOption, handleSignIn, h
                         <HeaderStyle.AlarmContents>
                             <HeaderStyle.AlarmHeader>Update</HeaderStyle.AlarmHeader>
                             <HeaderStyle.AlarmList>
-                                <AlarmList lists={alarmList}></AlarmList>
+                                <AlarmList lists={alarmLists}></AlarmList>
                             </HeaderStyle.AlarmList>
                         </HeaderStyle.AlarmContents>
                     }
@@ -106,4 +111,20 @@ const Header = ({ auth, menu, onChangeMenuBar, handleMenuOption, handleSignIn, h
     )
 }
 
-export default Header;
+let mapStateToProps = (state) => {
+    return {
+        alarm: state.alarm.alarm, 
+        alarmLists: state.alarm.alarmLists
+    }
+}
+
+let mapDispatchToProps = (dispatch) => {
+    return {
+        onChangeAlarmList: (alarmLists) => dispatch(setAlarmList(alarmLists)),
+        onChangeAlarm: (alarm) => dispatch(setAlarm(alarm))
+    }
+}
+
+const HeaderConnect = connect(mapStateToProps, mapDispatchToProps)(Header);
+
+export default HeaderConnect;
