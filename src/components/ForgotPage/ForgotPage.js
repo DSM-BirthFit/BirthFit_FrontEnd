@@ -203,7 +203,7 @@ const ForgotPage = ({ auth, menu, title, qna, help, email, authent, pw, conpw, o
                 <ForgotPageStyle.ForgotImg src={forgotImg}/>
             </ForgotPageStyle.Contents>
             <ForgotPageStyle.MainHeader>
-                <Header auth={auth} menu={menu} onChangeMenuBar={onChangeMenuBar} onChangeMenuOption={onChangeMenuOption} handleMenuOption={handleMenuOption} handleSignIn={handleSignIn} handleSignUp={handleSignUp}></Header>
+                <Header/>
             </ForgotPageStyle.MainHeader>
             <ForgotPageStyle.MainSide menu={menu}>
                 <SideBar auth={auth} menu={menu} title={title} qna={qna} help={help} onChangeMenuBar={onChangeMenuBar} onChangeMenuOption={onChangeMenuOption} handleMenuOption={handleMenuOption} handleSignIn={handleSignIn} handleSignUp={handleSignUp}></SideBar>

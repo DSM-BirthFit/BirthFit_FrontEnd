@@ -383,7 +383,8 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, userImage, conten
                 <ViewPageStyle.HelpImage src={HelpImg}/>
             }
             <ViewPageStyle.MainHeader>
-                <Header auth={auth} menu={menu} onChangeMenuBar={onChangeMenuBar} handleMenuOption={handleMenuOption} handleSignIn={handleSignIn} handleSignUp={handleSignUp} onChangeAuth={onChangeAuth} handleProfile={handleProfile} onChangeMenuOption={onChangeMenuOption}/>
+                <Header/>
+
             </ViewPageStyle.MainHeader>
             <ViewPageStyle.MainSide menu={menu}>
                 <SideBar auth={auth} menu={menu} title={title} qna={qna} help={help} handleMenuOption={handleMenuOption} onChangeMenuBar={onChangeMenuBar} handleSignIn={handleSignIn} handleSignUp={handleSignUp} handleProfile={handleProfile} onChangeAuth={onChangeAuth} onChangeMenuOption={onChangeMenuOption}/>

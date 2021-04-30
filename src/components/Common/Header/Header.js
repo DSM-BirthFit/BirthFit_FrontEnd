@@ -1,15 +1,21 @@
 import React, {useState, useEffect} from 'react';
 import { useHistory } from 'react-router-dom';
+
 import * as HeaderStyle from '../../../assets/styles/Common/Header/Header';
 import { AiOutlineMenu } from 'react-icons/ai';
 import { BsBell } from 'react-icons/bs';
-import { handleLogout } from '../Controllers/user';
-import AlarmList from '../Alarm/AlarmList';
 import userImg from '../../../assets/images/user.jpg';
-import { setAlarm, setAlarmList } from '../../../actions/Alarm';
-import { connect } from 'react-redux';
 
-const Header = ({ auth, menu, alarm, alarmLists, onChangeAlarm, onChangeAlarmList, onChangeMenuBar, handleMenuOption, handleSignIn, handleSignUp, handleProfile, onChangeAuth, onChangeMenuOption }) => {
+import AlarmList from '../Alarm/AlarmList';
+
+import { connect } from 'react-redux';
+import { setAlarm, setAlarmList } from '../../../actions/Alarm';
+import { setMenu, setAuth } from '../../../actions/Head';
+import { setSideBar } from '../../../actions/Sidebar';
+
+import { handleMenuOption, handleSignIn, handleSignUp, handleProfile, handleLogout } from '../Controllers/user';
+
+const Header = ({ auth, menu, alarm, alarmLists, onChangeAlarm, onChangeAlarmList, onChangeMenuBar, onChangeAuth, onChangeMenuOption }) => {
     let history = useHistory();
 
     const [userInfo, setUserInfo] = useState(false),
@@ -71,7 +77,7 @@ const Header = ({ auth, menu, alarm, alarmLists, onChangeAlarm, onChangeAlarmLis
             <HeaderStyle.MainTitle onClick={() => {handleMenuOption(0, onChangeMenuOption);handleMain()}}>Birth<HeaderStyle.HighLightTitle>Fit</HeaderStyle.HighLightTitle></HeaderStyle.MainTitle>
             { auth ? 
                 <HeaderStyle.RightMenu>
-                    <HeaderStyle.UserInfo src={userImg} onClick={() => {setAlarm(false);setUserInfo(!userInfo);}}></HeaderStyle.UserInfo>
+                    <HeaderStyle.UserInfo src={userImg} onClick={() => {onChangeAlarm(false);setUserInfo(!userInfo);}}></HeaderStyle.UserInfo>
                     <HeaderStyle.AlarmIcon onClick={() => {setUserInfo(false);onChangeAlarm(!alarm);}}>
                         <BsBell size="30" color="white"></BsBell>
                         <HeaderStyle.AlarmTure/>
@@ -113,6 +119,8 @@ const Header = ({ auth, menu, alarm, alarmLists, onChangeAlarm, onChangeAlarmLis
 
 let mapStateToProps = (state) => {
     return {
+        auth: state.head.auth,
+        menu: state.head.menu,
         alarm: state.alarm.alarm, 
         alarmLists: state.alarm.alarmLists
     }
@@ -120,6 +128,9 @@ let mapStateToProps = (state) => {
 
 let mapDispatchToProps = (dispatch) => {
     return {
+        onChangeMenuBar: (menu) => dispatch(setMenu(menu)),
+        onChangeMenuOption: (title, qna, help) => dispatch(setSideBar(title, qna, help)),
+        onChangeAuth: (auth) => dispatch(setAuth(auth)),
         onChangeAlarmList: (alarmLists) => dispatch(setAlarmList(alarmLists)),
         onChangeAlarm: (alarm) => dispatch(setAlarm(alarm))
     }

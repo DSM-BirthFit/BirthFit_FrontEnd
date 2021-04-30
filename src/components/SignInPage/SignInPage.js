@@ -154,7 +154,7 @@ const SignInPage = ({ auth, menu, title, qna, help, id, pw, idClick, pwClick, on
                 }
             </SignInPageStyle.Contents>
             <SignInPageStyle.MainHeader>
-                <Header auth={auth} menu={menu} onChangeMenuBar={onChangeMenuBar} onChangeMenuOption={onChangeMenuOption} handleMenuOption={handleMenuOption} handleSignIn={handleSignIn} handleSignUp={handleSignUp}></Header>
+                <Header/>
             </SignInPageStyle.MainHeader>
             <SignInPageStyle.MaineSide menu={menu}>
                 <SideBar auth={auth} menu={menu} title={title} qna={qna} help={help} onChangeMenuBar={onChangeMenuBar} onChangeMenuOption={onChangeMenuOption} onChangeMenuOption={onChangeMenuOption} handleMenuOption={handleMenuOption} handleSignIn={handleSignIn} handleSignUp={handleSignUp}></SideBar>

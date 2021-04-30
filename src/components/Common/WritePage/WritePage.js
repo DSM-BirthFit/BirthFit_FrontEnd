@@ -86,7 +86,7 @@ const WritePage = ({ auth, menu, title, qna, help, writeTitle, writeText, writeL
                 </WritePageStyle.MainContents>
             </WritePageStyle.Contents>
             <WritePageStyle.MainHeader>
-                <Header auth={auth} menu={menu} onChangeMenuBar={onChangeMenuBar} handleMenuOption={handleMenuOption} handleSignIn={handleSignIn} handleSignUp={handleSignUp} onChangeAuth={onChangeAuth} handleProfile={handleProfile} onChangeMenuOption={onChangeMenuOption}></Header>
+                <Header/>
             </WritePageStyle.MainHeader>
             <WritePageStyle.MainSide menu={menu}>
                 <SideBar auth={auth} menu={menu} title={title} qna={qna} help={help} handleMenuOption={handleMenuOption} onChangeMenuBar={onChangeMenuBar} handleSignIn={handleSignIn} handleSignUp={handleSignUp} handleProfile={handleProfile} onChangeAuth={onChangeAuth} onChangeMenuOption={onChangeMenuOption}></SideBar>

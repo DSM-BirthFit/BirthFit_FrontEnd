@@ -224,7 +224,7 @@ const SignUpPage = ({ auth, menu, title, qna, help, email, authent, id, pw, conp
                 <SignUpPageStyle.SignUpImg src={signupImg}/>
             </SignUpPageStyle.Contents>
             <SignUpPageStyle.MainHeader>
-                <Header auth={auth} menu={menu} onChangeMenuBar={onChangeMenuBar} onChangeMenuOption={onChangeMenuOption} handleMenuOption={handleMenuOption} handleSignIn={handleSignIn} handleSignUp={handleSignUp}></Header>
+                <Header/>
             </SignUpPageStyle.MainHeader>
             <SignUpPageStyle.MaineSide menu={menu}>
                 <SideBar auth={auth} menu={menu} title={title} qna={qna} help={help}  onChangeMenuBar={onChangeMenuBar} onChangeMenuOption={onChangeMenuOption} handleMenuOption={handleMenuOption} handleSignIn={handleSignIn} handleSignUp={handleSignUp}></SideBar>

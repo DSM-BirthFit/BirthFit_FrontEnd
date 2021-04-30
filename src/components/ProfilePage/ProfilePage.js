@@ -169,7 +169,7 @@ const ProfilePage = ({ auth, menu, title, qna, help, id, pw, onChangeMenuBar, on
                 <ProfilePageStyle.ProfileImg src={profileImg}/>
             </ProfilePageStyle.Contents>
             <ProfilePageStyle.MainHeader>
-                <Header auth={auth} menu={menu} onChangeMenuBar={onChangeMenuBar} handleMenuOption={handleMenuOption} handleSignIn={handleSignIn} handleSignUp={handleSignUp} onChangeAuth={onChangeAuth} handleProfile={handleProfile} onChangeMenuOption={onChangeMenuOption}></Header>
+                <Header/>
             </ProfilePageStyle.MainHeader>
             <ProfilePageStyle.MainSide menu={menu}>
                 <SideBar auth={auth} menu={menu} title={title} qna={qna} help={help} handleMenuOption={handleMenuOption} onChangeMenuBar={onChangeMenuBar} onChangeMenuOption={onChangeMenuOption} handleSignIn={handleSignIn} handleSignUp={handleSignUp} handleProfile={handleProfile} onChangeAuth={onChangeAuth}></SideBar>

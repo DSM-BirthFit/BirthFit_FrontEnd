@@ -155,7 +155,7 @@ const TablePage = ({ auth, menu, title, qna, help, pageTitle, writeButton, answe
                 </TablePageStyle.MainContents>
             </TablePageStyle.Contents>
             <TablePageStyle.MainHeader>
-                <Header auth={auth} menu={menu} onChangeMenuBar={onChangeMenuBar} handleMenuOption={handleMenuOption} handleSignIn={handleSignIn} handleSignUp={handleSignUp} onChangeAuth={onChangeAuth} handleProfile={handleProfile} onChangeMenuOption={onChangeMenuOption}></Header>
+                <Header/>
             </TablePageStyle.MainHeader>
             <TablePageStyle.MainSide menu={menu}>
                 <SideBar auth={auth} menu={menu} title={title} qna={qna} help={help} handleMenuOption={handleMenuOption} onChangeMenuBar={onChangeMenuBar} handleSignIn={handleSignIn} handleSignUp={handleSignUp} handleProfile={handleProfile} onChangeAuth={onChangeAuth} onChangeMenuOption={onChangeMenuOption}></SideBar>

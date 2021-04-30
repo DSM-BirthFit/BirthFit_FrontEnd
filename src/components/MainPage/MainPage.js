@@ -59,7 +59,7 @@ const MainPage = ({ auth, menu, title, qna, help, onChangeMenuBar, onChangeAuth,
                 <MainPageStyle.IntroImg src={introImg}/>
             </MainPageStyle.Contents>
             <MainPageStyle.MainHeader>
-                <Header auth={auth} menu={menu} onChangeMenuBar={onChangeMenuBar} onChangeMenuOption={onChangeMenuOption} handleMenuOption={handleMenuOption} handleSignIn={handleSignIn} handleSignUp={handleSignUp} onChangeAuth={onChangeAuth} handleProfile={handleProfile}></Header>
+                <Header/>
             </MainPageStyle.MainHeader>
             <MainPageStyle.MaineSide menu={menu}>
                 <SideBar auth={auth} menu={menu} title={title} qna={qna} help={help} onChangeMenuBar={onChangeMenuBar}  onChangeMenuOption={onChangeMenuOption} handleMenuOption={handleMenuOption} handleSignIn={handleSignIn} handleSignUp={handleSignUp} onChangeAuth={onChangeAuth} handleProfile={handleProfile}></SideBar>
