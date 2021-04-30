@@ -8,7 +8,9 @@ import { handleMenuOption, handleSignIn, handleSignUp, handleProfile } from '../
 import { handleWriteSubmit } from '../Controllers/write';
 
 import { connect } from 'react-redux';
-import { setMenu, setSideBar, setAuth, setWrite } from '../../../actions';
+import { setMenu, setAuth } from '../../../actions/Head';
+import { setSideBar } from '../../../actions/Sidebar';
+import { setWrite } from '../../../actions/Write';
 
 const WritePage = ({ auth, menu, title, qna, help, writeTitle, writeText, writeLen, headTiitle, url, option, headButton, TitleText, onChangeAuth, onChangeMenuBar, onChangeMenuOption, onChangeWrite}) => {
     let history = useHistory();

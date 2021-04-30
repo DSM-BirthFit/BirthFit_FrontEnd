@@ -9,7 +9,8 @@ import Pagination from '../Pagination/Pagination';
 import { handleMenuOption, handleSignIn, handleSignUp, handleProfile, PutRefreshToken } from '../Controllers/user';
 
 import { connect } from 'react-redux';
-import { setMenu, setSideBar, setAuth } from '../../../actions';
+import { setMenu, setAuth } from '../../../actions/Head';
+import { setSideBar } from '../../../actions/Sidebar';
 
 const axios = require('axios');
 

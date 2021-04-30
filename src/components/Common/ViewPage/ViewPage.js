@@ -12,7 +12,10 @@ import HelpImg from '../../../assets/images/help.jpg';
 import { handleMenuOption, handleSignIn, handleSignUp, handleProfile, PutRefreshToken } from '../Controllers/user';
 
 import { connect } from 'react-redux';
-import { setMenu, setSideBar, setAuth, setView, setComment, setLike } from '../../../actions';
+import { setMenu, setAuth } from '../../../actions/Head';
+import { setSideBar } from '../../../actions/Sidebar';
+import { setView, setLike } from '../../../actions/View';
+import { setComment } from '../../../actions/Comment';
 
 const axios = require('axios');
 

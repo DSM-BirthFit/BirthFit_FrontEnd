@@ -10,7 +10,9 @@ import ProfileList from './ProfileList/ProfileList';
 import { handleMenuOption, handleSignIn, handleSignUp, handleProfile, PutRefreshToken } from '../Common/Controllers/user';
 
 import { connect } from 'react-redux';
-import { setMenu, setSideBar, setAuth, setProfile } from '../../actions';
+import { setMenu, setAuth } from '../../actions/Head';
+import { setSideBar } from '../../actions/Sidebar';
+import { setProfile } from '../../actions/User';
 
 const axios = require('axios');
 

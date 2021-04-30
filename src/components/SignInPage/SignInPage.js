@@ -7,7 +7,9 @@ import Header from '../Common/Header/Header';
 import SideBar from '../Common/SideBar/SideBar';
 
 import { connect } from 'react-redux';
-import { setAuth, setMenu, setSignin, setSideBar } from '../../actions';
+import { setMenu, setAuth } from '../../actions/Head';
+import { setSideBar } from '../../actions/Sidebar';
+import { setSignin } from '../../actions/User';
 
 const axios = require('axios');
 

@@ -8,7 +8,8 @@ import SideBar from '../Common/SideBar/SideBar';
 import { handleMenuOption, handleSignIn, handleSignUp, handleProfile } from '../Common/Controllers/user';
 
 import { connect } from 'react-redux';
-import { setAuth, setMenu, setSideBar, } from '../../actions';
+import { setMenu, setAuth } from '../../actions/Head';
+import { setSideBar } from '../../actions/Sidebar';
 
 const axios = require('axios');
 
