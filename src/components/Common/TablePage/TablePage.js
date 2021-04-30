@@ -11,11 +11,11 @@ import { handleMenuOption, handleSignIn, handleSignUp, handleProfile, PutRefresh
 import { connect } from 'react-redux';
 import { setMenu, setAuth } from '../../../actions/Head';
 import { setSideBar } from '../../../actions/Sidebar';
-import { setCurrentPage, setMaxPageNumLimit, setMinPageNumLimit, setPageNumLimit, setPost } from '../../../actions/Post';
+import { setCurrentPage, setMaxPageNumLimit, setMinPageNumLimit, setPageNumLimit, setTotal } from '../../../actions/Post';
 
 const axios = require('axios');
 
-const TablePage = ({ auth, menu, title, qna, help, pageTitle, writeButton, answerType, url, currentPage, pageNumLimit, currentPosts, pageNumbers, maxPageNumLimit, minPageNumLimit, onChangeMenuBar, onChangeMenuOption, onChangeAuth, onChangePost, onChangeCurrentpage, onChangeMaxPageNumLimit, onChangeMinPageNumLimit, onChangePageNumLimit }) => {
+const TablePage = ({ auth, menu, title, qna, help, pageTitle, writeButton, answerType, url, currentPage, pageNumLimit, currentPosts, pageNumbers, maxPageNumLimit, minPageNumLimit, onChangeMenuBar, onChangeMenuOption, onChangeAuth, onChangeTotalPage, onChangeCurrentpage, onChangeMaxPageNumLimit, onChangeMinPageNumLimit, onChangePageNumLimit }) => {
     let history = useHistory();
      
     const pageAxios = (num) => {
@@ -25,17 +25,18 @@ const TablePage = ({ auth, menu, title, qna, help, pageTitle, writeButton, answe
 
         axios.get(`http://10.156.145.170:8000/${url}?page=${num}`, {})
         .then(res => {
+            console.log(res);
             onChangePageNumLimit(10);
-            onChangePost(res.data.listResponse);
-            onChangeCurrentpage(1);
+            onChangeTotalPage(res.data.totalPage);
+            onChangeCurrentpage(num+1, res.data.listResponse);
         })
         .catch(err => {
             PutRefreshToken();
             axios.get(`http://10.156.145.170:8000/${url}?page=${num}`, {})
             .then(res => {
                 onChangePageNumLimit(10);
-                onChangePost(res.data.listResponse);
-                onChangeCurrentpage(1);
+                onChangeTotalPage(res.data.totalPage);
+                onChangeCurrentpage(num+1, res.data.listResponse);
             })
             .catch(err => {
                 console.log(err);
@@ -73,23 +74,13 @@ const TablePage = ({ auth, menu, title, qna, help, pageTitle, writeButton, answe
 
     const handlePrevBtn = () => {
         if(currentPage != pageNumbers[0]) {
-            setCurrentPage(currentPage - 1);
-
-            if((currentPage - 1)%pageNumLimit==0) {
-                setMaxPageNumLimit(maxPageNumLimit - pageNumLimit);
-                setMinPageNumLimit(minPageNumLimit - pageNumLimit);
-            }
+            pageAxios(currentPage-2);
         }
     }
 
     const handleNextBtn = () => {
         if(currentPage != pageNumbers[pageNumbers.length - 1]) {
-            setCurrentPage(currentPage + 1);
-
-            if(currentPage+1> maxPageNumLimit) {
-                setMaxPageNumLimit(maxPageNumLimit + pageNumLimit);
-                setMinPageNumLimit(minPageNumLimit + pageNumLimit);
-            }
+            pageAxios(currentPage);
         }
     }
 
@@ -135,7 +126,7 @@ const TablePage = ({ auth, menu, title, qna, help, pageTitle, writeButton, answe
                         {pageDecrementBtn}
                         <Pagination 
                             pageNumbers={pageNumbers} 
-                            paginate={setCurrentPage} 
+                            paginate={pageAxios} 
                             currentPage={currentPage} 
                             maxPageNumLimit={maxPageNumLimit} 
                             minPageNumLimit={minPageNumLimit}
@@ -179,8 +170,8 @@ let mapDispatchToProps = (dispatch) => {
         onChangeMenuOption: (title, qna, help) => dispatch(setSideBar(title, qna, help)),
         onChangeAuth: (auth) => dispatch(setAuth(auth)),
         onChangePageNumLimit: (pageNumLimit) => dispatch(setPageNumLimit(pageNumLimit)),
-        onChangePost: (post) => dispatch(setPost(post)),
-        onChangeCurrentpage: (currentPage) => dispatch(setCurrentPage(currentPage)),
+        onChangeTotalPage: (totalPage) => dispatch(setTotal(totalPage)),
+        onChangeCurrentpage: (currentPage, currentPosts) => dispatch(setCurrentPage(currentPage, currentPosts)),
         onChangeMaxPageNumLimit: (maxPageNumLimit) => dispatch(setMaxPageNumLimit(maxPageNumLimit)),
         onChangeMinPageNumLimit: (minPageNumLimit) => dispatch(setMinPageNumLimit(minPageNumLimit))
     }

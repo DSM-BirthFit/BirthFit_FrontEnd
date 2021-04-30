@@ -13,7 +13,7 @@ const Pagination = ({ pageNumbers, paginate, currentPage, maxPageNumLimit, minPa
   const pagination = pageNumbers.map((number) => {
     if(number < maxPageNumLimit+1 && number > minPageNumLimit){
         return(
-            <PaginationStyle.PageLi currentPage={currentPage} number={number} key={number} onClick={() => paginate(number)}>
+            <PaginationStyle.PageLi currentPage={currentPage} number={number} key={number} onClick={() => paginate(number-1)}>
                 <PaginationStyle.PageSpan>
                 {number}
                 </PaginationStyle.PageSpan>
