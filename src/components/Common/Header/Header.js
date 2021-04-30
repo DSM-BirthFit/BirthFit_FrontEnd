@@ -4,13 +4,51 @@ import * as HeaderStyle from '../../../assets/styles/Common/Header/Header';
 import { AiOutlineMenu } from 'react-icons/ai';
 import { BsBell } from 'react-icons/bs';
 import { handleLogout } from '../Controllers/user';
+import AlarmList from '../Alarm/AlarmList';
 import userImg from '../../../assets/images/user.jpg';
 
 const Header = ({ auth, menu, onChangeMenuBar, handleMenuOption, handleSignIn, handleSignUp, handleProfile, onChangeAuth, onChangeMenuOption }) => {
     let history = useHistory();
 
     const [userInfo, setUserInfo] = useState(false),
-          [alarm, setAlarm] = useState(false);
+          [alarm, setAlarm] = useState(false),
+          [alarmList, setAlarmList] = useState([
+              {
+                alarm_id: 1,
+                user_name: "userTest",
+                image: userImg,
+                content: 'asdfasdfasdfasdfasdfasdfasdfasdasdfasdfasdfasdfasdfsdfd',
+                date: '오전 11:22'
+              },
+              {
+                alarm_id: 2,
+                user_name: "userTest",
+                image: userImg,
+                content: 'asdfasdfasdfasdfasdfasdfasdfasdasdfasdfasdfasdfasdfsdfd',
+                date: '오전 11:22'
+              },
+              {
+                alarm_id: 3,
+                user_name: "userTest",
+                image: userImg,
+                content: 'asdfasdfasdfasdfasdfasdfasdfasdasdfasdfasdfasdfasdfsdfd',
+                date: '오전 11:22'
+              },
+              {
+                alarm_id: 4,
+                user_name: "userTest",
+                image: userImg,
+                content: 'asdfasdfasdfasdfasdfasdfasdfasdasdfasdfasdfasdfasdfsdfd',
+                date: '오전 11:22'
+              },
+              {
+                alarm_id: 5,
+                user_name: "userTest",
+                image: userImg,
+                content: 'asdfasdfasdfasdfasdfasdfasdfasdasdfasdfasdfasdfasdfsdfd',
+                date: '오전 11:22'
+              }
+          ]);
 
     const handleMain = () => {
         onChangeMenuBar(false);
@@ -52,7 +90,9 @@ const Header = ({ auth, menu, onChangeMenuBar, handleMenuOption, handleSignIn, h
                     { alarm &&
                         <HeaderStyle.AlarmContents>
                             <HeaderStyle.AlarmHeader>Update</HeaderStyle.AlarmHeader>
-
+                            <HeaderStyle.AlarmList>
+                                <AlarmList lists={alarmList}></AlarmList>
+                            </HeaderStyle.AlarmList>
                         </HeaderStyle.AlarmContents>
                     }
                 </HeaderStyle.RightMenu>

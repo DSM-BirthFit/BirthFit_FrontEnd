@@ -42,7 +42,7 @@ export const UserBtn = styled.button`
 
     &:nth-child(1) {
         color: white;
-        border 2px solid white;
+        border: 2px solid white;
         &:hover {
             background: white;
             color: #394B5A;
@@ -51,7 +51,7 @@ export const UserBtn = styled.button`
 
     &:nth-child(2) {
         color: #99F8FF;
-        border 2px solid #99F8FF;
+        border: 2px solid #99F8FF;
         &:hover {
             background: #99F8FF;
             color: #394B5A;

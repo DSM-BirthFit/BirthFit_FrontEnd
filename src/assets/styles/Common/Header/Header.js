@@ -165,16 +165,27 @@ export const AlarmContents = styled.div`
     width: 350px;
     height: 500px;
     box-shadow: 0px 0px 10px #196166;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 `;
 
 export const AlarmHeader = styled.div`
     color: white;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+    width: 350px;
+    justify-content: center;
+    display: flex;
+    box-shadow: 0px 7px 20px #2F3E4B;
     padding: 15px 0px;
+    z-index:1;
 `;
 
+export const AlarmList = styled.div`
+    width: 350px;
+    height: 420px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+`;
 
 export const FirstBtn = styled.div`
     color: #99F8FF;
