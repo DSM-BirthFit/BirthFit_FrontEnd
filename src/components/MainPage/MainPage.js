@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import * as MainPageStyle from '../../assets/styles/MainPage/MainPage';
 import introImg from '../../assets/images/intro.jpg';
 
@@ -15,7 +15,6 @@ const axios = require('axios');
 
 const MainPage = ({ auth, menu, title, qna, help, onChangeMenuBar, onChangeAuth, onChangeMenuOption }) => {
     let history = useHistory();
-    let location = useLocation();
 
     const pointText = "We give information about benefits and welfare.",
           detailText = "QnA allows you to ask questions and receive answers, and posts about benefits and welfare are posted.";

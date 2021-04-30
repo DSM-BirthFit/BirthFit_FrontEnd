@@ -29,6 +29,14 @@ const TablePage = ({ auth, menu, title, qna, help, pageTitle, writeButton, answe
             onChangePageNumLimit(10);
             onChangeTotalPage(res.data.totalPage);
             onChangeCurrentpage(num+1, res.data.listResponse);
+            if(currentPage%pageNumLimit===0) {
+                onChangeMaxPageNumLimit(maxPageNumLimit - pageNumLimit);
+                onChangeMinPageNumLimit(minPageNumLimit - pageNumLimit);
+            }
+            if(currentPage+1> maxPageNumLimit) {
+                onChangeMaxPageNumLimit(maxPageNumLimit + pageNumLimit);
+                onChangeMinPageNumLimit(minPageNumLimit + pageNumLimit);
+            }
         })
         .catch(err => {
             PutRefreshToken();
@@ -37,6 +45,14 @@ const TablePage = ({ auth, menu, title, qna, help, pageTitle, writeButton, answe
                 onChangePageNumLimit(10);
                 onChangeTotalPage(res.data.totalPage);
                 onChangeCurrentpage(num+1, res.data.listResponse);
+                if(currentPage%pageNumLimit===0) {
+                    onChangeMaxPageNumLimit(maxPageNumLimit - pageNumLimit);
+                    onChangeMinPageNumLimit(minPageNumLimit - pageNumLimit);
+                }
+                if(currentPage+1> maxPageNumLimit) {
+                onChangeMaxPageNumLimit(maxPageNumLimit + pageNumLimit);
+                onChangeMinPageNumLimit(minPageNumLimit + pageNumLimit);
+            }
             })
             .catch(err => {
                 console.log(err);

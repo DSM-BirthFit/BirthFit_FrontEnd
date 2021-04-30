@@ -24,9 +24,8 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, userImage, conten
     const { id } = useParams();
 
     const [height, setHeight] = useState('35px'),
-          [display, setDisplay] = useState(false),
-          [commentLen, setCommentLen] = useState(0),
           [answerHeight, setAnswerHeight] = useState('18px'),
+          [display, setDisplay] = useState(false),
           [submitAnswer, setSubmitAnswer] = useState([0, {commentId: -1, userId: "", comment: "", isMine: false}]),
           [editAnswer, setEditAnswer] = useState([-1, '']),
           [deleteAnswer, setDeleteAnswer] = useState(-1);
@@ -55,11 +54,9 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, userImage, conten
         .then(res => {
             if(url !== 'help') {
                 console.log(res);
-                setCommentLen(res.data.answer.length);
                 onChnageView(res.data.answer, res.data.userImage, res.data.content, res.data.createdAt, res.data.likeCount, res.data.isLike, res.data.isMine, res.data.title, res.data.userId, res.data.view);
             } else {
                 console.log(res);
-                setCommentLen(res.data.comment.length);
                 onChnageView(res.data.comment, res.data.userImage, res.data.content, res.data.createdAt, res.data.likeCount, res.data.isLike, res.data.isMine, res.data.title, res.data.userId, res.data.view);
             }
         })
@@ -133,7 +130,6 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, userImage, conten
             });
             console.log(contents);
             setSubmitAnswer([0, {commentId: -1, userId: "", comment: "", isMine: false}]);
-            setCommentLen(array.length);
             onChnageView(array, userImage, contents, createdAt, likeCount, isLike, isMine, viewTitle, userId, view);
         }
     }, [submitAnswer])
@@ -305,7 +301,6 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, userImage, conten
                 return url==="help" ? value.commentId !== deleteAnswer : value.qnaId != deleteAnswer;
             })
             setDeleteAnswer(-1);
-            setCommentLen(cha.length);
             onChnageView(cha, userImage, contents, createdAt, likeCount, isLike, isMine, viewTitle, userId, view);
         }
     }, [deleteAnswer])
@@ -330,13 +325,13 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, userImage, conten
                         { url !== "help" ?
                             <ViewPageStyle.QnAPage>
                                 <ViewPageStyle.QnAHeader>A</ViewPageStyle.QnAHeader>
-                                <AnswerList lists={commentLen > 0 ? answer : []} height={answerHeight} ySize={AnswerySize} url={url} handleAnswer={handleAnswer} handleAnswerEditSubmit={handleAnswerEditSubmit} handleAnswerDeleteSubmit={handleAnswerDeleteSubmit}/>
+                                <AnswerList lists={answer.length > 0 ? answer : []} height={answerHeight} ySize={AnswerySize} url={url} handleAnswer={handleAnswer} handleAnswerEditSubmit={handleAnswerEditSubmit} handleAnswerDeleteSubmit={handleAnswerDeleteSubmit}/>
                             </ViewPageStyle.QnAPage>
                           :
                             <ViewPageStyle.HelpPage>
                                 <ViewPageStyle.HelpHeader>
                                     <BsChatDots color="#394B5A" size="40"></BsChatDots>
-                                    <ViewPageStyle.HelpHeaderTitle>{commentLen}</ViewPageStyle.HelpHeaderTitle>
+                                    <ViewPageStyle.HelpHeaderTitle>{answer.length}</ViewPageStyle.HelpHeaderTitle>
                                 </ViewPageStyle.HelpHeader>
                                 <ViewPageStyle.CommntPage>
                                     <ViewPageStyle.CommentInput id="text_content" height={height} display={display} onKeyDown={() => ySize()} onKeyUp={() => ySize()} onClick={() => setDisplay(true)} placeholder="댓글 추가..." onChange={(e) => {e.target.value.length <= 250 && onChangeCommet(e.target.value, e.target.value.length)}} value={comment}/>
@@ -348,7 +343,7 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, userImage, conten
                                         </ViewPageStyle.CommentBtn>
                                     </ViewPageStyle.CommentBottom>
                                     <ViewPageStyle.List display={display}>
-                                        <AnswerList lists={commentLen > 0 ? answer : []} height={answerHeight} ySize={AnswerySize} url={url} handleAnswer={handleAnswer} handleAnswerEditSubmit={handleAnswerEditSubmit} handleAnswerDeleteSubmit={handleAnswerDeleteSubmit}/>
+                                        <AnswerList lists={answer.length > 0 ? answer : []} height={answerHeight} ySize={AnswerySize} url={url} handleAnswer={handleAnswer} handleAnswerEditSubmit={handleAnswerEditSubmit} handleAnswerDeleteSubmit={handleAnswerDeleteSubmit}/>
                                     </ViewPageStyle.List>
                                 </ViewPageStyle.CommntPage>
                             </ViewPageStyle.HelpPage>

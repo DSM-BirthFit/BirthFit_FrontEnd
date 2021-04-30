@@ -19,7 +19,7 @@ const ForgotPage = ({ auth, menu, title, qna, help, email, authent, pw, conpw, o
 
     const text = 'Enter your email address below and we\'ll send you a link to reset your password.'
 
-    const [inputList, setInuptList] = useState([
+    const inputList = [
         { 
             id: 0,
             name: 'Email',
@@ -44,7 +44,7 @@ const ForgotPage = ({ auth, menu, title, qna, help, email, authent, pw, conpw, o
             btn: false,
             warning: '',
         },
-    ]),
+    ],
           [inputClick, setInputClick] = useState({value:'', id:-1}),
           [inputChange, setInputChange] = useState({value:'', id:-1});
 
