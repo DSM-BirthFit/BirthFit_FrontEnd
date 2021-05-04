@@ -18,7 +18,7 @@ import { handleMenuOption, handleSignIn, handleSignUp, handleProfile, handleLogo
 
 import axios from 'axios';
 
-const Header = ({ auth, menu, alarm, alarmLists, email, id, onChangeAlarm, onChangeAlarmList, onChangeMenuBar, onChangeAuth, onChangeMenuOption, onChnageHeader }) => {
+const Header = ({ auth, menu, alarm, alarmLists, email, id, imgURL, onChangeAlarm, onChangeAlarmList, onChangeMenuBar, onChangeAuth, onChangeMenuOption, onChnageHeader }) => {
     let history = useHistory();
 
     const [userInfo, setUserInfo] = useState(false),
@@ -63,15 +63,16 @@ const Header = ({ auth, menu, alarm, alarmLists, email, id, onChangeAlarm, onCha
     useEffect(() => {
         onChangeAlarmList(alarmList);
         const local = JSON.parse(localStorage.getItem('userInfo'));
+        if(auth) {
+            axios.defaults.headers.common['Authorization'] = `${local.tokenType} ${local.accessToken}`;
     
-        axios.defaults.headers.common['Authorization'] = `${local.tokenType} ${local.accessToken}`;
-
-        axios.get(`http://13.124.184.19:8000/user/profile`, {})
-        .then(res => {
-            console.log(res);
-            onChnageHeader(res.data.email, res.data.userId);
-        })
-        .catch(err => {console.log(err);})
+            axios.get(`http://13.124.184.19:8000/user/profile`, {})
+            .then(res => {
+                console.log(res);
+                onChnageHeader(res.data.email, res.data.userId, res.data.image);
+            })
+            .catch(err => {console.log(err);})
+        }
     }, [])
 
     const handleMain = () => {
@@ -90,7 +91,7 @@ const Header = ({ auth, menu, alarm, alarmLists, email, id, onChangeAlarm, onCha
             <HeaderStyle.MainTitle onClick={() => {handleMenuOption(0, onChangeMenuOption);handleMain()}}>Birth<HeaderStyle.HighLightTitle>Fit</HeaderStyle.HighLightTitle></HeaderStyle.MainTitle>
             { auth ? 
                 <HeaderStyle.RightMenu>
-                    <HeaderStyle.UserInfo src={userImg} onClick={() => {onChangeAlarm(false);setUserInfo(!userInfo);}}></HeaderStyle.UserInfo>
+                    <HeaderStyle.UserInfo src={imgURL} onClick={() => {onChangeAlarm(false);setUserInfo(!userInfo);}}></HeaderStyle.UserInfo>
                     <HeaderStyle.AlarmIcon onClick={() => {setUserInfo(false);onChangeAlarm(!alarm);}}>
                         <BsBell size="30" color="white"></BsBell>
                         <HeaderStyle.AlarmTure/>
@@ -137,7 +138,8 @@ let mapStateToProps = (state) => {
         alarm: state.alarm.alarm, 
         alarmLists: state.alarm.alarmLists,
         email: state.user.email,
-        id: state.user.id
+        id: state.user.id,
+        imgURL: state.user.imgURL
     }
 }
 
@@ -148,7 +150,7 @@ let mapDispatchToProps = (dispatch) => {
         onChangeAuth: (auth) => dispatch(setAuth(auth)),
         onChangeAlarmList: (alarmLists) => dispatch(setAlarmList(alarmLists)),
         onChangeAlarm: (alarm) => dispatch(setAlarm(alarm)),
-        onChnageHeader: (email, id) => dispatch(setHeader(email, id))
+        onChnageHeader: (email, id, img) => dispatch(setHeader(email, id, img))
     }
 }
 

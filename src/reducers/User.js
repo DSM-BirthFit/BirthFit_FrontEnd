@@ -9,7 +9,8 @@ const userIntialState = {
     pw : "", 
     pwClick: false,
     conpw : "",
-    img: BasicUserImg
+    img: BasicUserImg,
+    imgURL: BasicUserImg
 }
 
 const user = (state=userIntialState, action) => {
@@ -39,7 +40,8 @@ const user = (state=userIntialState, action) => {
         case SET_HEADER:
             return Object.assign({}, state, {
                 email: action.email,
-                id: action.id
+                id: action.id,
+                imgURL: action.img === null ? BasicUserImg : action.img
             })
         case SET_PROFILE:
             return Object.assign({}, state, {
@@ -49,7 +51,8 @@ const user = (state=userIntialState, action) => {
             })  
         case SET_USERIMG:
             return Object.assign({}, state, {
-                img: action.img
+                img: action.img,
+                imgURL: URL.createObjectURL(action.img)
             }) 
         default:
             return state

@@ -36,11 +36,12 @@ export const setForgot = (email, authent, pw, conpw) => {
     }
 }
 
-export const setHeader = (email, id) => {
+export const setHeader = (email, id, img) => {
     return {
         type: SET_HEADER,
         email,
-        id
+        id,
+        img
     }
 }
 

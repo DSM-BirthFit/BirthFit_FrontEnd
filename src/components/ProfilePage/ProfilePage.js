@@ -16,12 +16,11 @@ import { setProfile, setUserImg } from '../../actions/User';
 
 const axios = require('axios');
 
-const ProfilePage = ({ auth, menu, title, qna, help, id, pw, img, onChangeMenuBar, onChangeMenuOption, onChangeAuth, onChangeProfile, onChangeUserImg }) => {
+const ProfilePage = ({ auth, menu, title, qna, help, id, email, pw, img, imgURL, onChangeMenuBar, onChangeMenuOption, onChangeAuth, onChangeProfile, onChangeUserImg }) => {
     let history = useHistory();
     let location = useLocation();
 
-    const [user, setUser] = useState({userId: '', userEmail: ''}),
-          [inputList, setInuptList] = useState([
+    const [inputList, setInuptList] = useState([
               {
                 id: 0,
                 name: 'ID',
@@ -47,12 +46,7 @@ const ProfilePage = ({ auth, menu, title, qna, help, id, pw, img, onChangeMenuBa
           [changeInput, setChangeInput] = useState({id: -1, value: ''});
     
     useEffect(() => {
-        if(typeof (location.state) !== 'undefined' && location.state !== null) {
-            const { user } = location.state;
-            setUser(user);
-        } else {
-            setUser({userId: '', userEmail: ''});
-        }
+        
     }, [])
 
     useEffect(() => {
@@ -100,7 +94,6 @@ const ProfilePage = ({ auth, menu, title, qna, help, id, pw, img, onChangeMenuBa
 
     const handleUpdateProfile = () => {
         let checkWarn = false;
-        let thisId = id;
 
         for(let i=2;i<4;i++) {
             if(inputList[i].warning !== '') {
@@ -108,10 +101,6 @@ const ProfilePage = ({ auth, menu, title, qna, help, id, pw, img, onChangeMenuBa
                 checkWarn = true;
                 break;
             }
-        }
-
-        if(thisId === '') {
-            thisId = user.userId;   
         }
 
         if(!checkWarn) {
@@ -122,9 +111,13 @@ const ProfilePage = ({ auth, menu, title, qna, help, id, pw, img, onChangeMenuBa
             var formData = new FormData();
             formData.append("image", img);
             formData.append("password", pw);
-            formData.append("userId", thisId);
+            formData.append("userId", id);
 
-            axios.put(`http://13.124.184.19:8000/user/profile`, formData)
+            axios.put(`http://13.124.184.19:8000/user/profile`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                }
+            })
             .then(res => {console.log(res);
                 onChangeProfile('', '');
                 onChangeMenuBar(false);
@@ -139,7 +132,7 @@ const ProfilePage = ({ auth, menu, title, qna, help, id, pw, img, onChangeMenuBa
 
     const handleProfileImage = (e) => {
         e.preventDefault();
-        onChangeUserImg(URL.createObjectURL(e.target.files[0]));
+        onChangeUserImg(e.target.files[0]);
     }
     
     return (
@@ -152,7 +145,7 @@ const ProfilePage = ({ auth, menu, title, qna, help, id, pw, img, onChangeMenuBa
                     </ProfilePageStyle.TextContents>
                     <ProfilePageStyle.ImageChange>
                         <ProfilePageStyle.ImageChangeTitle>Profile Photo</ProfilePageStyle.ImageChangeTitle>
-                        <ProfilePageStyle.ImageCircle src={img}></ProfilePageStyle.ImageCircle>
+                        <ProfilePageStyle.ImageCircle src={imgURL}></ProfilePageStyle.ImageCircle>
                         <ProfilePageStyle.ImageText>
                             <ProfilePageStyle.ImageDescription>Select an image file on your computer.</ProfilePageStyle.ImageDescription>
                             <ProfilePageStyle.ChooseImage>
@@ -163,7 +156,7 @@ const ProfilePage = ({ auth, menu, title, qna, help, id, pw, img, onChangeMenuBa
                         </ProfilePageStyle.ImageText>
                     </ProfilePageStyle.ImageChange>
                     <ProfilePageStyle.Input>
-                        <ProfileList user={user} lists={inputList} handleChangeInput={handleChangeInput}/>
+                        <ProfileList userid={id} userEmail={email} lists={inputList} handleChangeInput={handleChangeInput}/>
                         <ProfilePageStyle.UpdateBtn onClick={() => handleUpdateProfile()}>UPDATE PROFILE</ProfilePageStyle.UpdateBtn>
                     </ProfilePageStyle.Input>
                 </ProfilePageStyle.MainContents>
@@ -187,8 +180,10 @@ let mapStateToProps = (state) => {
         qna: state.sidebar.qna,
         help: state.sidebar.help,
         id: state.user.id,
+        email: state.user.email,
         pw: state.user.pw,
-        img: state.user.img
+        img: state.user.img,
+        imgURL: state.user.imgURL
     }
 }
 

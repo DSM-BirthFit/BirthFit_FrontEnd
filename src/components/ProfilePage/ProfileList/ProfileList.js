@@ -1,11 +1,12 @@
 import React from 'react';
 import ProfileItem from '../ProfileItem/ProfileItem';
 
-const ProfileList = ({ user, lists, handleChangeInput }) => {
+const ProfileList = ({ userid, userEmail, lists, handleChangeInput }) => {
     const profileItem = lists.map(
         list => (
             <ProfileItem 
-                user={user}
+                userid={userid}
+                userEmail={userEmail}
                 id={list.id} 
                 name={list.name} 
                 warning={list.warning} 

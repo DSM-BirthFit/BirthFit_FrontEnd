@@ -34,15 +34,7 @@ export const handleProfile = (onChangeMenuOption, onChangeMenuBar, history) => {
         console.log(res);
         handleMenuOption(0, onChangeMenuOption);
         onChangeMenuBar(false);
-        history.push({
-            pathname: '/profile',
-            state: {
-                user: {
-                    userEmail: res.data.email,
-                    userId: res.data.userId
-                }
-            }
-        })
+        history.push('/profile')
     })
     .catch(err => {console.log(err);})
 }
