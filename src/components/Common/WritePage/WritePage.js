@@ -32,6 +32,9 @@ const WritePage = ({ auth, menu, title, qna, help, writeTitle, writeText, writeL
             onChangeAuth(false);
             history.push('/');
         }
+        
+        onChangeWrite('', '', 0);
+
         if (typeof (location.state) !== 'undefined' && location.state !== null) {
             const { title, contents, len, userId, num } = location.state;
             onChangeWrite(title, contents, len);

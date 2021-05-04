@@ -2,6 +2,7 @@ export const SET_SIGNIN = 'SET_SIGNIN';
 export const SET_SIGNUP = 'SET_SIGNUP';
 export const SET_FORGOT = 'SET_FORGOT';
 export const SET_PROFILE = 'SET_PROFILE';
+export const SET_USERIMG = 'SET_USERIMG';
 
 export const setSignin = (id, pw, idClick, pwClick) => {
     return {
@@ -34,10 +35,18 @@ export const setForgot = (email, authent, pw, conpw) => {
     }
 }
 
-export const setProfile = (id, pw) => {
+export const setProfile = (id, pw, img) => {
     return {
         type: SET_PROFILE,
         id: id,
-        pw: pw
+        pw: pw,
+        img: img
+    }
+}
+
+export const setUserImg = (img) => {
+    return {
+        type: SET_USERIMG,
+        img
     }
 }

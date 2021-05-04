@@ -1,4 +1,5 @@
-import { SET_SIGNIN, SET_SIGNUP, SET_FORGOT, SET_PROFILE } from '../actions/User';
+import { SET_SIGNIN, SET_SIGNUP, SET_FORGOT, SET_PROFILE, SET_USERIMG } from '../actions/User';
+import BasicUserImg from '../assets/images/user.jpg';
 
 const userIntialState = {
     email : "", 
@@ -8,6 +9,7 @@ const userIntialState = {
     pw : "", 
     pwClick: false,
     conpw : "",
+    img: BasicUserImg
 }
 
 const user = (state=userIntialState, action) => {
@@ -37,8 +39,13 @@ const user = (state=userIntialState, action) => {
         case SET_PROFILE:
             return Object.assign({}, state, {
                 id: action.id,
-                pw: action.pw
-            })   
+                pw: action.pw,
+                img: action.img
+            })  
+        case SET_USERIMG:
+            return Object.assign({}, state, {
+                img: action.img
+            }) 
         default:
             return state
     }

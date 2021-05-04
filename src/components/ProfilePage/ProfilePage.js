@@ -12,11 +12,11 @@ import { handleMenuOption, handleSignIn, handleSignUp, handleProfile, PutRefresh
 import { connect } from 'react-redux';
 import { setMenu, setAuth } from '../../actions/Head';
 import { setSideBar } from '../../actions/Sidebar';
-import { setProfile } from '../../actions/User';
+import { setProfile, setUserImg } from '../../actions/User';
 
 const axios = require('axios');
 
-const ProfilePage = ({ auth, menu, title, qna, help, id, pw, onChangeMenuBar, onChangeMenuOption, onChangeAuth, onChangeProfile }) => {
+const ProfilePage = ({ auth, menu, title, qna, help, id, pw, img, onChangeMenuBar, onChangeMenuOption, onChangeAuth, onChangeProfile, onChangeUserImg }) => {
     let history = useHistory();
     let location = useLocation();
 
@@ -44,8 +44,7 @@ const ProfilePage = ({ auth, menu, title, qna, help, id, pw, onChangeMenuBar, on
                 warning: '',
               }
           ]),
-          [changeInput, setChangeInput] = useState({id: -1, value: ''}),
-          [imgUrl, setImgUrl] = useState(BasicUserImg);
+          [changeInput, setChangeInput] = useState({id: -1, value: ''});
     
     useEffect(() => {
         if(typeof (location.state) !== 'undefined' && location.state !== null) {
@@ -120,10 +119,12 @@ const ProfilePage = ({ auth, menu, title, qna, help, id, pw, onChangeMenuBar, on
 
             axios.defaults.headers.common['Authorization'] = `${local.tokenType} ${local.accessToken}`;
 
-            axios.put(`http://10.156.145.170:8000/user/profile`, {
-                userId: thisId,
-                password: pw
-            })
+            var formData = new FormData();
+            formData.append("image", img);
+            formData.append("password", pw);
+            formData.append("userId", thisId);
+
+            axios.put(`http://13.124.184.19:8000/user/profile`, formData)
             .then(res => {console.log(res);
                 onChangeProfile('', '');
                 onChangeMenuBar(false);
@@ -138,7 +139,7 @@ const ProfilePage = ({ auth, menu, title, qna, help, id, pw, onChangeMenuBar, on
 
     const handleProfileImage = (e) => {
         e.preventDefault();
-        setImgUrl(URL.createObjectURL(e.target.files[0]));
+        onChangeUserImg(URL.createObjectURL(e.target.files[0]));
     }
     
     return (
@@ -151,14 +152,14 @@ const ProfilePage = ({ auth, menu, title, qna, help, id, pw, onChangeMenuBar, on
                     </ProfilePageStyle.TextContents>
                     <ProfilePageStyle.ImageChange>
                         <ProfilePageStyle.ImageChangeTitle>Profile Photo</ProfilePageStyle.ImageChangeTitle>
-                        <ProfilePageStyle.ImageCircle src={imgUrl}></ProfilePageStyle.ImageCircle>
+                        <ProfilePageStyle.ImageCircle src={img}></ProfilePageStyle.ImageCircle>
                         <ProfilePageStyle.ImageText>
                             <ProfilePageStyle.ImageDescription>Select an image file on your computer.</ProfilePageStyle.ImageDescription>
                             <ProfilePageStyle.ChooseImage>
                                 <ProfilePageStyle.ChooseLabel for="choose_file">CHOOSE IMAGE</ProfilePageStyle.ChooseLabel>
                                 <ProfilePageStyle.ChooseInput type="file" id="choose_file" onChange={(e) => handleProfileImage(e)}/>
                             </ProfilePageStyle.ChooseImage>
-                            <ProfilePageStyle.ResetImage type="button" value="RESET IMAGE" onClick={() => setImgUrl(BasicUserImg)}/>
+                            <ProfilePageStyle.ResetImage type="button" value="RESET IMAGE" onClick={() => onChangeUserImg(BasicUserImg)}/>
                         </ProfilePageStyle.ImageText>
                     </ProfilePageStyle.ImageChange>
                     <ProfilePageStyle.Input>
@@ -186,7 +187,8 @@ let mapStateToProps = (state) => {
         qna: state.sidebar.qna,
         help: state.sidebar.help,
         id: state.user.id,
-        pw: state.user.pw
+        pw: state.user.pw,
+        img: state.user.img
     }
 }
 
@@ -195,7 +197,8 @@ let mapDispatchToProps = (dispatch) => {
         onChangeMenuBar: (menu) => dispatch(setMenu(menu)),
         onChangeMenuOption: (title, qna, help) => dispatch(setSideBar(title, qna, help)),
         onChangeAuth: (auth) => dispatch(setAuth(auth)),
-        onChangeProfile: (id, pw) => dispatch(setProfile(id, pw))
+        onChangeProfile: (id, pw, img) => dispatch(setProfile(id, pw, img)),
+        onChangeUserImg: (img) => dispatch(setUserImg(img))
     }
 }
 
