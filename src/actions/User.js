@@ -1,6 +1,7 @@
 export const SET_SIGNIN = 'SET_SIGNIN';
 export const SET_SIGNUP = 'SET_SIGNUP';
 export const SET_FORGOT = 'SET_FORGOT';
+export const SET_HEADER = 'SET_HEADER';
 export const SET_PROFILE = 'SET_PROFILE';
 export const SET_USERIMG = 'SET_USERIMG';
 
@@ -32,6 +33,14 @@ export const setForgot = (email, authent, pw, conpw) => {
         authent: authent,
         pw: pw,
         conpw: conpw
+    }
+}
+
+export const setHeader = (email, id) => {
+    return {
+        type: SET_HEADER,
+        email,
+        id
     }
 }
 

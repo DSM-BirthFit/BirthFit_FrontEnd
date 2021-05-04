@@ -12,10 +12,13 @@ import { connect } from 'react-redux';
 import { setAlarm, setAlarmList } from '../../../actions/Alarm';
 import { setMenu, setAuth } from '../../../actions/Head';
 import { setSideBar } from '../../../actions/Sidebar';
+import { setHeader } from '../../../actions/User';
 
 import { handleMenuOption, handleSignIn, handleSignUp, handleProfile, handleLogout } from '../Controllers/user';
 
-const Header = ({ auth, menu, alarm, alarmLists, onChangeAlarm, onChangeAlarmList, onChangeMenuBar, onChangeAuth, onChangeMenuOption }) => {
+import axios from 'axios';
+
+const Header = ({ auth, menu, alarm, alarmLists, email, id, onChangeAlarm, onChangeAlarmList, onChangeMenuBar, onChangeAuth, onChangeMenuOption, onChnageHeader }) => {
     let history = useHistory();
 
     const [userInfo, setUserInfo] = useState(false),
@@ -59,6 +62,16 @@ const Header = ({ auth, menu, alarm, alarmLists, onChangeAlarm, onChangeAlarmLis
 
     useEffect(() => {
         onChangeAlarmList(alarmList);
+        const local = JSON.parse(localStorage.getItem('userInfo'));
+    
+        axios.defaults.headers.common['Authorization'] = `${local.tokenType} ${local.accessToken}`;
+
+        axios.get(`http://13.124.184.19:8000/user/profile`, {})
+        .then(res => {
+            console.log(res);
+            onChnageHeader(res.data.email, res.data.userId);
+        })
+        .catch(err => {console.log(err);})
     }, [])
 
     const handleMain = () => {
@@ -88,8 +101,8 @@ const Header = ({ auth, menu, alarm, alarmLists, onChangeAlarm, onChangeAlarmLis
                             <HeaderStyle.Line></HeaderStyle.Line>
                             <HeaderStyle.AccountContents>
                                 <HeaderStyle.Account>Account</HeaderStyle.Account>
-                                <HeaderStyle.UserName>ID : esung246</HeaderStyle.UserName>
-                                <HeaderStyle.UserEmail>Email : esung246@gmail.com</HeaderStyle.UserEmail>
+                                <HeaderStyle.UserName>ID : {id}</HeaderStyle.UserName>
+                                <HeaderStyle.UserEmail>Email : {email}</HeaderStyle.UserEmail>
                             </HeaderStyle.AccountContents>
                             <HeaderStyle.OptionContents>
                                 <HeaderStyle.Option>Option</HeaderStyle.Option>
@@ -122,7 +135,9 @@ let mapStateToProps = (state) => {
         auth: state.head.auth,
         menu: state.head.menu,
         alarm: state.alarm.alarm, 
-        alarmLists: state.alarm.alarmLists
+        alarmLists: state.alarm.alarmLists,
+        email: state.user.email,
+        id: state.user.id
     }
 }
 
@@ -132,7 +147,8 @@ let mapDispatchToProps = (dispatch) => {
         onChangeMenuOption: (title, qna, help) => dispatch(setSideBar(title, qna, help)),
         onChangeAuth: (auth) => dispatch(setAuth(auth)),
         onChangeAlarmList: (alarmLists) => dispatch(setAlarmList(alarmLists)),
-        onChangeAlarm: (alarm) => dispatch(setAlarm(alarm))
+        onChangeAlarm: (alarm) => dispatch(setAlarm(alarm)),
+        onChnageHeader: (email, id) => dispatch(setHeader(email, id))
     }
 }
 
