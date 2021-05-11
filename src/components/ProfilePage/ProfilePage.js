@@ -7,7 +7,7 @@ import BasicUserImg from '../../assets/images/user.jpg';
 import Header from '../Common/Header/Header';
 import SideBar from '../Common/SideBar/SideBar';
 import ProfileList from './ProfileList/ProfileList';
-import { handleMenuOption, handleSignIn, handleSignUp, handleProfile, PutRefreshToken } from '../Common/Controllers/user';
+import { handleMenuOption, handleSignIn, handleSignUp, handleProfile, handleLogout } from '../Common/Controllers/user';
 
 import { connect } from 'react-redux';
 import { setMenu, setAuth } from '../../actions/Head';
@@ -16,7 +16,7 @@ import { setProfile, setUserImg } from '../../actions/User';
 
 const axios = require('axios');
 
-const ProfilePage = ({ auth, menu, title, qna, help, id, email, pw, img, imgURL, onChangeMenuBar, onChangeMenuOption, onChangeAuth, onChangeProfile, onChangeUserImg }) => {
+const ProfilePage = ({ auth, menu, title, qna, help, id, email, pw, conpw, img, chooseImg, onChangeMenuBar, onChangeMenuOption, onChangeAuth, onChangeProfile, onChangeUserImg }) => {
     let history = useHistory();
     let location = useLocation();
 
@@ -110,7 +110,7 @@ const ProfilePage = ({ auth, menu, title, qna, help, id, email, pw, img, imgURL,
 
             var formData = new FormData();
             formData.append("image", img);
-            formData.append("password", pw);
+            formData.append("password", conpw);
             formData.append("userId", id);
 
             axios.put(`http://13.124.184.19:8000/user/profile`, formData, {
@@ -135,6 +135,29 @@ const ProfilePage = ({ auth, menu, title, qna, help, id, email, pw, img, imgURL,
         onChangeUserImg(e.target.files[0]);
     }
     
+    const handleDeleteProfile = () => {
+        var deletePassword = prompt("Insert Your Password");
+        console.log(deletePassword);
+
+        const local = JSON.parse(localStorage.getItem('userInfo'));
+
+        axios.defaults.headers.common['Authorization'] = `${local.tokenType} ${local.accessToken}`;
+
+        axios.delete(`http://13.124.184.19:8000/user`, {
+            data: {
+                password: deletePassword
+            },
+        })
+        .then(res => {
+            console.log(res);
+            handleLogout(onChangeAuth, onChangeMenuBar, onChangeMenuOption, history);
+        })
+        .catch(err => {
+            console.log(err);
+        })
+    }
+
+
     return (
         <ProfilePageStyle.Container>
             <ProfilePageStyle.Contents menu={menu}>
@@ -145,7 +168,7 @@ const ProfilePage = ({ auth, menu, title, qna, help, id, email, pw, img, imgURL,
                     </ProfilePageStyle.TextContents>
                     <ProfilePageStyle.ImageChange>
                         <ProfilePageStyle.ImageChangeTitle>Profile Photo</ProfilePageStyle.ImageChangeTitle>
-                        <ProfilePageStyle.ImageCircle src={imgURL}></ProfilePageStyle.ImageCircle>
+                        <ProfilePageStyle.ImageCircle src={chooseImg}></ProfilePageStyle.ImageCircle>
                         <ProfilePageStyle.ImageText>
                             <ProfilePageStyle.ImageDescription>Select an image file on your computer.</ProfilePageStyle.ImageDescription>
                             <ProfilePageStyle.ChooseImage>
@@ -157,7 +180,10 @@ const ProfilePage = ({ auth, menu, title, qna, help, id, email, pw, img, imgURL,
                     </ProfilePageStyle.ImageChange>
                     <ProfilePageStyle.Input>
                         <ProfileList userid={id} userEmail={email} lists={inputList} handleChangeInput={handleChangeInput}/>
-                        <ProfilePageStyle.UpdateBtn onClick={() => handleUpdateProfile()}>UPDATE PROFILE</ProfilePageStyle.UpdateBtn>
+                        <ProfilePageStyle.ProfileBtn>
+                            <ProfilePageStyle.UpdateBtn onClick={() => handleUpdateProfile()}>UPDATE PROFILE</ProfilePageStyle.UpdateBtn>
+                            <ProfilePageStyle.DeleteBtn onClick={() => handleDeleteProfile()}>DELETE PROFILE</ProfilePageStyle.DeleteBtn>
+                        </ProfilePageStyle.ProfileBtn>
                     </ProfilePageStyle.Input>
                 </ProfilePageStyle.MainContents>
                 <ProfilePageStyle.ProfileImg src={profileImg}/>
@@ -182,8 +208,10 @@ let mapStateToProps = (state) => {
         id: state.user.id,
         email: state.user.email,
         pw: state.user.pw,
+        conpw: state.user.conpw,
         img: state.user.img,
-        imgURL: state.user.imgURL
+        imgURL: state.user.imgURL,
+        chooseImg: state.user.chooseImg
     }
 }
 

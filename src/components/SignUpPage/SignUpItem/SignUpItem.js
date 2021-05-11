@@ -8,7 +8,7 @@ const SignUpItem = ({ id, name, btn, warning, handleChangeInput, handleClickInpu
             { btn ?
                 <SignUpItemStyled.BtnTrue>
                     <SignUpItemStyled.InputTextTrue onChange={(e) => handleChangeInput(e.target.value, id)} onClick={(e) => handleClickInput(e.target.value, id)}/>
-                    <SignUpItemStyled.Btn type="button" value="send" onClick={() => handleSend(id)}/>
+                    <SignUpItemStyled.Btn type="button" value={id==2 ? "check" :"send"} onClick={() => handleSend(id)}/>
                 </SignUpItemStyled.BtnTrue>
             :
                 <SignUpItemStyled.InputTextFalse type={(id===3||id===4) && "password"} onChange={(e) => handleChangeInput(e.target.value, id)} onClick={(e) => handleClickInput(e.target.value, id)}/>

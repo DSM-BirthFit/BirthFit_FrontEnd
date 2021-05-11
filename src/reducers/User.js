@@ -10,7 +10,8 @@ const userIntialState = {
     pwClick: false,
     conpw : "",
     img: BasicUserImg,
-    imgURL: BasicUserImg
+    imgURL: BasicUserImg,
+    chooseImg: BasicUserImg
 }
 
 const user = (state=userIntialState, action) => {
@@ -52,7 +53,7 @@ const user = (state=userIntialState, action) => {
         case SET_USERIMG:
             return Object.assign({}, state, {
                 img: action.img,
-                imgURL: URL.createObjectURL(action.img)
+                chooseImg: URL.createObjectURL(action.img)
             }) 
         default:
             return state

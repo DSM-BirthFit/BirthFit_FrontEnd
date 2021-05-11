@@ -18,6 +18,10 @@ import { handleMenuOption, handleSignIn, handleSignUp, handleProfile, handleLogo
 
 import axios from 'axios';
 
+import io from 'socket.io-client';
+const local = JSON.parse(localStorage.getItem('userInfo'));
+const endpoint = `http://13.124.184.19:3000?token=${local.accessToken}/`
+
 const Header = ({ auth, menu, alarm, alarmLists, email, id, imgURL, onChangeAlarm, onChangeAlarmList, onChangeMenuBar, onChangeAuth, onChangeMenuOption, onChnageHeader }) => {
     let history = useHistory();
 
@@ -62,18 +66,20 @@ const Header = ({ auth, menu, alarm, alarmLists, email, id, imgURL, onChangeAlar
 
     useEffect(() => {
         onChangeAlarmList(alarmList);
-        const local = JSON.parse(localStorage.getItem('userInfo'));
         if(auth) {
             axios.defaults.headers.common['Authorization'] = `${local.tokenType} ${local.accessToken}`;
     
             axios.get(`http://13.124.184.19:8000/user/profile`, {})
             .then(res => {
-                console.log(res);
                 onChnageHeader(res.data.email, res.data.userId, res.data.image);
             })
             .catch(err => {console.log(err);})
+
+            const socket = io(endpoint);
+
+            console.log(socket); 
         }
-    }, [])
+    }, [auth])
 
     const handleMain = () => {
         onChangeMenuBar(false);

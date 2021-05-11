@@ -176,6 +176,12 @@ export const Input = styled.div`
     }
 `;
 
+export const ProfileBtn = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+`;
+
 export const UpdateBtn = styled.button`
     color: white;
     font-size: 18px;
@@ -186,9 +192,27 @@ export const UpdateBtn = styled.button`
     width: 200px;
     height: 50px;
     outline: none;
-    margin-top: -30px;
-    float: right;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
+export const DeleteBtn = styled.button`
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    background: #FF9999;
+    border: 3px solid #FF9999;
+    border-radius: 5px;
+    width: 200px;
+    height: 50px;
+    outline: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
 `;
 
 export const ProfileImg = styled.img`
