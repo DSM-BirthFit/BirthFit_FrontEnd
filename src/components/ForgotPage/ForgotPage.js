@@ -12,6 +12,8 @@ import { setMenu } from '../../actions/Head';
 import { setSideBar } from '../../actions/Sidebar';
 import { setForgot } from '../../actions/User';
 
+import { PutRefreshToken } from '../Common/Controllers/user';
+
 const axios = require('axios');
 
 const ForgotPage = ({ auth, menu, title, qna, help, email, authent, pw, conpw, onChangeMenuBar, onChangeMenuOption, onChangeForgot }) => {
@@ -167,7 +169,6 @@ const ForgotPage = ({ auth, menu, title, qna, help, email, authent, pw, conpw, o
             })
             .catch(err => {
                 console.log(err);
-                setInputChange({value: email, id: 0});
             })
         } else if(num === 1) {
             axios.put(`http://13.124.184.19:8000/email/verify`, {
@@ -179,7 +180,6 @@ const ForgotPage = ({ auth, menu, title, qna, help, email, authent, pw, conpw, o
             })
             .catch(err => {
                 console.log(err);
-                setInputChange({value: authent, id: 1});
             })
         }
     }

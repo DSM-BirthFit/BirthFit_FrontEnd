@@ -9,7 +9,7 @@ import { setMenu, setAuth } from '../../../actions/Head';
 import { setSideBar } from '../../../actions/Sidebar';
 import { setHeader } from '../../../actions/User';
 
-import { handleMenuOption, handleSignIn, handleSignUp, handleProfile, handleLogout } from '../Controllers/user';
+import { handleMenuOption, handleSignIn, handleSignUp, handleProfile, handleLogout, PutRefreshToken } from '../Controllers/user';
 
 import axios from 'axios';
 
@@ -29,7 +29,16 @@ const Header = ({ auth, menu, email, id, img, onChangeMenuBar, onChangeAuth, onC
                 console.log(res);
                 onChnageHeader(res.data.email, res.data.userId, res.data.image);
             })
-            .catch(err => {console.log(err);})
+            .catch(err => {
+                console.log(err);
+                PutRefreshToken();
+                axios.get(`http://13.124.184.19:8000/user/profile`, {})
+                .then(res => {
+                    console.log(res);
+                    onChnageHeader(res.data.email, res.data.userId, res.data.image);
+                })
+                .catch(err => console.log(err))
+            })
         }
     }, [auth])
 

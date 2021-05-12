@@ -7,7 +7,7 @@ import BasicUserImg from '../../assets/images/user.jpg';
 import Header from '../Common/Header/Header';
 import SideBar from '../Common/SideBar/SideBar';
 import ProfileList from './ProfileList/ProfileList';
-import { handleMenuOption, handleSignIn, handleSignUp, handleProfile, handleLogout } from '../Common/Controllers/user';
+import { handleMenuOption, handleSignIn, handleSignUp, handleProfile, handleLogout, PutRefreshToken } from '../Common/Controllers/user';
 
 import { connect } from 'react-redux';
 import { setMenu, setAuth } from '../../actions/Head';
@@ -108,8 +108,8 @@ const ProfilePage = ({ auth, menu, title, qna, help, id, email, pw, conpw, img, 
 
             console.log(postImg);
 
-            formData.append("image", postImg=="" ? null: postImg);
-            formData.append("password", pw=="" ? null : pw);
+            formData.append("image", postImg);
+            formData.append("password", pw);
             formData.append("userId", id);
 
             axios.put(`http://13.124.184.19:8000/user/profile`, formData, {
@@ -125,7 +125,26 @@ const ProfilePage = ({ auth, menu, title, qna, help, id, email, pw, conpw, img, 
                     pathname: '/',
                 })
             })
-            .catch(err => {console.log(err);})
+            .catch(err => {
+                console.log(err);
+                PutRefreshToken();
+                axios.put(`http://13.124.184.19:8000/user/profile`, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    }
+                })
+                .then(res => {console.log(res);
+                    onChangeProfile('', '');
+                    onChangeMenuBar(false);
+                    handleMenuOption(0, onChangeMenuOption);
+                    history.push({
+                        pathname: '/',
+                    })
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+            })
         }
     }
 
@@ -153,6 +172,19 @@ const ProfilePage = ({ auth, menu, title, qna, help, id, email, pw, conpw, img, 
         })
         .catch(err => {
             console.log(err);
+            PutRefreshToken();
+            axios.delete(`http://13.124.184.19:8000/user`, {
+                data: {
+                    password: deletePassword
+                },
+            })
+            .then(res => {
+                console.log(res);
+                handleLogout(onChangeAuth, onChangeMenuBar, onChangeMenuOption, history);
+            })
+            .catch(err => {
+                console.log(err);
+            })
         })
     }
 

@@ -36,7 +36,18 @@ export const handleProfile = (onChangeMenuOption, onChangeMenuBar, history) => {
         onChangeMenuBar(false);
         history.push('/profile')
     })
-    .catch(err => {console.log(err);})
+    .catch(err => {
+        console.log(err);
+        PutRefreshToken();
+        axios.get(`http://13.124.184.19:8000/user/profile`, {})
+        .then(res => {
+            console.log(res);
+            handleMenuOption(0, onChangeMenuOption);
+            onChangeMenuBar(false);
+            history.push('/profile')
+        })
+        .catch(err => console.log(err))
+    })
 }
 
 export const handleLogout = (onChangeAuth, onChangeMenuBar, onChangeMenuOption, history) => {

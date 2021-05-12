@@ -189,7 +189,25 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, userImage, conten
                 }
             })
         })
-        .catch(err => {console.log(err);})
+        .catch(err => {
+            console.log(err);
+            PutRefreshToken();
+            axios.get(`http://13.124.184.19:8000/user/profile`, {})
+            .then(res => {
+                console.log(res);
+                history.push({
+                    pathname: answerContents==='' ? `/qna/answer/${id}` : `/qna/answer/edit/${id}`,
+                    state: {
+                        title: '',
+                        contents: answerContents,
+                        len: 0,
+                        userId: res.data.userId,
+                        num: answerContents==='' ? -1 : num
+                    }
+                })
+            })
+            .catch(err => console.log(err))
+        })
     }
 
     const AnswerySize = () => {
