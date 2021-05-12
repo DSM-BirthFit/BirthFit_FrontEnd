@@ -3,13 +3,8 @@ import { useHistory } from 'react-router-dom';
 
 import * as HeaderStyle from '../../../assets/styles/Common/Header/Header';
 import { AiOutlineMenu } from 'react-icons/ai';
-import { BsBell } from 'react-icons/bs';
-import userImg from '../../../assets/images/user.jpg';
-
-import AlarmList from '../Alarm/AlarmList';
 
 import { connect } from 'react-redux';
-import { setAlarm, setAlarmList } from '../../../actions/Alarm';
 import { setMenu, setAuth } from '../../../actions/Head';
 import { setSideBar } from '../../../actions/Sidebar';
 import { setHeader } from '../../../actions/User';
@@ -18,66 +13,23 @@ import { handleMenuOption, handleSignIn, handleSignUp, handleProfile, handleLogo
 
 import axios from 'axios';
 
-import io from 'socket.io-client';
-const local = JSON.parse(localStorage.getItem('userInfo'));
-const endpoint = `http://13.124.184.19:3000?token=${local.accessToken}/`
-
-const Header = ({ auth, menu, alarm, alarmLists, email, id, imgURL, onChangeAlarm, onChangeAlarmList, onChangeMenuBar, onChangeAuth, onChangeMenuOption, onChnageHeader }) => {
+const Header = ({ auth, menu, email, id, img, onChangeMenuBar, onChangeAuth, onChangeMenuOption, onChnageHeader }) => {
     let history = useHistory();
 
     const [userInfo, setUserInfo] = useState(false),
-          alarmList = [
-              {
-                alarm_id: 1,
-                user_name: "userTest",
-                image: userImg,
-                content: 'asdfasdfasdfasdfasdfasdfasdfasdasdfasdfasdfasdfasdfsdfd',
-                date: '오전 11:22'
-              },
-              {
-                alarm_id: 2,
-                user_name: "userTest",
-                image: userImg,
-                content: 'asdfasdfasdfasdfasdfasdfasdfasdasdfasdfasdfasdfasdfsdfd',
-                date: '오전 11:22'
-              },
-              {
-                alarm_id: 3,
-                user_name: "userTest",
-                image: userImg,
-                content: 'asdfasdfasdfasdfasdfasdfasdfasdasdfasdfasdfasdfasdfsdfd',
-                date: '오전 11:22'
-              },
-              {
-                alarm_id: 4,
-                user_name: "userTest",
-                image: userImg,
-                content: 'asdfasdfasdfasdfasdfasdfasdfasdasdfasdfasdfasdfasdfsdfd',
-                date: '오전 11:22'
-              },
-              {
-                alarm_id: 5,
-                user_name: "userTest",
-                image: userImg,
-                content: 'asdfasdfasdfasdfasdfasdfasdfasdasdfasdfasdfasdfasdfsdfd',
-                date: '오전 11:22'
-              }
-          ];
+          [aImg, setAImg] = useState('');
 
     useEffect(() => {
-        onChangeAlarmList(alarmList);
         if(auth) {
+            const local = JSON.parse(localStorage.getItem('userInfo'));
             axios.defaults.headers.common['Authorization'] = `${local.tokenType} ${local.accessToken}`;
     
             axios.get(`http://13.124.184.19:8000/user/profile`, {})
             .then(res => {
+                console.log(res);
                 onChnageHeader(res.data.email, res.data.userId, res.data.image);
             })
             .catch(err => {console.log(err);})
-
-            const socket = io(endpoint);
-
-            console.log(socket); 
         }
     }, [auth])
 
@@ -97,11 +49,7 @@ const Header = ({ auth, menu, alarm, alarmLists, email, id, imgURL, onChangeAlar
             <HeaderStyle.MainTitle onClick={() => {handleMenuOption(0, onChangeMenuOption);handleMain()}}>Birth<HeaderStyle.HighLightTitle>Fit</HeaderStyle.HighLightTitle></HeaderStyle.MainTitle>
             { auth ? 
                 <HeaderStyle.RightMenu>
-                    <HeaderStyle.UserInfo src={imgURL} onClick={() => {onChangeAlarm(false);setUserInfo(!userInfo);}}></HeaderStyle.UserInfo>
-                    <HeaderStyle.AlarmIcon onClick={() => {setUserInfo(false);onChangeAlarm(!alarm);}}>
-                        <BsBell size="30" color="white"></BsBell>
-                        <HeaderStyle.AlarmTure/>
-                    </HeaderStyle.AlarmIcon>
+                    <HeaderStyle.UserInfo src={img} onClick={() => setUserInfo(!userInfo)}></HeaderStyle.UserInfo>
                     { userInfo &&
                         <HeaderStyle.UserInfoContents>
                             <HeaderStyle.Welcome>"Welcome to the <HeaderStyle.Strong>Birth<HeaderStyle.Point>Fit</HeaderStyle.Point>!</HeaderStyle.Strong>"</HeaderStyle.Welcome>
@@ -118,14 +66,6 @@ const Header = ({ auth, menu, alarm, alarmLists, email, id, imgURL, onChangeAlar
                             </HeaderStyle.OptionContents>
                         </HeaderStyle.UserInfoContents>
                     }
-                    { alarm &&
-                        <HeaderStyle.AlarmContents>
-                            <HeaderStyle.AlarmHeader>Update</HeaderStyle.AlarmHeader>
-                            <HeaderStyle.AlarmList>
-                                <AlarmList lists={alarmLists}></AlarmList>
-                            </HeaderStyle.AlarmList>
-                        </HeaderStyle.AlarmContents>
-                    }
                 </HeaderStyle.RightMenu>
                 :
                 <HeaderStyle.RightMenu>
@@ -141,11 +81,9 @@ let mapStateToProps = (state) => {
     return {
         auth: state.head.auth,
         menu: state.head.menu,
-        alarm: state.alarm.alarm, 
-        alarmLists: state.alarm.alarmLists,
         email: state.user.email,
         id: state.user.id,
-        imgURL: state.user.imgURL
+        img: state.user.img
     }
 }
 
@@ -154,8 +92,6 @@ let mapDispatchToProps = (dispatch) => {
         onChangeMenuBar: (menu) => dispatch(setMenu(menu)),
         onChangeMenuOption: (title, qna, help) => dispatch(setSideBar(title, qna, help)),
         onChangeAuth: (auth) => dispatch(setAuth(auth)),
-        onChangeAlarmList: (alarmLists) => dispatch(setAlarmList(alarmLists)),
-        onChangeAlarm: (alarm) => dispatch(setAlarm(alarm)),
         onChnageHeader: (email, id, img) => dispatch(setHeader(email, id, img))
     }
 }

@@ -16,7 +16,7 @@ import { setProfile, setUserImg } from '../../actions/User';
 
 const axios = require('axios');
 
-const ProfilePage = ({ auth, menu, title, qna, help, id, email, pw, conpw, img, chooseImg, onChangeMenuBar, onChangeMenuOption, onChangeAuth, onChangeProfile, onChangeUserImg }) => {
+const ProfilePage = ({ auth, menu, title, qna, help, id, email, pw, conpw, img, postImg, chooseImg, onChangeMenuBar, onChangeMenuOption, onChangeAuth, onChangeProfile, onChangeUserImg }) => {
     let history = useHistory();
     let location = useLocation();
 
@@ -45,10 +45,6 @@ const ProfilePage = ({ auth, menu, title, qna, help, id, email, pw, conpw, img, 
           ]),
           [changeInput, setChangeInput] = useState({id: -1, value: ''});
     
-    useEffect(() => {
-        
-    }, [])
-
     useEffect(() => {
         if(localStorage.getItem('userInfo') && auth===false) {
             onChangeAuth(true);
@@ -109,8 +105,11 @@ const ProfilePage = ({ auth, menu, title, qna, help, id, email, pw, conpw, img, 
             axios.defaults.headers.common['Authorization'] = `${local.tokenType} ${local.accessToken}`;
 
             var formData = new FormData();
-            formData.append("image", img);
-            formData.append("password", conpw);
+
+            console.log(postImg);
+
+            formData.append("image", postImg=="" ? null: postImg);
+            formData.append("password", pw=="" ? null : pw);
             formData.append("userId", id);
 
             axios.put(`http://13.124.184.19:8000/user/profile`, formData, {
@@ -156,7 +155,6 @@ const ProfilePage = ({ auth, menu, title, qna, help, id, email, pw, conpw, img, 
             console.log(err);
         })
     }
-
 
     return (
         <ProfilePageStyle.Container>
@@ -210,7 +208,7 @@ let mapStateToProps = (state) => {
         pw: state.user.pw,
         conpw: state.user.conpw,
         img: state.user.img,
-        imgURL: state.user.imgURL,
+        postImg: state.user.postImg,
         chooseImg: state.user.chooseImg
     }
 }
@@ -220,8 +218,8 @@ let mapDispatchToProps = (dispatch) => {
         onChangeMenuBar: (menu) => dispatch(setMenu(menu)),
         onChangeMenuOption: (title, qna, help) => dispatch(setSideBar(title, qna, help)),
         onChangeAuth: (auth) => dispatch(setAuth(auth)),
-        onChangeProfile: (id, pw, img) => dispatch(setProfile(id, pw, img)),
-        onChangeUserImg: (img) => dispatch(setUserImg(img))
+        onChangeProfile: (id, pw) => dispatch(setProfile(id, pw)),
+        onChangeUserImg: (chooseImg) => dispatch(setUserImg(chooseImg))
     }
 }
 

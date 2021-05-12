@@ -45,18 +45,17 @@ export const setHeader = (email, id, img) => {
     }
 }
 
-export const setProfile = (id, pw, img) => {
+export const setProfile = (id, pw) => {
     return {
         type: SET_PROFILE,
-        id: id,
-        pw: pw,
-        img: img
+        id,
+        pw,
     }
 }
 
-export const setUserImg = (img) => {
+export const setUserImg = (chooseImg) => {
     return {
         type: SET_USERIMG,
-        img
+        chooseImg
     }
 }
