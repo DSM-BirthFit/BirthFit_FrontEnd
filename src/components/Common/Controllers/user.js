@@ -29,7 +29,7 @@ export const handleProfile = (onChangeMenuOption, onChangeMenuBar, history) => {
     
     axios.defaults.headers.common['Authorization'] = `${local.tokenType} ${local.accessToken}`;
 
-    axios.get(`http://13.124.184.19:8000/user/profile`, {})
+    axios.get(`http://10.156.145.170:8000/user/profile`, {})
     .then(res => {
         console.log(res);
         handleMenuOption(0, onChangeMenuOption);
@@ -39,7 +39,7 @@ export const handleProfile = (onChangeMenuOption, onChangeMenuBar, history) => {
     .catch(err => {
         console.log(err);
         PutRefreshToken();
-        axios.get(`http://13.124.184.19:8000/user/profile`, {})
+        axios.get(`http://10.156.145.170:8000/user/profile`, {})
         .then(res => {
             console.log(res);
             handleMenuOption(0, onChangeMenuOption);
@@ -65,7 +65,7 @@ export const PutRefreshToken = () => {
 
     axios.defaults.headers.common['X-Refresh-Token'] = `${local.tokenType} ${local.refreshToken}`;
 
-    axios.put(`http://13.124.184.19:8000/user`, {})
+    axios.put(`http://10.156.145.170:8000/user`, {})
     .then(res => {
         console.log(res);
         localStorage.removeItem('userInfo');

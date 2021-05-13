@@ -108,11 +108,17 @@ const ProfilePage = ({ auth, menu, title, qna, help, id, email, pw, conpw, img, 
 
             console.log(postImg);
 
-            formData.append("image", postImg);
+            if(postImg=="") {
+                formData.append("image", null);
+                formData.delete("image");
+            } else {
+                formData.append("image", postImg);
+            }
+
             formData.append("password", pw);
             formData.append("userId", id);
 
-            axios.put(`http://13.124.184.19:8000/user/profile`, formData, {
+            axios.put(`http://10.156.145.170:8000/user/profile`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 }
@@ -128,7 +134,7 @@ const ProfilePage = ({ auth, menu, title, qna, help, id, email, pw, conpw, img, 
             .catch(err => {
                 console.log(err);
                 PutRefreshToken();
-                axios.put(`http://13.124.184.19:8000/user/profile`, formData, {
+                axios.put(`http://10.156.145.170:8000/user/profile`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                     }
@@ -161,7 +167,7 @@ const ProfilePage = ({ auth, menu, title, qna, help, id, email, pw, conpw, img, 
 
         axios.defaults.headers.common['Authorization'] = `${local.tokenType} ${local.accessToken}`;
 
-        axios.delete(`http://13.124.184.19:8000/user`, {
+        axios.delete(`http://10.156.145.170:8000/user`, {
             data: {
                 password: deletePassword
             },
@@ -173,7 +179,7 @@ const ProfilePage = ({ auth, menu, title, qna, help, id, email, pw, conpw, img, 
         .catch(err => {
             console.log(err);
             PutRefreshToken();
-            axios.delete(`http://13.124.184.19:8000/user`, {
+            axios.delete(`http://10.156.145.170:8000/user`, {
                 data: {
                     password: deletePassword
                 },

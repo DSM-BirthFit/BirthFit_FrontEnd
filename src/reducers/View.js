@@ -19,7 +19,7 @@ const view = (state=viewIntialState, action) => {
         case SET_VIEW:
             return Object.assign({}, state, {
                 answer: action.answer,
-                userImage: action.userImage == null ? BasicUserImg : `http://13.124.184.19:8000/image/${action.userImage}`,
+                userImage: action.userImage == null ? BasicUserImg : `http://10.156.145.170:8000/image/${action.userImage}`,
                 contents: action.contents,
                 createdAt: action.createdAt,
                 likeCount: action.likeCount,
