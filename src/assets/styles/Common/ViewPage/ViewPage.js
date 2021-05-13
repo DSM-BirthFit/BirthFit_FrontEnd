@@ -78,7 +78,7 @@ export const UserImage = styled.div`
     width: 50px;
     height: 50px;
     border-radius: 50px;
-    background: url(${props => props.src === null ? sampleImg : props.src}) center center no-repeat;
+    background: url(${props => props.src === null ? sampleImg : `http://13.124.184.19:8000/image/${props.src}`}) center center no-repeat;
     background-size: contain;
     float: left;
     margin-right: 20px;

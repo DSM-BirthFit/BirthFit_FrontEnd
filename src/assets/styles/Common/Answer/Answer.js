@@ -20,7 +20,7 @@ export const UserInfo = styled.div`
 `;
 
 export const userImage = styled.div`
-    background: url(${props => props.src == null ? NullImage : props.src}) center center no-repeat;
+    background: url(${props => props.src == null ? NullImage : `http://13.124.184.19:8000/image/${props.src}`}) center center no-repeat;
     background-size: contain;
     border-radius: 150px;
     width: 30px;

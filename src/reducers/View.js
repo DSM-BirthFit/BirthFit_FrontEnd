@@ -1,5 +1,4 @@
 import { SET_VIEW, SET_LIKE } from '../actions/View';
-import BasicUserImg from '../assets/images/user.jpg';
 
 const viewIntialState = {
     answer: [],
@@ -19,7 +18,7 @@ const view = (state=viewIntialState, action) => {
         case SET_VIEW:
             return Object.assign({}, state, {
                 answer: action.answer,
-                userImage: action.userImage == null ? BasicUserImg : `http://13.124.184.19:8000/image/${action.userImage}`,
+                userImage: action.userImage == null ? null : action.userImage,
                 contents: action.contents,
                 createdAt: action.createdAt,
                 likeCount: action.likeCount,

@@ -94,7 +94,7 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, userImage, conten
             setDisplay(false);
             axios.get(`http://13.124.184.19:8000/user/profile`, {})
             .then(res => {
-                setSubmitAnswer([1, {commentId: answer.length == 0 ? 0 : answer[answer.length-1].commentId+1, userId: res.data.userId, comment: comment, isMine: true}]);
+                setSubmitAnswer([1, {commentId: answer.length == 0 ? 0 : answer[answer.length-1].commentId+1, userId: res.data.userId, userImage: res.data.image, comment: comment, isMine: true}]);
             })
             .catch(err => {console.log(err);})
         })
@@ -125,6 +125,7 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, userImage, conten
             array.push({
                 commentId :submitAnswer[1].commentId,
                 userId: submitAnswer[1].userId,
+                userImage: submitAnswer[1].userImage,
                 comment: submitAnswer[1].comment,
                 isMine: submitAnswer[1].isMine,
             });
@@ -258,7 +259,7 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, userImage, conten
                 return value.commentId === editAnswer[0];
             })
 
-            array.splice(num-1, 1, {commentId :array[num-1].commentId, userId: array[num-1].userId, comment: editAnswer[1], isMine: array[num-1].isMine,})
+            array.splice(num-1, 1, {commentId :array[num-1].commentId, userId: array[num-1].userId, userImage: array[num-1].userImage, comment: editAnswer[1], isMine: array[num-1].isMine,})
             setEditAnswer([-1, '']);
         }
     }, [editAnswer])
