@@ -50,7 +50,7 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, userImage, conten
     
         axios.defaults.headers.common['Authorization'] = `${local.tokenType} ${local.accessToken}`;
 
-        axios.get(`http://10.156.145.170:8000/${url}/${id}`, {})
+        axios.get(`http://13.124.184.19:8000/${url}/${id}`, {})
         .then(res => {
             if(url !== 'help') {
                 console.log(res);
@@ -63,7 +63,7 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, userImage, conten
         .catch(err => {
             console.log(err);
             PutRefreshToken();
-            axios.get(`http://10.156.145.170:8000/${url}/${id}`, {})
+            axios.get(`http://13.124.184.19:8000/${url}/${id}`, {})
             .then(res => {
                 onChnageView(res.data.answer, res.data.content, res.data.createdAt, res.data.likeCount, res.data.isLike, res.data.isMine, res.data.title, res.data.userId, res.data.view);
             })
@@ -86,13 +86,13 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, userImage, conten
 
         axios.defaults.headers.common['Authorization'] = `${local.tokenType} ${local.accessToken}`;
 
-        axios.post(`http://10.156.145.170:8000/${url}/comment/${id}`, {
+        axios.post(`http://13.124.184.19:8000/${url}/comment/${id}`, {
             comment: comment
         })
         .then(res => {
             onChangeCommet('', 0);
             setDisplay(false);
-            axios.get(`http://10.156.145.170:8000/user/profile`, {})
+            axios.get(`http://13.124.184.19:8000/user/profile`, {})
             .then(res => {
                 setSubmitAnswer([1, {commentId: answer.length == 0 ? 0 : answer[answer.length-1].commentId+1, userId: res.data.userId, comment: comment, isMine: true}]);
             })
@@ -101,13 +101,13 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, userImage, conten
         .catch(err => {
             console.log(err);
             PutRefreshToken();
-            axios.post(`http://10.156.145.170:8000/${url}/comment/${id}`, {
+            axios.post(`http://13.124.184.19:8000/${url}/comment/${id}`, {
                 comment: comment
             })
             .then(res => {
                 onChangeCommet('', 0);
                 setDisplay(false);
-                axios.get(`http://10.156.145.170:8000/user/profile`, {})
+                axios.get(`http://13.124.184.19:8000/user/profile`, {})
                 .then(res => {
                     setSubmitAnswer([1, {commentId: answer.length == 0 ? 0 : answer[answer.length-1].commentId+1, userId: res.data.userId, comment: comment, isMine: true}]);
                 })
@@ -147,7 +147,7 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, userImage, conten
     }
 
     const handleDeletePost = () => {
-        axios.delete(`http://10.156.145.170:8000/${url}/${id}`,{})
+        axios.delete(`http://13.124.184.19:8000/${url}/${id}`,{})
         .then(res => {
             console.log(res);
             history.push({
@@ -157,7 +157,7 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, userImage, conten
         .catch(err => {
             console.log(err);
             PutRefreshToken();
-            axios.delete(`http://10.156.145.170:8000/${url}/${id}`,{})
+            axios.delete(`http://13.124.184.19:8000/${url}/${id}`,{})
             .then(res => {
                 console.log(res);
                 history.push({
@@ -175,7 +175,7 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, userImage, conten
     
         axios.defaults.headers.common['Authorization'] = `${local.tokenType} ${local.accessToken}`;
 
-        axios.get(`http://10.156.145.170:8000/user/profile`, {})
+        axios.get(`http://13.124.184.19:8000/user/profile`, {})
         .then(res => {
             console.log(res);
             history.push({
@@ -192,7 +192,7 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, userImage, conten
         .catch(err => {
             console.log(err);
             PutRefreshToken();
-            axios.get(`http://10.156.145.170:8000/user/profile`, {})
+            axios.get(`http://13.124.184.19:8000/user/profile`, {})
             .then(res => {
                 console.log(res);
                 history.push({
@@ -222,7 +222,7 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, userImage, conten
     
         axios.defaults.headers.common['Authorization'] = `${local.tokenType} ${local.accessToken}`;
 
-        axios.put(`http://10.156.145.170:8000/help/comment/${commentId}`,
+        axios.put(`http://13.124.184.19:8000/help/comment/${commentId}`,
         {
             comment: text
         })
@@ -233,7 +233,7 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, userImage, conten
         .catch(err => {
             console.log(err);
             PutRefreshToken();
-            axios.put(`http://10.156.145.170:8000/help/comment/${commentId}`,
+            axios.put(`http://13.124.184.19:8000/help/comment/${commentId}`,
             {
                 comment: text
             })
@@ -269,14 +269,14 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, userImage, conten
 
         axios.defaults.headers.common['Authorization'] = `${local.tokenType} ${local.accessToken}`;
 
-        axios.delete(`http://10.156.145.170:8000/${url}/${middle}/${commentId}`,{})
+        axios.delete(`http://13.124.184.19:8000/${url}/${middle}/${commentId}`,{})
         .then(res => {
             console.log(res);
         })
         .catch(err => {
             console.log(err);
             PutRefreshToken();
-            axios.delete(`http://10.156.145.170:8000/${url}/${middle}/${commentId}`,{})
+            axios.delete(`http://13.124.184.19:8000/${url}/${middle}/${commentId}`,{})
             .then(res => {
                 console.log(res);
             })
@@ -295,14 +295,14 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, userImage, conten
 
         axios.defaults.headers.common['Authorization'] = `${local.tokenType} ${local.accessToken}`;
 
-        axios.put(`http://10.156.145.170:8000/${url}/${id}/like`,{})
+        axios.put(`http://13.124.184.19:8000/${url}/${id}/like`,{})
         .then(res => {
             console.log(res);
         })
         .catch(err => {
             console.log(err);
             PutRefreshToken();
-            axios.put(`http://10.156.145.170:8000/${url}/${id}/like`,{})
+            axios.put(`http://13.124.184.19:8000/${url}/${id}/like`,{})
             .then(res => {
                 console.log(res);
             })

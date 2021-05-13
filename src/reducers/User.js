@@ -42,8 +42,8 @@ const user = (state=userIntialState, action) => {
             return Object.assign({}, state, {
                 email: action.email,
                 id: action.id,
-                img: action.img == null ? BasicUserImg : `http://10.156.145.170:8000/image/${action.img}`,
-                chooseImg: action.img == null ? BasicUserImg : `http://10.156.145.170:8000/image/${action.img}`
+                img: action.img == null ? BasicUserImg : `http://13.124.184.19:8000/image/${action.img}`,
+                chooseImg: action.img == null ? BasicUserImg : `http://13.124.184.19:8000/image/${action.img}`
             })
         case SET_PROFILE:
             return Object.assign({}, state, {

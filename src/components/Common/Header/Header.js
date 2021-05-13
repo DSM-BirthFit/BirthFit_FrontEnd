@@ -24,7 +24,7 @@ const Header = ({ auth, menu, email, id, img, onChangeMenuBar, onChangeAuth, onC
             const local = JSON.parse(localStorage.getItem('userInfo'));
             axios.defaults.headers.common['Authorization'] = `${local.tokenType} ${local.accessToken}`;
     
-            axios.get(`http://10.156.145.170:8000/user/profile`, {})
+            axios.get(`http://13.124.184.19:8000/user/profile`, {})
             .then(res => {
                 console.log(res);
                 onChnageHeader(res.data.email, res.data.userId, res.data.image);
@@ -32,7 +32,7 @@ const Header = ({ auth, menu, email, id, img, onChangeMenuBar, onChangeAuth, onC
             .catch(err => {
                 console.log(err);
                 PutRefreshToken();
-                axios.get(`http://10.156.145.170:8000/user/profile`, {})
+                axios.get(`http://13.124.184.19:8000/user/profile`, {})
                 .then(res => {
                     console.log(res);
                     onChnageHeader(res.data.email, res.data.userId, res.data.image);

@@ -142,7 +142,7 @@ const ForgotPage = ({ auth, menu, title, qna, help, email, authent, pw, conpw, o
         }
 
         if(!checkWarn && email !== '' && authent !== '' && pw !== '' && conpw !== '') {
-            axios.put(`http://10.156.145.170:8000/user/password`, {
+            axios.put(`http://13.124.184.19:8000/user/password`, {
                 email: email,
                 password: pw
             })
@@ -161,7 +161,7 @@ const ForgotPage = ({ auth, menu, title, qna, help, email, authent, pw, conpw, o
 
     const handleSend = (num) => {
         if(num === 0) {
-            axios.post(`http://10.156.145.170:8000/email/password?email=${email}`, {
+            axios.post(`http://13.124.184.19:8000/email/password?email=${email}`, {
                 email: email
             })
             .then(res => {
@@ -171,7 +171,7 @@ const ForgotPage = ({ auth, menu, title, qna, help, email, authent, pw, conpw, o
                 console.log(err);
             })
         } else if(num === 1) {
-            axios.put(`http://10.156.145.170:8000/email/verify`, {
+            axios.put(`http://13.124.184.19:8000/email/verify`, {
                 email: email,
                 code: authent
             })
