@@ -5,6 +5,7 @@ const userIntialState = {
     email : "", 
     authent : "", 
     id : "", 
+    postId: "",
     idClick: false,
     pw : "", 
     pwClick: false,
@@ -42,12 +43,13 @@ const user = (state=userIntialState, action) => {
             return Object.assign({}, state, {
                 email: action.email,
                 id: action.id,
+                postId: action.id,
                 img: action.img == null ? BasicUserImg : `http://13.124.184.19:8000/image/${action.img}`,
                 chooseImg: action.img == null ? BasicUserImg : `http://13.124.184.19:8000/image/${action.img}`
             })
         case SET_PROFILE:
             return Object.assign({}, state, {
-                id: action.id,
+                postId: action.postId,
                 pw: action.pw,
             })  
         case SET_USERIMG:

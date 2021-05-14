@@ -10,6 +10,7 @@ import AnswerList from '../Answer/AnswerList/AnswerList';
 import QnAImg from '../../../assets/images/qna.jpg';
 import HelpImg from '../../../assets/images/help.jpg';
 import { handleMenuOption, handleSignIn, handleSignUp, handleProfile, PutRefreshToken } from '../Controllers/user';
+import { handleReRenderViewPage } from '../Controllers/write';
 
 import { connect } from 'react-redux';
 import { setMenu, setAuth } from '../../../actions/Head';
@@ -19,16 +20,13 @@ import { setComment } from '../../../actions/Write';
 
 const axios = require('axios');
 
-const ViewPage = ({ auth, menu, title, qna, help, url, answer, userImage, contents, createdAt, likeCount, isLike, isMine, viewTitle, userId, view, comment, len,  onChangeAuth, onChangeMenuBar, onChangeMenuOption , onChnageView, onChangeCommet, onChangeLike}) => {
+const ViewPage = ({ auth, menu, title, qna, help, url, answer, userImage, contents, createdAt, likeCount, isLike, isMine, viewTitle, userId, view, comment, len,  onChangeAuth, onChangeMenuBar, onChangeMenuOption , onChangeView, onChangeCommet, onChangeLike}) => {
     let history = useHistory();
     const { id } = useParams();
 
     const [height, setHeight] = useState('35px'),
           [answerHeight, setAnswerHeight] = useState('18px'),
-          [display, setDisplay] = useState(false),
-          [submitAnswer, setSubmitAnswer] = useState([0, {commentId: -1, userId: "", comment: "", isMine: false}]),
-          [editAnswer, setEditAnswer] = useState([-1, '']),
-          [deleteAnswer, setDeleteAnswer] = useState(-1);
+          [display, setDisplay] = useState(false);
 
     useEffect(() => {
         if(localStorage.getItem('userInfo') && auth===false) {
@@ -46,32 +44,7 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, userImage, conten
     }, []);
 
     useEffect(() => {
-        const local = JSON.parse(localStorage.getItem('userInfo'));
-    
-        axios.defaults.headers.common['Authorization'] = `${local.tokenType} ${local.accessToken}`;
-
-        axios.get(`http://13.124.184.19:8000/${url}/${id}`, {})
-        .then(res => {
-            if(url !== 'help') {
-                console.log(res);
-                onChnageView(res.data.answer, res.data.userImage, res.data.content, res.data.createdAt, res.data.likeCount, res.data.isLike, res.data.isMine, res.data.title, res.data.userId, res.data.view);
-            } else {
-                console.log(res);
-                onChnageView(res.data.comment, res.data.userImage, res.data.content, res.data.createdAt, res.data.likeCount, res.data.isLike, res.data.isMine, res.data.title, res.data.userId, res.data.view);
-            }
-        })
-        .catch(err => {
-            console.log(err);
-            PutRefreshToken();
-            axios.get(`http://13.124.184.19:8000/${url}/${id}`, {})
-            .then(res => {
-                onChnageView(res.data.answer, res.data.content, res.data.createdAt, res.data.likeCount, res.data.isLike, res.data.isMine, res.data.title, res.data.userId, res.data.view);
-            })
-            .catch(err => {
-                console.log(err);
-            }) 
-        }) 
-
+        handleReRenderViewPage(url, id, onChangeView);
     }, []);
 
     const ySize = () => {
@@ -79,6 +52,13 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, userImage, conten
         sTextarea.style.height = "1px";
         sTextarea.style.height = sTextarea.scrollHeight +5 + "px";
         setHeight(sTextarea.style.height);
+    }
+
+    const AnswerySize = () => {
+        var sTextarea = document.getElementById("answer_content");
+        sTextarea.style.height = "1px";
+        sTextarea.style.height = sTextarea.scrollHeight +5 + "px";
+        setAnswerHeight(sTextarea.style.height);
     }
 
     const handleCommentSubmit = () => {
@@ -94,7 +74,7 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, userImage, conten
             setDisplay(false);
             axios.get(`http://13.124.184.19:8000/user/profile`, {})
             .then(res => {
-                setSubmitAnswer([1, {commentId: answer.length == 0 ? 0 : answer[answer.length-1].commentId+1, userId: res.data.userId, userImage: res.data.image, comment: comment, isMine: true}]);
+                handleReRenderViewPage(url, id, onChangeView);
             })
             .catch(err => {console.log(err);})
         })
@@ -109,7 +89,7 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, userImage, conten
                 setDisplay(false);
                 axios.get(`http://13.124.184.19:8000/user/profile`, {})
                 .then(res => {
-                    setSubmitAnswer([1, {commentId: answer.length == 0 ? 0 : answer[answer.length-1].commentId+1, userId: res.data.userId, comment: comment, isMine: true}]);
+                    handleReRenderViewPage(url, id, onChangeView);
                 })
                 .catch(err => {console.log(err);})
             })
@@ -118,22 +98,6 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, userImage, conten
             }) 
         }) 
     }
-
-    useEffect(() => {
-        if(submitAnswer[0] !== 0){
-            let array = answer;
-            array.push({
-                commentId :submitAnswer[1].commentId,
-                userId: submitAnswer[1].userId,
-                userImage: submitAnswer[1].userImage,
-                comment: submitAnswer[1].comment,
-                isMine: submitAnswer[1].isMine,
-            });
-            console.log(contents);
-            setSubmitAnswer([0, {commentId: -1, userId: "", comment: "", isMine: false}]);
-            onChnageView(array, userImage, contents, createdAt, likeCount, isLike, isMine, viewTitle, userId, view);
-        }
-    }, [submitAnswer])
 
     const handleEditPage = () => {
         history.push({
@@ -211,13 +175,6 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, userImage, conten
         })
     }
 
-    const AnswerySize = () => {
-        var sTextarea = document.getElementById("answer_content");
-        sTextarea.style.height = "1px";
-        sTextarea.style.height = sTextarea.scrollHeight +5 + "px";
-        setAnswerHeight(sTextarea.style.height);
-    }
-
     const handleAnswerEditSubmit = (commentId, text, setText, setEdit) => {
         const local = JSON.parse(localStorage.getItem('userInfo'));
     
@@ -228,8 +185,9 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, userImage, conten
             comment: text
         })
         .then(res => {
-            setText('');
+            setText(text);
             setEdit(false);
+            handleReRenderViewPage(url, id, onChangeView);
         })
         .catch(err => {
             console.log(err);
@@ -239,30 +197,16 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, userImage, conten
                 comment: text
             })
             .then(res => {
-                setText('');
+                setText(text);
                 setEdit(false);
+                handleReRenderViewPage(url, id, onChangeView);
             })
             .catch(err => {
                 console.log(err);
             })
         })
 
-        setEditAnswer([commentId, text]);
     }
-
-    useEffect(() => {
-        if(editAnswer[0] !== -1) {
-            let array = answer;
-            var num = 0; 
-            array.find(function(value) {
-                num++;
-                return value.commentId === editAnswer[0];
-            })
-
-            array.splice(num-1, 1, {commentId :array[num-1].commentId, userId: array[num-1].userId, userImage: array[num-1].userImage, comment: editAnswer[1], isMine: array[num-1].isMine,})
-            setEditAnswer([-1, '']);
-        }
-    }, [editAnswer])
 
     const handleAnswerDeleteSubmit = (commentId) => {
         const local = JSON.parse(localStorage.getItem('userInfo'));
@@ -273,6 +217,7 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, userImage, conten
         axios.delete(`http://13.124.184.19:8000/${url}/${middle}/${commentId}`,{})
         .then(res => {
             console.log(res);
+            handleReRenderViewPage(url, id, onChangeView);
         })
         .catch(err => {
             console.log(err);
@@ -280,13 +225,12 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, userImage, conten
             axios.delete(`http://13.124.184.19:8000/${url}/${middle}/${commentId}`,{})
             .then(res => {
                 console.log(res);
+                handleReRenderViewPage(url, id, onChangeView);
             })
             .catch(err => {
                 console.log(err);
             })
         })
-
-        setDeleteAnswer(commentId);
     }
 
     const handleChangeLike = () => {
@@ -299,6 +243,7 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, userImage, conten
         axios.put(`http://13.124.184.19:8000/${url}/${id}/like`,{})
         .then(res => {
             console.log(res);
+            handleReRenderViewPage(url, id, onChangeView);
         })
         .catch(err => {
             console.log(err);
@@ -306,23 +251,13 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, userImage, conten
             axios.put(`http://13.124.184.19:8000/${url}/${id}/like`,{})
             .then(res => {
                 console.log(res);
+                handleReRenderViewPage(url, id, onChangeView);
             })
             .catch(err => {
                 console.log(err);
             })
         })
     }
-
-    useEffect(() => {
-        if(deleteAnswer !== -1){
-            let array = answer;
-            var cha = array.filter(function(value, index, array) {
-                return url==="help" ? value.commentId !== deleteAnswer : value.qnaId != deleteAnswer;
-            })
-            setDeleteAnswer(-1);
-            onChnageView(cha, userImage, contents, createdAt, likeCount, isLike, isMine, viewTitle, userId, view);
-        }
-    }, [deleteAnswer])
 
     return (
         <ViewPageStyle.Container>
@@ -438,7 +373,7 @@ let mapDispatchToProps = (dispatch) => {
         onChangeMenuBar: (menu) => dispatch(setMenu(menu)),
         onChangeMenuOption: (title, qna, help) => dispatch(setSideBar(title, qna, help)),
         onChangeAuth: (auth) => dispatch(setAuth(auth)),
-        onChnageView: (answer, userImage, contents, createdAt, likeCount, isLike, isMine, title, userId, view) => dispatch(setView(answer, userImage, contents, createdAt, likeCount, isLike, isMine, title, userId, view)),
+        onChangeView: (answer, userImage, contents, createdAt, likeCount, isLike, isMine, title, userId, view) => dispatch(setView(answer, userImage, contents, createdAt, likeCount, isLike, isMine, title, userId, view)),
         onChangeCommet: (comment, len) => dispatch(setComment(comment, len)),
         onChangeLike: (like) => dispatch(setLike(like))
     }

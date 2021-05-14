@@ -16,7 +16,7 @@ import { setProfile, setUserImg } from '../../actions/User';
 
 const axios = require('axios');
 
-const ProfilePage = ({ auth, menu, title, qna, help, id, email, pw, conpw, img, postImg, chooseImg, onChangeMenuBar, onChangeMenuOption, onChangeAuth, onChangeProfile, onChangeUserImg }) => {
+const ProfilePage = ({ auth, menu, title, qna, help, postId, email, pw, conpw, img, postImg, chooseImg, onChangeMenuBar, onChangeMenuOption, onChangeAuth, onChangeProfile, onChangeUserImg }) => {
     let history = useHistory();
     let location = useLocation();
 
@@ -68,7 +68,7 @@ const ProfilePage = ({ auth, menu, title, qna, help, id, email, pw, conpw, img, 
                     onChangeProfile(changeInput.value, pw);
                     break;
                 case 2:
-                    onChangeProfile(id, changeInput.value);
+                    onChangeProfile(postId, changeInput.value);
                     break;
                 default:
                     break;
@@ -106,7 +106,7 @@ const ProfilePage = ({ auth, menu, title, qna, help, id, email, pw, conpw, img, 
 
             var formData = new FormData();
 
-            console.log(postImg);
+            console.log(postId);
 
             if(postImg=="") {
                 formData.append("image", null);
@@ -116,7 +116,7 @@ const ProfilePage = ({ auth, menu, title, qna, help, id, email, pw, conpw, img, 
             }
 
             formData.append("password", pw);
-            formData.append("userId", id);
+            formData.append("userId", postId);
 
             axios.put(`http://13.124.184.19:8000/user/profile`, formData, {
                 headers: {
@@ -215,7 +215,7 @@ const ProfilePage = ({ auth, menu, title, qna, help, id, email, pw, conpw, img, 
                         </ProfilePageStyle.ImageText>
                     </ProfilePageStyle.ImageChange>
                     <ProfilePageStyle.Input>
-                        <ProfileList userid={id} userEmail={email} lists={inputList} handleChangeInput={handleChangeInput}/>
+                        <ProfileList userid={postId} userEmail={email} lists={inputList} handleChangeInput={handleChangeInput}/>
                         <ProfilePageStyle.ProfileBtn>
                             <ProfilePageStyle.UpdateBtn onClick={() => handleUpdateProfile()}>UPDATE PROFILE</ProfilePageStyle.UpdateBtn>
                             <ProfilePageStyle.DeleteBtn onClick={() => handleDeleteProfile()}>DELETE PROFILE</ProfilePageStyle.DeleteBtn>
@@ -241,7 +241,7 @@ let mapStateToProps = (state) => {
         title: state.sidebar.title,
         qna: state.sidebar.qna,
         help: state.sidebar.help,
-        id: state.user.id,
+        postId: state.user.postId,
         email: state.user.email,
         pw: state.user.pw,
         conpw: state.user.conpw,
@@ -256,7 +256,7 @@ let mapDispatchToProps = (dispatch) => {
         onChangeMenuBar: (menu) => dispatch(setMenu(menu)),
         onChangeMenuOption: (title, qna, help) => dispatch(setSideBar(title, qna, help)),
         onChangeAuth: (auth) => dispatch(setAuth(auth)),
-        onChangeProfile: (id, pw) => dispatch(setProfile(id, pw)),
+        onChangeProfile: (postId, pw) => dispatch(setProfile(postId, pw)),
         onChangeUserImg: (chooseImg) => dispatch(setUserImg(chooseImg))
     }
 }

@@ -45,10 +45,10 @@ export const setHeader = (email, id, img) => {
     }
 }
 
-export const setProfile = (id, pw) => {
+export const setProfile = (postId, pw) => {
     return {
         type: SET_PROFILE,
-        id,
+        postId,
         pw,
     }
 }

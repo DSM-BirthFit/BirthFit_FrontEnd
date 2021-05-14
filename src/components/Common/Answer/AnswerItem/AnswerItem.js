@@ -5,6 +5,11 @@ const AnswerItem = ({ commentId, userImg, content, isMine, userId, height, ySize
     const [edit, setEdit] = useState(false),
           [text, setText] = useState(content);
 
+    if(commentId == 18) {
+        console.log("content : " + content);
+        console.log("text : " + text);
+    }
+
     return (
         <AnswerItemStyle.Container id={commentId}>
             <AnswerItemStyle.Header>
@@ -21,7 +26,7 @@ const AnswerItem = ({ commentId, userImg, content, isMine, userId, height, ySize
                 { isMine && edit &&
                     <AnswerItemStyle.Btn>
                         <AnswerItemStyle.Edit onClick={() => handleAnswerEditSubmit(commentId, text, setText, setEdit)}>완료</AnswerItemStyle.Edit>
-                        <AnswerItemStyle.Delete onClick={() => setEdit(!edit)}>취소</AnswerItemStyle.Delete>
+                        <AnswerItemStyle.Delete onClick={() => {setEdit(!edit);setText(content)}}>취소</AnswerItemStyle.Delete>
                     </AnswerItemStyle.Btn>
                 }
             </AnswerItemStyle.Header>

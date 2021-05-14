@@ -127,3 +127,31 @@ export const handleWriteSubmit = (title, text, history, url, option, id, onChang
         }
     }
 }
+
+export const handleReRenderViewPage = (url, id, onChangeView) => {
+    const local = JSON.parse(localStorage.getItem('userInfo'));
+    
+        axios.defaults.headers.common['Authorization'] = `${local.tokenType} ${local.accessToken}`;
+
+        axios.get(`http://13.124.184.19:8000/${url}/${id}`, {})
+        .then(res => {
+            if(url !== 'help') {
+                console.log(res);
+                onChangeView(res.data.answer, res.data.userImage, res.data.content, res.data.createdAt, res.data.likeCount, res.data.isLike, res.data.isMine, res.data.title, res.data.userId, res.data.view);
+            } else {
+                console.log(res);
+                onChangeView(res.data.comment, res.data.userImage, res.data.content, res.data.createdAt, res.data.likeCount, res.data.isLike, res.data.isMine, res.data.title, res.data.userId, res.data.view);
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            PutRefreshToken();
+            axios.get(`http://13.124.184.19:8000/${url}/${id}`, {})
+            .then(res => {
+                onChangeView(res.data.answer, res.data.content, res.data.createdAt, res.data.likeCount, res.data.isLike, res.data.isMine, res.data.title, res.data.userId, res.data.view);
+            })
+            .catch(err => {
+                console.log(err);
+            }) 
+        }) 
+}
