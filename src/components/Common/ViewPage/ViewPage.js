@@ -66,7 +66,7 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, userImage, conten
 
         axios.defaults.headers.common['Authorization'] = `${local.tokenType} ${local.accessToken}`;
 
-        axios.post(`http://13.124.184.19:8000/${url}/comment/${id}`, {
+        axios.post(`http://13.124.184.19:8000/${url}/${id}/comment`, {
             comment: comment
         })
         .then(res => {
@@ -81,7 +81,7 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, userImage, conten
         .catch(err => {
             console.log(err);
             PutRefreshToken();
-            axios.post(`http://13.124.184.19:8000/${url}/comment/${id}`, {
+            axios.post(`http://13.124.184.19:8000/${url}/${id}/comment`, {
                 comment: comment
             })
             .then(res => {
@@ -144,7 +144,7 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, userImage, conten
         .then(res => {
             console.log(res);
             history.push({
-                pathname: answerContents==='' ? `/qna/answer/${id}` : `/qna/answer/edit/${id}`,
+                pathname: answerContents==='' ? `/qna/${id}/answer` : `/qna/answer/edit/${id}`,
                 state: {
                     title: '',
                     contents: answerContents,
@@ -161,7 +161,7 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, userImage, conten
             .then(res => {
                 console.log(res);
                 history.push({
-                    pathname: answerContents==='' ? `/qna/answer/${id}` : `/qna/answer/edit/${id}`,
+                    pathname: answerContents==='' ? `/qna/${id}/answer` : `/qna/answer/edit/${id}`,
                     state: {
                         title: '',
                         contents: answerContents,
