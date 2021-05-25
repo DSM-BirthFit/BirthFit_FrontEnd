@@ -5,11 +5,6 @@ const AnswerItem = ({ commentId, userImg, content, isMine, userId, height, ySize
     const [edit, setEdit] = useState(false),
           [text, setText] = useState(content);
 
-    if(commentId == 18) {
-        console.log("content : " + content);
-        console.log("text : " + text);
-    }
-
     return (
         <AnswerItemStyle.Container id={commentId}>
             <AnswerItemStyle.Header>

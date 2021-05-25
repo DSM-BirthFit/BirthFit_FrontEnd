@@ -143,6 +143,7 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, userImage, conten
         axios.get(`http://13.124.184.19:8000/user/profile`, {})
         .then(res => {
             console.log(res);
+            console.log(num);
             history.push({
                 pathname: answerContents==='' ? `/qna/answer/${id}` : `/qna/answer/edit/${id}`,
                 state: {
