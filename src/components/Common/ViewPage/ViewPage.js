@@ -144,7 +144,7 @@ const ViewPage = ({ auth, menu, title, qna, help, url, answer, userImage, conten
         .then(res => {
             console.log(res);
             history.push({
-                pathname: answerContents==='' ? `/qna/${id}/answer` : `/qna/answer/edit/${id}`,
+                pathname: answerContents==='' ? `/qna/answer/${id}` : `/qna/answer/edit/${id}`,
                 state: {
                     title: '',
                     contents: answerContents,

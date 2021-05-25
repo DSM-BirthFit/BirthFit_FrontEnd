@@ -69,7 +69,7 @@ export const handleWriteSubmit = (title, text, history, url, option, id, onChang
         })
     } else if(option === "answer"){
         if(thisId === -1) {
-            axios.post(`http://13.124.184.19:8000/qna/answer/${id}`, {
+            axios.post(`http://13.124.184.19:8000/qna/${id}/answer`, {
                 answer: text
             })
             .then(res => {
@@ -82,7 +82,7 @@ export const handleWriteSubmit = (title, text, history, url, option, id, onChang
             .catch(err => {
                 console.log(err);
                 PutRefreshToken();
-                axios.post(`http://13.124.184.19:8000/qna/answer/${id}`, {
+                axios.post(`http://13.124.184.19:8000/qna/${id}/answer`, {
                     content: text
                 })
                 .then(res => {
