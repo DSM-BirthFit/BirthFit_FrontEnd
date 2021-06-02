@@ -15,6 +15,21 @@ const userIntialState = {
     chooseImg: BasicUserImg
 }
 
+function dataURLtoFile(dataurl, filename) {
+ 
+    var arr = dataurl.split(','),
+        mime = arr[0].match(/:(.*?);/)[1],
+        bstr = atob(arr[1]), 
+        n = bstr.length, 
+        u8arr = new Uint8Array(n);
+        
+    while(n--){
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+    
+    return new File([u8arr], filename, {type:mime});
+}
+
 const user = (state=userIntialState, action) => {
     switch(action.type) {
         case SET_SIGNIN:
@@ -54,8 +69,8 @@ const user = (state=userIntialState, action) => {
             })  
         case SET_USERIMG:
             return Object.assign({}, state, {
-                postImg: action.chooseImg,
-                chooseImg: URL.createObjectURL(action.chooseImg)
+                postImg: typeof action.chooseImg==="string" ? dataURLtoFile(action.chooseImg, 'user.png') :action.chooseImg,
+                chooseImg: typeof action.chooseImg==="string" ? action.chooseImg : URL.createObjectURL(action.chooseImg)
             }) 
         default:
             return state
