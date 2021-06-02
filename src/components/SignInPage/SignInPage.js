@@ -66,7 +66,7 @@ const SignInPage = ({ auth, menu, title, qna, help, id, pw, idClick, pwClick, on
             console.log(res);
             setNullIn(true);
             onChangeAuth(true);
-
+            
             localStorage.setItem(
                 "userInfo",
                 JSON.stringify({
@@ -77,6 +77,7 @@ const SignInPage = ({ auth, menu, title, qna, help, id, pw, idClick, pwClick, on
             );
             onChangeMenuBar(false);
             handleMenuOption(0, onChangeMenuOption);
+            onChangeSignin(id, '', false, false);
 
             history.push({
                 pathname: '/',
